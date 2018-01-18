@@ -1,8 +1,7 @@
 package de.danoeh.antennapod.core.syndication.namespace;
 
-import org.xml.sax.Attributes;
-
 import de.danoeh.antennapod.core.syndication.handler.HandlerState;
+import org.xml.sax.Attributes;
 
 
 public abstract class Namespace {

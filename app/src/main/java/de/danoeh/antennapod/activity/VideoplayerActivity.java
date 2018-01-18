@@ -152,9 +152,16 @@ public class VideoplayerActivity extends MediaplayerActivity {
 
     @Override
     protected void onAwaitingVideoSurface() {
-        setupVideoAspectRatio();
         if (videoSurfaceCreated && controller != null) {
             Log.d(TAG, "Videosurface already created, setting videosurface now");
+
+            Pair<Integer, Integer> videoSize = controller.getVideoSize();
+            if (videoSize != null && videoSize.first > 0 && videoSize.second > 0) {
+                Log.d(TAG, "Width,height of video: " + videoSize.first + ", " + videoSize.second);
+                videoview.setVideoSize(videoSize.first, videoSize.second);
+            } else {
+                Log.e(TAG, "Could not determine video size");
+            }
             controller.setVideoSurface(videoview.getHolder());
         }
     }
@@ -190,18 +197,6 @@ public class VideoplayerActivity extends MediaplayerActivity {
     void setupVideoControlsToggler() {
         videoControlsHider.stop();
         videoControlsHider.start();
-    }
-
-    private void setupVideoAspectRatio() {
-        if (videoSurfaceCreated && controller != null) {
-            Pair<Integer, Integer> videoSize = controller.getVideoSize();
-            if (videoSize != null && videoSize.first > 0 && videoSize.second > 0) {
-                Log.d(TAG, "Width,height of video: " + videoSize.first + ", " + videoSize.second);
-                videoview.setVideoSize(videoSize.first, videoSize.second);
-            } else {
-                Log.e(TAG, "Could not determine video size");
-            }
-        }
     }
 
     private void toggleVideoControlsVisibility() {
@@ -252,7 +247,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
                     Log.e(TAG, "Couldn't attach surface to mediaplayer - reference to service was null");
                 }
             }
-            setupVideoAspectRatio();
+
         }
 
         @Override

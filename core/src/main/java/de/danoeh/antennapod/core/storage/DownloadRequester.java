@@ -89,9 +89,7 @@ public class DownloadRequester {
     private void download(Context context, FeedFile item, FeedFile container, File dest,
                           boolean overwriteIfExists, String username, String password,
                           String lastModified, boolean deleteOnFailure, Bundle arguments) {
-        final boolean partiallyDownloadedFileExists = item.getFile_url() != null && new File(item.getFile_url()).exists();
-
-        Log.d(TAG, "partiallyDownloadedFileExists: " + partiallyDownloadedFileExists);
+        final boolean partiallyDownloadedFileExists = item.getFile_url() != null;
         if (isDownloadingFile(item)) {
                 Log.e(TAG, "URL " + item.getDownload_url()
                         + " is already being downloaded");

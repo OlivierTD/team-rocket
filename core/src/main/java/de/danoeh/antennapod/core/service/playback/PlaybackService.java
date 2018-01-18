@@ -450,7 +450,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         if (keycode == -1 && playable == null && !castDisconnect) {
             Log.e(TAG, "PlaybackService was started with no arguments");
             stopSelf();
-            return Service.START_NOT_STICKY;
+            return Service.START_REDELIVER_INTENT;
         }
 
         if ((flags & Service.START_FLAG_REDELIVERY) != 0) {
@@ -462,7 +462,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 Log.d(TAG, "Received media button event");
                 handleKeycode(keycode, intent.getIntExtra(MediaButtonReceiver.EXTRA_SOURCE,
                         InputDeviceCompat.SOURCE_CLASS_NONE));
-            } else if (!flavorHelper.castDisconnect(castDisconnect) && playable != null) {
+            } else if (!flavorHelper.castDisconnect(castDisconnect)) {
                 started = true;
                 boolean stream = intent.getBooleanExtra(EXTRA_SHOULD_STREAM,
                         true);
@@ -472,20 +472,19 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 //If the user asks to play External Media, the casting session, if on, should end.
                 flavorHelper.castDisconnect(playable instanceof ExternalMedia);
                 if(playable instanceof FeedMedia){
-                    playable = DBReader.getFeedMedia(((FeedMedia)playable).getId());
+                    playable = (Playable) DBReader.getFeedMedia(((FeedMedia)playable).getId());
                 }
                 mediaPlayer.playMediaObject(playable, stream, startWhenPrepared, prepareImmediately);
             }
         }
 
-        return Service.START_NOT_STICKY;
+        return Service.START_REDELIVER_INTENT;
     }
 
     /**
      * Handles media button events
-     * return: keycode was handled
      */
-    private boolean handleKeycode(int keycode, int source) {
+    private void handleKeycode(int keycode, int source) {
         Log.d(TAG, "Handling keycode: " + keycode);
         final PlaybackServiceMediaPlayer.PSMPInfo info = mediaPlayer.getPSMPInfo();
         final PlayerStatus status = info.playerStatus;
@@ -502,7 +501,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     mediaPlayer.setStartWhenPrepared(true);
                     mediaPlayer.prepare();
                 }
-                return true;
+                break;
             case KeyEvent.KEYCODE_MEDIA_PLAY:
                 if (status == PlayerStatus.PAUSED || status == PlayerStatus.PREPARED) {
                     mediaPlayer.resume();
@@ -510,13 +509,13 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     mediaPlayer.setStartWhenPrepared(true);
                     mediaPlayer.prepare();
                 }
-                return true;
+                break;
             case KeyEvent.KEYCODE_MEDIA_PAUSE:
                 if (status == PlayerStatus.PLAYING) {
                     mediaPlayer.pause(!UserPreferences.isPersistNotify(), true);
                 }
 
-                return true;
+                break;
             case KeyEvent.KEYCODE_MEDIA_NEXT:
                 if(source == InputDevice.SOURCE_CLASS_NONE ||
                         UserPreferences.shouldHardwareButtonSkip()) {
@@ -528,10 +527,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     // user actually wants to fast-forward
                     seekDelta(UserPreferences.getFastForwardSecs() * 1000);
                 }
-                return true;
+                break;
             case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD:
                 mediaPlayer.seekDelta(UserPreferences.getFastForwardSecs() * 1000);
-                return true;
+                break;
             case KeyEvent.KEYCODE_MEDIA_PREVIOUS:
                 if(UserPreferences.shouldHardwarePreviousButtonRestart()) {
                     // user wants to restart current episode
@@ -540,10 +539,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     //  user wants to rewind current episode
                     mediaPlayer.seekDelta(-UserPreferences.getRewindSecs() * 1000);
                 }
-                return true;
+                break;
             case KeyEvent.KEYCODE_MEDIA_REWIND:
                 mediaPlayer.seekDelta(-UserPreferences.getRewindSecs() * 1000);
-                return true;
+                break;
             case KeyEvent.KEYCODE_MEDIA_STOP:
                 if (status == PlayerStatus.PLAYING) {
                     mediaPlayer.pause(true, true);
@@ -551,15 +550,15 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 }
 
                 stopForeground(true); // gets rid of persistent notification
-                return true;
+                break;
             default:
                 Log.d(TAG, "Unhandled key code: " + keycode);
                 if (info.playable != null && info.playerStatus == PlayerStatus.PLAYING) {   // only notify the user about an unknown key event if it is actually doing something
                     String message = String.format(getResources().getString(R.string.unknown_media_key), keycode);
                     Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
                 }
+                break;
         }
-        return false;
     }
 
     /**
@@ -1775,7 +1774,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 if (keyEvent != null &&
                         keyEvent.getAction() == KeyEvent.ACTION_DOWN &&
                         keyEvent.getRepeatCount() == 0){
-                    return handleKeycode(keyEvent.getKeyCode(), keyEvent.getSource());
+                    handleKeycode(keyEvent.getKeyCode(), keyEvent.getSource());
                 }
             }
             return false;

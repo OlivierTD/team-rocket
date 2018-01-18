@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Menu;
@@ -369,16 +368,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                     MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
                     | Intent.FLAG_ACTIVITY_NEW_TASK);
-
-            View cover = findViewById(R.id.imgvCover);
-            if (cover != null && Build.VERSION.SDK_INT >= 16) {
-                ActivityOptionsCompat options = ActivityOptionsCompat.
-                        makeSceneTransitionAnimation(MediaplayerActivity.this,
-                        cover, "coverTransition");
-                startActivity(intent, options.toBundle());
-            } else {
-                startActivity(intent);
-            }
+            startActivity(intent);
             return true;
         } else {
             if (media != null) {
