@@ -59,6 +59,7 @@ import de.danoeh.antennapod.fragment.AddFeedFragment;
 import de.danoeh.antennapod.fragment.DownloadsFragment;
 import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.fragment.ExternalPlayerFragment;
+import de.danoeh.antennapod.fragment.HomePageFragment;
 import de.danoeh.antennapod.fragment.ItemlistFragment;
 import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
@@ -192,7 +193,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
                     // it's not a number, this happens if we removed
                     // a label from the NAV_DRAWER_TAGS
                     // give them a nice default...
-                    loadFragment(QueueFragment.TAG, null);
+                    loadFragment(HomePageFragment.TAG, null);
                 }
             }
         }
