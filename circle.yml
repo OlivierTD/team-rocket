@@ -18,5 +18,7 @@ dependencies:
 
 test:
   override:
+    # Give permissions
+    - chmod +x gradlew
     - ./gradlew assembleDebug -PdisablePreDex:
         timeout: 1800
