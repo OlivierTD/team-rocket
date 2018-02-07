@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name" translate="false">AntennaPod</string>
+
+    <string name="queue_list_fragment">Queue List Fragment!</string>
 </resources>

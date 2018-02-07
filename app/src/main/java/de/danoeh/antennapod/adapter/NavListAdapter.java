@@ -40,6 +40,7 @@ import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.fragment.NewEpisodesFragment;
 import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
+import de.danoeh.antennapod.fragment.QueueListFragment;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
 
 /**
@@ -117,7 +118,7 @@ public class NavListAdapter extends BaseAdapter
         }
         int icon;
         switch (tag) {
-            case QueueFragment.TAG:
+            case QueueListFragment.TAG:
                 icon = R.attr.stat_playlist;
                 break;
             case NewEpisodesFragment.TAG:
@@ -252,13 +253,7 @@ public class NavListAdapter extends BaseAdapter
         holder.count.setOnClickListener(null);
 
         String tag = tags.get(position);
-        if (tag.equals(QueueFragment.TAG)) {
-            int queueSize = itemAccess.getQueueSize();
-            if (queueSize > 0) {
-                holder.count.setText(String.valueOf(queueSize));
-                holder.count.setVisibility(View.VISIBLE);
-            }
-        } else if (tag.equals(EpisodesFragment.TAG)) {
+        if (tag.equals(EpisodesFragment.TAG)) {
             int unreadItems = itemAccess.getNumberOfNewItems();
             if (unreadItems > 0) {
                 holder.count.setText(String.valueOf(unreadItems));
