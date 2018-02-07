@@ -302,6 +302,7 @@
     <string name="project_pref">Project</string>
     <string name="other_pref">Other</string>
     <string name="about_pref">About</string>
+    <string name="queues_label">Queues</string>
     <string name="queue_label">Queue</string>
     <string name="services_label">Services</string>
     <string name="flattr_label">Flattr</string>

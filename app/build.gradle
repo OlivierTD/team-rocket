@@ -12,7 +12,7 @@ repositories {
 
 buildscript {
     repositories {
-       jcenter()
+        jcenter()
     }
     dependencies {
         classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.8.1'
@@ -133,6 +133,7 @@ configurations {
 }
 
 dependencies {
+    compile 'com.android.support:support-v4:25.4.0'
     freeDebugCompile project(path: ":core", configuration: "freeDebug")
     freeReleaseCompile project(path: ":core", configuration: "freeRelease")
     // free build hack: skip some dependencies
