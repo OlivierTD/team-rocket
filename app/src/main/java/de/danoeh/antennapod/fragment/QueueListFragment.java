@@ -61,8 +61,7 @@ public class QueueListFragment extends Fragment {
         super.onDestroyView();
     }
 
-    @Override
     public void createNewQueue(){
-        
+
     }
 }
