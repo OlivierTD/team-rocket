@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:text="Create New Queue"/>
-        <!-- android:onClick="createQueue"/> -->
+        <!--android:onClick="createQueue"/>-->
 
 
 </FrameLayout>
