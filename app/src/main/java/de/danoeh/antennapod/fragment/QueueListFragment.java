@@ -14,6 +14,7 @@ public class QueueListFragment extends Fragment {
 
     public static final String TAG = "QueueListFragment";
 
+    //List of queue fragments
     private List<QueueFragment> queueList;
 
     // Called to do initial creation of fragment
