@@ -8,7 +8,7 @@
         android:id="@+id/textTopItunes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="iTunes top 20s"
+        android:text="iTunes top podcasts"
         android:textSize="20sp"
         android:paddingTop="30dp"
         android:paddingLeft="15dp"/>
