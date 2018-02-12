@@ -52,10 +52,6 @@ public class ToplistFragment extends Fragment{
      */
     private ItunesAdapter adapter;
     private GridView gridView;
-    private ProgressBar progressBar;
-    private TextView txtvError;
-    private Button butRetry;
-    private TextView txtvEmpty;
 
     /**
      * List of podcasts retreived from the search
@@ -73,7 +69,7 @@ public class ToplistFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_itunes_search, container, false);
+        View view = inflater.inflate(R.layout.toplist_itunes, container, false);
         gridView = (GridView) view.findViewById(R.id.gridView);
         adapter = new ItunesAdapter(getActivity(), new ArrayList<>());
         gridView.setAdapter(adapter);
@@ -91,7 +87,6 @@ public class ToplistFragment extends Fragment{
                 startActivity(intent);
             } else {
                 gridView.setVisibility(View.GONE);
-                progressBar.setVisibility(View.VISIBLE);
                 subscription = Observable.create((Observable.OnSubscribe<String>) subscriber -> {
                     OkHttpClient client = AntennapodHttpClient.getHttpClient();
                     Request.Builder httpReq = new Request.Builder()
@@ -117,7 +112,6 @@ public class ToplistFragment extends Fragment{
                         .subscribeOn(Schedulers.newThread())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(feedUrl -> {
-                            progressBar.setVisibility(View.GONE);
                             gridView.setVisibility(View.VISIBLE);
                             Intent intent = new Intent(getActivity(), OnlineFeedViewActivity.class);
                             intent.putExtra(OnlineFeedViewActivity.ARG_FEEDURL, feedUrl);
@@ -125,7 +119,6 @@ public class ToplistFragment extends Fragment{
                             startActivity(intent);
                         }, error -> {
                             Log.e(TAG, Log.getStackTraceString(error));
-                            progressBar.setVisibility(View.GONE);
                             gridView.setVisibility(View.VISIBLE);
                             String prefix = getString(R.string.error_msg_prefix);
                             new MaterialDialog.Builder(getActivity())
@@ -135,10 +128,6 @@ public class ToplistFragment extends Fragment{
                         });
             }
         });
-        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
-        txtvError = (TextView) view.findViewById(R.id.txtvError);
-        butRetry = (Button) view.findViewById(R.id.butRetry);
-        txtvEmpty = (TextView) view.findViewById(android.R.id.empty);
 
         loadToplist();
 
@@ -150,10 +139,6 @@ public class ToplistFragment extends Fragment{
             subscription.unsubscribe();
         }
         gridView.setVisibility(View.GONE);
-        txtvError.setVisibility(View.GONE);
-        butRetry.setVisibility(View.GONE);
-        txtvEmpty.setVisibility(View.GONE);
-        progressBar.setVisibility(View.VISIBLE);
         subscription = Observable.create((Observable.OnSubscribe<List<ItunesAdapter.Podcast>>) subscriber -> {
             String lang = Locale.getDefault().getLanguage();
             String url = "https://itunes.apple.com/" + lang + "/rss/toppodcasts/limit=25/explicit=true/json";
@@ -197,16 +182,10 @@ public class ToplistFragment extends Fragment{
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(podcasts -> {
-                    progressBar.setVisibility(View.GONE);
                     topList = podcasts;
                     updateData(topList);
                 }, error -> {
                     Log.e(TAG, Log.getStackTraceString(error));
-                    progressBar.setVisibility(View.GONE);
-                    txtvError.setText(error.toString());
-                    txtvError.setVisibility(View.VISIBLE);
-                    butRetry.setOnClickListener(v -> loadToplist());
-                    butRetry.setVisibility(View.VISIBLE);
                 });
     }
 
@@ -215,14 +194,12 @@ public class ToplistFragment extends Fragment{
         adapter.clear();
         if (result != null && result.size() > 0) {
             gridView.setVisibility(View.VISIBLE);
-            txtvEmpty.setVisibility(View.GONE);
             for (ItunesAdapter.Podcast p : result) {
                 adapter.add(p);
             }
             adapter.notifyDataSetInvalidated();
         } else {
             gridView.setVisibility(View.GONE);
-            txtvEmpty.setVisibility(View.VISIBLE);
         }
     }
 }

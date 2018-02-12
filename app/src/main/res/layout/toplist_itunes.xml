@@ -1,50 +1,49 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:background="@android:color/darker_gray">
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/textTopItunes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="top|center"
         android:text="iTunes top 20s"
-        android:textSize="17sp"
-        android:paddingTop="30dp"/>
+        android:textSize="20sp"
+        android:paddingTop="30dp"
+        android:paddingLeft="15dp"/>
 
-    <HorizontalScrollView
+    <GridView
+        android:id="@+id/gridView"
         android:layout_width="match_parent"
-        android:layout_height="116dp"
-        android:paddingTop="8dp"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:paddingBottom="5dp">
+        android:layout_height="265dp"
+        android:clipToPadding="false"
+        android:columnWidth="400dp"
+        android:gravity="center"
+        android:horizontalSpacing="8dp"
+        android:numColumns="auto_fit"
+        android:layout_marginTop="60dp"
+        android:paddingBottom="@dimen/list_vertical_padding"
+        android:paddingTop="@dimen/list_vertical_padding"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="8dp"
+        tools:listitem="@layout/gpodnet_podcast_listitem" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/imgvCover"
-            android:layout_centerVertical="true"
-            android:orientation="vertical">
+    <TextView
+        android:id="@id/android:empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:visibility="gone"
+        android:text="@string/search_status_no_results" />
 
-            <ImageView
-                android:id="@+id/imgvCover"
-                android:layout_width="@dimen/thumbnail_length_itemlist"
-                android:layout_height="@dimen/thumbnail_length_itemlist"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginRight="8dp"
-                android:adjustViewBounds="true"
-                android:contentDescription="@string/cover_label"
-                android:cropToPadding="true"
-                android:scaleType="fitXY"
-                tools:background="@android:color/holo_green_dark"
-                tools:src="@drawable/ic_stat_antenna_default" />
-        </LinearLayout>
-    </HorizontalScrollView>
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:indeterminateOnly="true"
+        android:visibility="gone"/>
 
-</LinearLayout>
+</RelativeLayout>
