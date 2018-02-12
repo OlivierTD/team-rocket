@@ -1,11 +1,13 @@
 package de.danoeh.antennapod.fragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.widget.Button;
 import android.widget.TextView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
 
 /**
  * Created by Sai Shan on 2018-02-02.
