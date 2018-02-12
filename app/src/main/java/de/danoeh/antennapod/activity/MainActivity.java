@@ -59,9 +59,10 @@ import de.danoeh.antennapod.fragment.AddFeedFragment;
 import de.danoeh.antennapod.fragment.DownloadsFragment;
 import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.fragment.ExternalPlayerFragment;
+import de.danoeh.antennapod.fragment.HomePageFragment;
 import de.danoeh.antennapod.fragment.ItemlistFragment;
 import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
-import de.danoeh.antennapod.fragment.QueueListFragment;
+import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
 import de.danoeh.antennapod.preferences.PreferenceController;
@@ -95,7 +96,8 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
     public static final String SAVE_TITLE = "title";
 
     public static final String[] NAV_DRAWER_TAGS = {
-            QueueListFragment.TAG,
+            HomePageFragment.TAG,
+            QueueFragment.TAG,
             EpisodesFragment.TAG,
             SubscriptionFragment.TAG,
             DownloadsFragment.TAG,
@@ -192,7 +194,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
                     // it's not a number, this happens if we removed
                     // a label from the NAV_DRAWER_TAGS
                     // give them a nice default...
-                    loadFragment(QueueListFragment.TAG, null);
+                    loadFragment(HomePageFragment.TAG, null);
                 }
             }
         }
@@ -217,7 +219,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
 
     private String getLastNavFragment() {
         SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        String lastFragment = prefs.getString(PREF_LAST_FRAGMENT_TAG, QueueListFragment.TAG);
+        String lastFragment = prefs.getString(PREF_LAST_FRAGMENT_TAG, QueueFragment.TAG);
         Log.d(TAG, "getLastNavFragment() -> " + lastFragment);
         return lastFragment;
     }
@@ -285,8 +287,11 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         Log.d(TAG, "loadFragment(tag: " + tag + ", args: " + args + ")");
         Fragment fragment = null;
         switch (tag) {
-            case QueueListFragment.TAG:
-                fragment = new QueueListFragment();
+            case HomePageFragment.TAG:
+                fragment = new HomePageFragment();
+                break;
+            case QueueFragment.TAG:
+                fragment = new QueueFragment();
                 break;
             case EpisodesFragment.TAG:
                 fragment = new EpisodesFragment();
@@ -305,9 +310,9 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
                 fragment = subscriptionFragment;
                 break;
             default:
-                // default to the queue
-                tag = QueueListFragment.TAG;
-                fragment = new QueueListFragment();
+                // default to the homepage
+                tag = HomePageFragment.TAG;
+                fragment =  new HomePageFragment();
                 args = null;
                 break;
         }
@@ -511,7 +516,8 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         boolean retVal = super.onCreateOptionsMenu(menu);
         if (Flavors.FLAVOR == Flavors.PLAY) {
             switch (getLastNavFragment()) {
-                case QueueListFragment.TAG:
+                case HomePageFragment.TAG:
+                case QueueFragment.TAG:
                 case EpisodesFragment.TAG:
                     requestCastButton(MenuItem.SHOW_AS_ACTION_IF_ROOM);
                     return retVal;
