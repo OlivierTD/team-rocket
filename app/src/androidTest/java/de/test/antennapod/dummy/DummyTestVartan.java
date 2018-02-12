@@ -8,7 +8,7 @@ import android.test.InstrumentationTestCase;
 
 public class DummyTestVartan extends InstrumentationTestCase {
 
-    public void vartanTest(){
+    public void testVartan(){
 
         String first = "vartan";
         String last = "beno";
