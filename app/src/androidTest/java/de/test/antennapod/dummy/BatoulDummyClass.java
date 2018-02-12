@@ -6,7 +6,7 @@ import android.test.InstrumentationTestCase;
 
 public class BatoulDummyClass extends InstrumentationTestCase{
 
-    public void dummyTest(){
+    public void testDummy(){
         //testing the CI for pull request!
         String name = "AntennaPod";
         assertEquals(name,"AntennaPod");
