@@ -304,6 +304,7 @@
     <string name="about_pref">About</string>
     <string name="queues_label">Queues</string>
     <string name="queue_label">Queue</string>
+    <string name="homepage_label">Home</string>
     <string name="services_label">Services</string>
     <string name="flattr_label">Flattr</string>
     <string name="pref_episode_cleanup_title">Episode Cleanup</string>
