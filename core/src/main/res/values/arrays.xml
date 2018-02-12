@@ -144,7 +144,8 @@
     </string-array>
 
     <string-array name="nav_drawer_titles">
-        <item>@string/queues_label</item>
+        <item>@string/homepage_label</item>
+        <item>@string/queue_label</item>
         <item>@string/episodes_label</item>
         <item>@string/subscriptions_label</item>
         <item>@string/downloads_label</item>
