@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import java.util.List;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 
@@ -13,6 +13,9 @@ import de.danoeh.antennapod.activity.MainActivity;
 public class QueueListFragment extends Fragment {
 
     public static final String TAG = "QueueListFragment";
+
+    //List of queue fragments
+    private List<QueueFragment> queueList;
 
     // Called to do initial creation of fragment
     @Override
@@ -57,5 +60,9 @@ public class QueueListFragment extends Fragment {
     @Override
     public void onDestroyView(){
         super.onDestroyView();
+    }
+
+    public void createNewQueue(){
+
     }
 }
