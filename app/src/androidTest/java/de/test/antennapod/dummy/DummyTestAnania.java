@@ -7,7 +7,7 @@ import android.test.InstrumentationTestCase;
 
 public class DummyTestAnania extends InstrumentationTestCase{
 
-    public void Anania() {
+    public void testAnania() {
 
         int y = 0;
         for (int x = 0; x < 3;x++) {
