@@ -33,11 +33,7 @@ public class HomePageFragment extends Fragment{
        super.onCreateView(inflater, container, savedInstanceState);
        View root = inflater.inflate(R.layout.home_page, container, false);
 
-       Button butSearchITunes = (Button) root.findViewById(R.id.butSearchItunes);
-       butSearchITunes.setOnClickListener(v -> activity.loadChildFragment(new ItunesSearchFragment()));
-
-
-        return root;
+       return root;
     }
 
     @Override
