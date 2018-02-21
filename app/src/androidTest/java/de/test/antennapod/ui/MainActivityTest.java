@@ -2,7 +2,6 @@ package de.test.antennapod.ui;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Handler;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.FlakyTest;
 import android.widget.ListView;
@@ -78,7 +77,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         solo.clickOnImageButton(0);
         getInstrumentation().waitForIdleSync();
     }
-/*
+
     public void testAddFeed() throws Exception {
         uiTestUtils.addHostedFeedData();
         final Feed feed = uiTestUtils.hostedFeeds.get(0);
@@ -146,11 +145,11 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
             assertEquals("", getActionbarTitle());
         }
     }
-*/
+
     private String getActionbarTitle() {
         return ((MainActivity) solo.getCurrentActivity()).getSupportActionBar().getTitle().toString();
     }
-/*
+
     @SuppressWarnings("unchecked")
     @FlakyTest(tolerance = 3)
     public void testGoToPreferences() {
@@ -226,7 +225,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         assertEquals(1, hidden.size());
         assertTrue(hidden.contains(DownloadsFragment.TAG));
     }
-*/
+
 
     /******** (stream from toplist) ********/
     public void testHomePageToplistStream(){
