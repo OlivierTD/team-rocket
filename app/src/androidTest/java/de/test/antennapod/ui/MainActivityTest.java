@@ -226,6 +226,20 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         assertTrue(hidden.contains(DownloadsFragment.TAG));
     }
 
+    /******** (opens homepage) ********/
+    public void testOpenHomePageToplist(){
+        //opens the homepage
+        openNavDrawer();
+        //clicks on the home button on the nav drawer
+        solo.clickOnText(solo.getString(R.string.homepage_label));
+
+
+        //wait for toplist fragment to load and scroll down the bottom
+        solo.waitForView(android.R.id.list);
+
+        //compares to see if the homepage label is the same as the page it's currently on
+        assertEquals(solo.getString(R.string.homepage_label), getActionbarTitle());
+    }
 
     /******** (stream from toplist) ********/
     public void testHomePageToplistStream(){
