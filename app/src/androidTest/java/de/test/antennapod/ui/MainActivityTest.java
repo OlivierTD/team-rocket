@@ -2,6 +2,7 @@ package de.test.antennapod.ui;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Handler;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.FlakyTest;
 import android.widget.ListView;
@@ -224,5 +225,31 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         List<String> hidden = UserPreferences.getHiddenDrawerItems();
         assertEquals(1, hidden.size());
         assertTrue(hidden.contains(DownloadsFragment.TAG));
+    }
+
+    public void testHomePageToplist(){
+        //Navigate to home page
+        openNavDrawer();
+        solo.clickOnText(solo.getString(R.string.homepage_label));
+
+        //wait for toplist fragment to load and scroll to bottom
+        solo.waitForView(android.R.id.list);
+
+        //open 2nd podcast in list
+        solo.clickInList(2);
+
+        //Subscribe to podcast
+        solo.waitForView(R.id.subscriptionLayout);
+        solo.clickOnButton(solo.getString(R.string.subscribe_label));
+
+        //Open podcast
+        solo.waitForView(R.id.subscriptionLayout);
+        solo.clickOnText(solo.getString(R.string.open_podcast));
+
+        //open 3rd episode in list
+        solo.clickInList(4);
+
+        //stream episode
+        solo.clickOnText(solo.getString(R.string.stream_label));
     }
 }
