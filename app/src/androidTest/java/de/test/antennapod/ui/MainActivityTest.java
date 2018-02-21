@@ -78,7 +78,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         solo.clickOnImageButton(0);
         getInstrumentation().waitForIdleSync();
     }
-
+/*
     public void testAddFeed() throws Exception {
         uiTestUtils.addHostedFeedData();
         final Feed feed = uiTestUtils.hostedFeeds.get(0);
@@ -146,11 +146,11 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
             assertEquals("", getActionbarTitle());
         }
     }
-
+*/
     private String getActionbarTitle() {
         return ((MainActivity) solo.getCurrentActivity()).getSupportActionBar().getTitle().toString();
     }
-
+/*
     @SuppressWarnings("unchecked")
     @FlakyTest(tolerance = 3)
     public void testGoToPreferences() {
@@ -226,8 +226,10 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         assertEquals(1, hidden.size());
         assertTrue(hidden.contains(DownloadsFragment.TAG));
     }
+*/
 
-    public void testHomePageToplist(){
+    /******** (stream from toplist) ********/
+    public void testHomePageToplistStream(){
         //Navigate to home page
         openNavDrawer();
         solo.clickOnText(solo.getString(R.string.homepage_label));
@@ -235,7 +237,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         //wait for toplist fragment to load and scroll to bottom
         solo.waitForView(android.R.id.list);
 
-        //open 2nd podcast in list
+        //open 2nd podcast in list view
         solo.clickInList(2);
 
         //Subscribe to podcast
@@ -251,5 +253,32 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 
         //stream episode
         solo.clickOnText(solo.getString(R.string.stream_label));
+    }
+
+    /******** (Download from toplist) ********/
+    public void testHomePageTopListDownload(){
+        //Navigate to home page
+        openNavDrawer();
+        solo.clickOnText(solo.getString(R.string.homepage_label));
+
+        //wait for toplist fragment to load and scroll to bottom
+        solo.waitForView(android.R.id.list);
+
+        //open 1st podcast in list view
+        solo.clickInList(1);
+
+        //Subscribe to podcast
+        solo.waitForView(R.id.subscriptionLayout);
+        solo.clickOnButton(solo.getString(R.string.subscribe_label));
+
+        //Open podcast
+        solo.waitForView(R.id.subscriptionLayout);
+        solo.clickOnText(solo.getString(R.string.open_podcast));
+
+        //open 1st episode in list
+        solo.clickInList(2);
+
+        //Download episode
+        solo.clickOnText(solo.getString(R.string.download_label));
     }
 }
