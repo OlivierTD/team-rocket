@@ -2,6 +2,7 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/subscriptionLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -15,8 +16,8 @@
         android:layout_marginRight="16dp"
         android:layout_marginTop="16dp"
         android:contentDescription="@string/cover_label"
-        tools:src="@drawable/ic_stat_antenna_default"
-        tools:background="@android:color/holo_green_dark" />
+        tools:background="@android:color/holo_green_dark"
+        tools:src="@drawable/ic_stat_antenna_default" />
 
     <TextView
         android:id="@+id/txtvTitle"
@@ -31,8 +32,8 @@
         android:ellipsize="end"
         android:gravity="center_vertical"
         android:maxLines="2"
-        tools:text="Online feed title"
-        tools:background="@android:color/holo_green_dark" />
+        tools:background="@android:color/holo_green_dark"
+        tools:text="Online feed title" />
 
     <TextView
         android:id="@+id/txtvAuthor"
@@ -46,8 +47,8 @@
         android:lines="1"
         android:textColor="?android:attr/textColorSecondary"
         android:textSize="@dimen/text_size_small"
-        tools:text="Online feed author"
-        tools:background="@android:color/holo_green_dark" />
+        tools:background="@android:color/holo_green_dark"
+        tools:text="Online feed author" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -83,8 +84,8 @@
             android:layout_marginRight="16dp"
             android:textColor="?android:attr/textColorSecondary"
             android:textSize="@dimen/text_size_small"
-            tools:text="@string/design_time_lorem_ipsum"
-            tools:background="@android:color/holo_green_dark"/>
+            tools:background="@android:color/holo_green_dark"
+            tools:text="@string/design_time_lorem_ipsum" />
 
     </LinearLayout>
 </RelativeLayout>
