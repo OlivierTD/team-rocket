@@ -189,7 +189,7 @@ public class ToplistFragment extends Fragment{
                 });
     }
 
-    void updateData(List<ItunesAdapter.Podcast> result) {
+    private void updateData(List<ItunesAdapter.Podcast> result) {
         this.searchResults = result;
         adapter.clear();
         if (result != null && result.size() > 0) {
