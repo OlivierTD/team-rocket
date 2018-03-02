@@ -11,13 +11,12 @@
         android:text="@string/queue_list_fragment" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/addQueue"
         style="@style/Widget.AntennaPod.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:text="Create New Queue"/>
-        <!--android:onClick="createQueue"/>-->
 
 
 </FrameLayout>

@@ -20,7 +20,7 @@ public class QueueListFragment extends Fragment {
     private List<QueueFragment> queueList;
 
     //button to add queues to list
-    public Button addQueue;
+    public Button addButton;
 
 
     // Called to do initial creation of fragment
@@ -38,8 +38,8 @@ public class QueueListFragment extends Fragment {
 
         View root = inflater.inflate(R.layout.fragment_queue_list, container, false);
 
-        //addQueue = (Button) getView().findViewById(R.id.addQueue);
-        //addQueue.setOnClickListener(this);
+        addButton = (Button) root.findViewById(R.id.addQueue);
+        addButton.setOnClickListener((View.OnClickListener) this);
 
         return root;
     }
