@@ -12,7 +12,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 
 
-public class QueueListFragment extends Fragment {
+public class QueueListFragment extends Fragment implements View.OnClickListener {
 
     public static final String TAG = "QueueListFragment";
 
@@ -39,16 +39,17 @@ public class QueueListFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_queue_list, container, false);
 
         addButton = (Button) root.findViewById(R.id.addQueue);
-        addButton.setOnClickListener((View.OnClickListener) this);
+        addButton.setOnClickListener(this);
 
         return root;
     }
 
 
     //adds a queue to the list of queues
+    @Override
     public void onClick(View v){
-        QueueFragment toAdd = new QueueFragment();
-        queueList.add(toAdd);
+        //QueueFragment toAdd = new QueueFragment();
+        //queueList.add(toAdd);
     }
 
     // Called when fragment is visible to the user
