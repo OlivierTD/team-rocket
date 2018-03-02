@@ -5,6 +5,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+
 import java.util.List;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
@@ -16,6 +18,10 @@ public class QueueListFragment extends Fragment {
 
     //List of queue fragments
     private List<QueueFragment> queueList;
+
+    //button to add queues to list
+    public Button addQueue;
+
 
     // Called to do initial creation of fragment
     @Override
@@ -32,7 +38,17 @@ public class QueueListFragment extends Fragment {
 
         View root = inflater.inflate(R.layout.fragment_queue_list, container, false);
 
+        //addQueue = (Button) getView().findViewById(R.id.addQueue);
+        //addQueue.setOnClickListener(this);
+
         return root;
+    }
+
+
+    //adds a queue to the list of queues
+    public void onClick(View v){
+        QueueFragment toAdd = new QueueFragment();
+        queueList.add(toAdd);
     }
 
     // Called when fragment is visible to the user
