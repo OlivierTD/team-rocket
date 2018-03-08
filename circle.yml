@@ -1,24 +1,86 @@
-general:
-  artifacts:
-    - app/build/outputs/apk
-machine:
-  environment:
-    GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"'
-  java:
-    version: oraclejdk8
-dependencies:
-  cache_directories:
-    - ~/.android
-    - ~/android
-  pre:
-    - echo y | android update sdk --no-ui --all --filter "tool,extra-android-m2repository,extra-android-support,extra-google-google_play_services,extra-google-m2repository,android-25"
-    - echo y | android update sdk --no-ui --all --filter "build-tools-25.0.3"
-  override:
-    - echo override dependencies
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/android:api-25-alpha
+    working_directory: ~/app
+    environment:
+      JVM_OPTS: -Xmx3200m
+    steps:
+      # Start checkout so that we can operte on the codebase
+      - checkout
 
-test:
-  override:
-    # Give permissions
-    - chmod +x gradlew
-    - ./gradlew assembleDebug -PdisablePreDex:
-        timeout: 1800
+      # Pull down cache if present
+      - restore_cache:
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum "app/build.gradle" }}
+     
+      # Giving permissions to allow gradlew commands
+      - run:
+          name: Chmod permissions
+          command: sudo chmod +x ./gradlew
+
+      # Pull down project's dependencies
+      - run:
+          name: Download Dependencies
+          command: ./gradlew androidDependencies
+
+      # Store dependencies
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum "app/build.gradle" }}
+
+      # Build the app
+      - run:
+          name: Assemble Debug
+          command: ./gradlew assembleDebug
+
+      # Upload build reports as artifacts
+      - store_artifacts:
+          path: app/build/reports
+          destination: reports
+
+
+  test:
+    working_directory: ~/app
+    docker:
+      - image: circleci/android:api-25-alpha
+    steps:
+      - checkout
+
+      - restore_cache:
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum "app/build.gradle" }}
+     
+      - run:
+          name: Chmod permissions
+          command: sudo chmod +x ./gradlew
+
+      - run:
+          name: Download Dependencies
+          command: ./gradlew androidDependencies
+
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum "app/build.gradle" }}
+
+      # Run unit tests
+      - run:
+          name: Run Tests
+          command: ./gradlew test
+
+
+      # Upload test metadata for CircleCI to process
+      - store_test_results:
+          path: app/build/test-results
+
+
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
