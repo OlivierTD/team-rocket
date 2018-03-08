@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -22,129 +23,8 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
     public static final String TAG = "QueueListFragment";
 
     //List of queue fragments
-    public List<QueueFragment> queueList = new List<QueueFragment>() {
 
-        public int size() {
-            return 0;
-        }
-
-        @Override
-        public boolean isEmpty() {
-            return false;
-        }
-
-        @Override
-        public boolean contains(Object o) {
-            return false;
-        }
-
-        @NonNull
-        @Override
-        public Iterator<QueueFragment> iterator() {
-            return null;
-        }
-
-        @NonNull
-        @Override
-        public Object[] toArray() {
-            return new Object[0];
-        }
-
-        @NonNull
-        @Override
-        public <T> T[] toArray(@NonNull T[] ts) {
-            return null;
-        }
-
-        @Override
-        public boolean add(QueueFragment queueFragment) {
-            return false;
-        }
-
-        @Override
-        public boolean remove(Object o) {
-            return false;
-        }
-
-        @Override
-        public boolean containsAll(@NonNull Collection<?> collection) {
-            return false;
-        }
-
-        @Override
-        public boolean addAll(@NonNull Collection<? extends QueueFragment> collection) {
-            return false;
-        }
-
-        @Override
-        public boolean addAll(int i, @NonNull Collection<? extends QueueFragment> collection) {
-            return false;
-        }
-
-        @Override
-        public boolean removeAll(@NonNull Collection<?> collection) {
-            return false;
-        }
-
-        @Override
-        public boolean retainAll(@NonNull Collection<?> collection) {
-            return false;
-        }
-
-        @Override
-        public void clear() {
-
-        }
-
-        @Override
-        public QueueFragment get(int i) {
-            return null;
-        }
-
-        @Override
-        public QueueFragment set(int i, QueueFragment queueFragment) {
-            return null;
-        }
-
-        @Override
-        public void add(int i, QueueFragment queueFragment) {
-
-        }
-
-        @Override
-        public QueueFragment remove(int i) {
-            return null;
-        }
-
-        @Override
-        public int indexOf(Object o) {
-            return 0;
-        }
-
-        @Override
-        public int lastIndexOf(Object o) {
-            return 0;
-        }
-
-        @NonNull
-        @Override
-        public ListIterator<QueueFragment> listIterator() {
-            return null;
-        }
-
-        @NonNull
-        @Override
-        public ListIterator<QueueFragment> listIterator(int i) {
-            return null;
-        }
-
-        @NonNull
-        @Override
-        public List<QueueFragment> subList(int i, int i1) {
-            return null;
-        }
-    };
-
+    public List<QueueFragment> queueList = new ArrayList<>();
     //button to add queues to list
     public Button addButton;
 
