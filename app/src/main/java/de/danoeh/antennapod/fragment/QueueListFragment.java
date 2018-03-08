@@ -23,7 +23,7 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
 
     //List of queue fragments
     public List<QueueFragment> queueList = new List<QueueFragment>() {
-        @Override
+
         public int size() {
             return 0;
         }
@@ -174,8 +174,7 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
     //adds a queue to the list of queues
     @Override
     public void onClick(View v){
-        QueueFragment toAdd = new QueueFragment();
-        queueList.add(toAdd);
+        createNewQueue();
     }
 
     // Called when fragment is visible to the user
@@ -205,7 +204,12 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
         super.onDestroyView();
     }
 
-    public void createNewQueue(){
+    public List<QueueFragment> getQueuesList() {
+        return this.queueList;
+    }
 
+    public void createNewQueue(){
+        QueueFragment toAdd = new QueueFragment();
+        this.queueList.add(toAdd);
     }
 }
