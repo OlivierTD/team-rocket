@@ -14,7 +14,7 @@
         android:paddingLeft="15dp"/>
 
     <GridView
-        android:id="@+id/gridView"
+        android:id="@+id/gridViewHome"
         android:layout_width="match_parent"
         android:layout_height="265dp"
         android:clipToPadding="false"
