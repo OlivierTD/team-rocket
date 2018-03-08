@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circle/android:api-25-alpha
+      - image: circleci/android:api-25-alpha
     working_directory: ~/app
     environment:
       JVM_OPTS: -Xmx3200m
@@ -44,7 +44,7 @@ jobs:
   test:
     working_directory: ~/app
     docker:
-      - image: circle/android:api-25-alpha
+      - image: circleci/android:api-25-alpha
     steps:
       - checkout
 
