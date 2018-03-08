@@ -1,11 +1,14 @@
-package de.test.antennapod.dummy; /**
+package dummy;
+import org.junit.Test;
+import static junit.framework.Assert.assertEquals;
+
+/**
  * Created by Batoul on 2018-02-09.
  */
-import android.test.InstrumentationTestCase;
 
+public class BatoulDummyClass {
 
-public class BatoulDummyClass extends InstrumentationTestCase{
-
+    @Test
     public void testDummy(){
         //testing the CI for pull request!
         String name = "AntennaPod";
