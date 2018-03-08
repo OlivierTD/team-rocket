@@ -54,7 +54,7 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
     //adds a queue to the list of queues
     @Override
     public void onClick(View v){
-        this.createNewQueue();
+        createNewQueue();
     }
 
     // Called when fragment is visible to the user
