@@ -1,13 +1,15 @@
-package de.test.antennapod.dummy;
+package dummy;
 
-import android.test.InstrumentationTestCase;
+import org.junit.Test;
+import static junit.framework.Assert.assertEquals;
 
 /**
  * Created by David on 2018-02-11.
  */
 
-public class DummyTestDavid extends InstrumentationTestCase {
+public class DummyTestDavid {
 
+    @Test
     public void test(){
         int x = 1;
         int y = 2;
@@ -16,3 +18,4 @@ public class DummyTestDavid extends InstrumentationTestCase {
         assertEquals(z, x+y);
     }
 }
+

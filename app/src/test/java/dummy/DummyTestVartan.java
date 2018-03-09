@@ -1,13 +1,14 @@
-package de.test.antennapod.dummy;
-
-import android.test.InstrumentationTestCase;
+package dummy;
+import org.junit.Test;
+import static junit.framework.Assert.assertEquals;
 
 /**
  * Created by Vartan Benohanian on 2018-02-12.
  */
 
-public class DummyTestVartan extends InstrumentationTestCase {
+public class DummyTestVartan {
 
+    @Test
     public void testVartan(){
 
         String first = "vartan";
