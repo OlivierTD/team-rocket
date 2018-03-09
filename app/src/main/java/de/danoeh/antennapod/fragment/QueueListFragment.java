@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,9 +25,9 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
 
     //List of queue fragments
 
-    public List<QueueFragment> queueList = new ArrayList<>();
+    private List<QueueFragment> queueList = new ArrayList<>();
     //button to add queues to list
-    public Button addButton;
+    private Button addButton;
 
 
     // Called to do initial creation of fragment
@@ -55,6 +56,10 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
     @Override
     public void onClick(View v){
         createNewQueue();
+
+        //this is for testing purposes primarily, prints a message on screen displaying the current size of the queuesList
+        String testMessage = Integer.toString(this.getQueuesList().size());
+        Toast.makeText(getActivity(), testMessage, Toast.LENGTH_SHORT).show();
     }
 
     // Called when fragment is visible to the user
@@ -90,6 +95,6 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
 
     public void createNewQueue(){
         QueueFragment toAdd = new QueueFragment();
-        this.queueList.add(toAdd);
+        this.getQueuesList().add(toAdd);
     }
 }
