@@ -73,6 +73,20 @@ public class suggestedPodcastsFragment extends Fragment{
 
 
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+        View root = inflater.inflate(R.layout.suggested_podcasts,container,false);
+
+        return root;
+    }
+
+
     //method that loads the user subscriptions
     private void loadSubscriptions() {
         if(subscription != null) {
@@ -113,86 +127,92 @@ public class suggestedPodcastsFragment extends Fragment{
     //method that search podcasts for a given query in the iTunes library
     //insert the podcasts in the arrayList podcasts
 
-            private void search (String query){
-            if (subscription != null) {
-                subscription.unsubscribe();
+    private void search (String query){
+        if (subscription != null) {
+            subscription.unsubscribe();
+        }
+        gridView.setVisibility(View.GONE);
+        txtvError.setVisibility(View.GONE);
+        butRetry.setVisibility(View.GONE);
+        txtvEmpty.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
+        subscription = rx.Observable.create((Observable.OnSubscribe<List<ItunesAdapter.Podcast>>) subscriber -> {
+            String encodedQuery = null;
+            try {
+                encodedQuery = URLEncoder.encode(query, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                // this won't ever be thrown
             }
-            gridView.setVisibility(View.GONE);
-            txtvError.setVisibility(View.GONE);
-            butRetry.setVisibility(View.GONE);
-            txtvEmpty.setVisibility(View.GONE);
-            progressBar.setVisibility(View.VISIBLE);
-            subscription = rx.Observable.create((Observable.OnSubscribe<List<ItunesAdapter.Podcast>>) subscriber -> {
-                String encodedQuery = null;
-                try {
-                    encodedQuery = URLEncoder.encode(query, "UTF-8");
-                } catch (UnsupportedEncodingException e) {
-                    // this won't ever be thrown
-                }
-                if (encodedQuery == null) {
-                    encodedQuery = query; // failsafe
-                }
+            if (encodedQuery == null) {
+                encodedQuery = query; // failsafe
+            }
 
-                //Spaces in the query need to be replaced with '+' character.
-                String formattedUrl = String.format(API_URL, query).replace(' ', '+');
+            //Spaces in the query need to be replaced with '+' character.
+            String formattedUrl = String.format(API_URL, query).replace(' ', '+');
 
-                OkHttpClient client = AntennapodHttpClient.getHttpClient();
-                Request.Builder httpReq = new Request.Builder()
-                        .url(formattedUrl)
-                        .header("User-Agent", ClientConfig.USER_AGENT);
+            OkHttpClient client = AntennapodHttpClient.getHttpClient();
+            Request.Builder httpReq = new Request.Builder()
+                    .url(formattedUrl)
+                    .header("User-Agent", ClientConfig.USER_AGENT);
 
-                try {
-                    Response response = client.newCall(httpReq.build()).execute();
+            try {
+                Response response = client.newCall(httpReq.build()).execute();
 
-                    if (response.isSuccessful()) {
-                        String resultString = response.body().string();
-                        JSONObject result = new JSONObject(resultString);
-                        JSONArray j = result.getJSONArray("results");
+                if (response.isSuccessful()) {
+                    String resultString = response.body().string();
+                    JSONObject result = new JSONObject(resultString);
+                    JSONArray j = result.getJSONArray("results");
 
-                        for (int i = 0; i < j.length(); i++) {
-                            JSONObject podcastJson = j.getJSONObject(i);
-                            ItunesAdapter.Podcast podcast = ItunesAdapter.Podcast.fromSearch(podcastJson);
-                            podcasts.add(podcast);
-                        }
-                    } else {
-                        String prefix = getString(R.string.error_msg_prefix);
-                        subscriber.onError(new IOException(prefix + response));
+                    //missing: max number of podcasts per search
+
+                    for (int i = 0; i < 5; i++) {
+                        JSONObject podcastJson = j.getJSONObject(i);
+                        ItunesAdapter.Podcast podcast = ItunesAdapter.Podcast.fromSearch(podcastJson);
+                        podcasts.add(podcast);
                     }
-                } catch (IOException | JSONException e) {
-                    subscriber.onError(e);
+                } else {
+                    String prefix = getString(R.string.error_msg_prefix);
+                    subscriber.onError(new IOException(prefix + response));
                 }
-                subscriber.onNext(podcasts);
-                subscriber.onCompleted();
-            })
-                    .subscribeOn(Schedulers.newThread())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(podcasts -> {
-                        progressBar.setVisibility(View.GONE);
-                        updateData(podcasts);
-                    }, error -> {
-                        Log.e(TAG, Log.getStackTraceString(error));
-                        progressBar.setVisibility(View.GONE);
-                        txtvError.setText(error.toString());
-                        txtvError.setVisibility(View.VISIBLE);
-                        butRetry.setOnClickListener(v -> search(query));
-                        butRetry.setVisibility(View.VISIBLE);
-                    });
-        }
-
-        //search method that looks for the keywords in the titles of subscribed podcasts
-
-        private void searchPodcasts (List<String> subsTitles){
-
-            for(int i=0; i <subsTitles.size(); i++){
-                String query = subsTitles.get(i);
-                search(query);
-
+            } catch (IOException | JSONException e) {
+                subscriber.onError(e);
             }
+            subscriber.onNext(podcasts);
+            subscriber.onCompleted();
+        })
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(podcasts -> {
+                    progressBar.setVisibility(View.GONE);
+                    updateData(podcasts);
+                }, error -> {
+                    Log.e(TAG, Log.getStackTraceString(error));
+                    progressBar.setVisibility(View.GONE);
+                    txtvError.setText(error.toString());
+                    txtvError.setVisibility(View.VISIBLE);
+                    butRetry.setOnClickListener(v -> search(query));
+                    butRetry.setVisibility(View.VISIBLE);
+                });
+    }
 
+    //search method that looks for the keywords in the titles of subscribed podcasts
+
+    private void searchPodcasts (List<String> subsTitles){
+
+        for(int i=0; i <subsTitles.size(); i++){
+            String query = subsTitles.get(i);
+            search(query);
 
         }
+
+
+
+    }
 
 
     //method missing: displaying the suggested podcasts on the HomePage
+    public void display(){
+
+    }
 
 }

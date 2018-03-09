@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     tools:background="@android:color/darker_gray">
 
+
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
@@ -21,4 +22,12 @@
         android:name="de.danoeh.antennapod.fragment.ToplistFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
+    <fragment
+        android:id="@+id/suggestedPodcasts"
+        android:name="de.danoeh.antennapod.fragment.suggestedPodcastsFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
 </LinearLayout>
