@@ -134,10 +134,20 @@ configurations {
 }
 
 dependencies {
+    //Required JUNIT 4 framework
+    testCompile 'junit:junit:4.12'
+    //For mockito
+    testCompile 'org.mockito:mockito-core:1.10.19'
+
+    // AndroidJUnitRunner and JUnit Rules
+    testCompile 'com.android.support.test:runner:1.0.1'
+    testCompile 'com.android.support.test:rules:1.0.1'
+
+/*
     // AndroidJUnitRunner and JUnit Rules
     androidTestCompile 'com.android.support.test:runner:1.0.1'
     androidTestCompile 'com.android.support.test:rules:1.0.1'
-
+    */
     compile 'com.android.support:support-v4:25.4.0'
     freeDebugCompile project(path: ":core", configuration: "freeDebug")
     freeReleaseCompile project(path: ":core", configuration: "freeRelease")
@@ -184,11 +194,6 @@ dependencies {
     compile "com.github.AntennaPod:AntennaPod-AudioPlayer:$audioPlayerVersion"
 
     compile 'com.github.mfietz:fyydlin:v0.3'
-
-    //Required JUNIT 4 framework
-    testCompile 'junit:junit:4.12'
-    //For mockito
-    testCompile 'org.mockito:mockito-core:1.10.19'
 }
 
 play {
