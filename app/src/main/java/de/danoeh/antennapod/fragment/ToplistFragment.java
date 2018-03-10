@@ -143,7 +143,7 @@ public class ToplistFragment extends Fragment{
         return view;
     }
 
-    public void loadToplist() {
+    private void loadToplist() {
         if (subscription != null) {
             subscription.unsubscribe();
         }
