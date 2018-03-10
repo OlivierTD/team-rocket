@@ -46,6 +46,10 @@ public class ToplistFragment extends Fragment{
 
     private static final String API_URL = "https://itunes.apple.com/search?media=podcast&term=%s";
 
+    private TextView txtvError;
+    private Button butRetry;
+    private TextView txtvEmpty;
+    private ProgressBar progressBar;
 
     /**
      * Adapter responsible with the search results
@@ -139,7 +143,7 @@ public class ToplistFragment extends Fragment{
         return view;
     }
 
-    private void loadToplist() {
+    public void loadToplist() {
         if (subscription != null) {
             subscription.unsubscribe();
         }
