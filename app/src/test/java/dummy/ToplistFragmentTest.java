@@ -1,6 +1,10 @@
 package dummy;
 
-import static org.junit.Assert.*;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
+
+import static org.mockito.Mockito.doAnswer;
 
 import org.junit.Test;
 import org.junit.After;
@@ -8,17 +12,26 @@ import org.junit.Before;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
-import de.danoeh.antennapod.activity.TestActivity;
+import java.util.Arrays;
+
 import de.danoeh.antennapod.fragment.ToplistFragment;
 
 /**
  * Created by David on 2018-03-07.
  */
+
 public class ToplistFragmentTest{
 
+    //Mock values for onCreateView
     @Mock
-    private TestActivity mockActivity;
+    LayoutInflater mockInflater;
+    @Mock
+    ViewGroup mockViewGroup;
+    @Mock
+    Bundle mockBundle;
 
     @Mock
     private ToplistFragment mockFragment;
@@ -26,19 +39,22 @@ public class ToplistFragmentTest{
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        mockActivity = Mockito.mock(TestActivity.class);
         mockFragment = Mockito.mock(ToplistFragment.class);
     }
 
     @After
     public void tearDown() throws Exception {
-        mockActivity = null;
         mockFragment = null;
     }
 
     @Test
     public void testToplist(){
-        mockFragment.loadToplist();
-        assertTrue(true);
+        doAnswer(new Answer<Void>() {
+            public Void answer(InvocationOnMock invocation) {
+                Object[] args = invocation.getArguments();
+                System.out.println("called with arguments: " + Arrays.toString(args));
+                return null;
+            }
+        }).when(mockFragment).onCreateView(mockInflater, mockViewGroup, mockBundle);
     }
 }
