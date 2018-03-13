@@ -58,6 +58,7 @@
         <item name="attr/ic_sd_storage">@drawable/ic_sd_storage_grey600_36dp</item>
         <item name="attr/ic_create_new_folder">@drawable/ic_create_new_folder_grey600_24dp</item>
         <item name="attr/ic_cast_disconnect">@drawable/ic_cast_disconnect_grey600_36dp</item>
+        <item name="attr/ic_home">@drawable/ic_home_grey</item>
     </style>
 
     <style name="Theme.AntennaPod.Dark" parent="Theme.AppCompat">
@@ -177,6 +178,7 @@
         <item name="attr/ic_sd_storage">@drawable/ic_sd_storage_grey600_36dp</item>
         <item name="attr/ic_create_new_folder">@drawable/ic_create_new_folder_grey600_24dp</item>
         <item name="attr/ic_cast_disconnect">@drawable/ic_cast_disconnect_grey600_36dp</item>
+        <item name="attr/ic_home">@drawable/ic_home_grey</item>
     </style>
 
     <style name="Theme.AntennaPod.Dark.NoTitle" parent="Theme.AppCompat.NoActionBar">
