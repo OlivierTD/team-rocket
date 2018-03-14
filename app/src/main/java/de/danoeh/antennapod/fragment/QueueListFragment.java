@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import de.danoeh.antennapod.core.feed.QueueObject;
 import de.danoeh.antennapod.core.util.InternalStorage;
+
 import android.os.Environment;
 
 import android.content.Context;
@@ -33,11 +34,9 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
     public static final String TAG = "QueueListFragment";
 
 
-
-
     //List of queue fragments
-
     private List<QueueObject> queueList = new ArrayList<>();
+
     //button to add queues to list
     private Button addButton;
 
@@ -45,17 +44,17 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
     // Called to do initial creation of fragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
         setRetainInstance(true); // Retains fragment instance across Activity re-creation
         setHasOptionsMenu(true); // Fragment would like to participate in populating the options menu
 
         //attempts to load from local storage
         try {
             queueList = (List<QueueObject>) InternalStorage.readObject(this.getContext(), "queue");
-        }catch (IOException e) {
-            //Log.e(TAG, e.getMessage());
+        } catch (IOException e) {
         } catch (ClassNotFoundException e) {
-            //Log.e(TAG, e.getMessage());
         }
 
     }
@@ -63,6 +62,7 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
     // Called to have fragment instantiate its user interface view
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         super.onCreateView(inflater, container, savedInstanceState);
 
         View root = inflater.inflate(R.layout.fragment_queue_list, container, false);
@@ -76,7 +76,8 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
 
     //adds a queue to the list of queues
     @Override
-    public void onClick(View v){
+    public void onClick(View v) {
+        //triggers the create
         createNewQueue();
 
         //this is for testing purposes primarily, prints a message on screen displaying the current size of the queuesList
@@ -86,35 +87,31 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
 
     // Called when fragment is visible to the user
     @Override
-    public void onStart(){
+    public void onStart() {
         super.onStart();
         //attempts to load from local storage
         try {
             queueList = (List<QueueObject>) InternalStorage.readObject(this.getContext(), "queue");
-        }catch (IOException e) {
-            //Log.e(TAG, e.getMessage());
+        } catch (IOException e) {
         } catch (ClassNotFoundException e) {
-            //Log.e(TAG, e.getMessage());
         }
     }
 
     // Called when fragment is visible to the user and actively running
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         //attempts to load from local storage
         try {
             queueList = (List<QueueObject>) InternalStorage.readObject(this.getContext(), "queue");
-        }catch (IOException e) {
-            //Log.e(TAG, e.getMessage());
+        } catch (IOException e) {
         } catch (ClassNotFoundException e) {
-            //Log.e(TAG, e.getMessage());
         }
     }
 
     // Called when the fragment is no longer resumed
     @Override
-    public void onPause(){
+    public void onPause() {
         super.onPause();
     }
 
@@ -123,7 +120,7 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
     * Allows the fragment to clean up resources associated with its View
     */
     @Override
-    public void onDestroyView(){
+    public void onDestroyView() {
         super.onDestroyView();
     }
 
@@ -131,22 +128,21 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
         return this.queueList;
     }
 
-    public void createNewQueue(){
+    public void createNewQueue() {
         QueueObject toAdd = new QueueObject();
         this.getQueuesList().add(toAdd);
 
         //attempts to store in local storage
         try {
             InternalStorage.writeObject(this.getContext(), "queue", queueList);
-        }catch (IOException e) {
-            //Log.e(TAG, e.getMessage());
+        } catch (IOException e) {
             String error = "failed to store";
             Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
         }
     }
 
     //for testing purposes, removes the internal storage mechanisms
-    public  void createNewQueueTester(){
+    public void createNewQueueTester() {
         QueueObject toAdd = new QueueObject();
         this.getQueuesList().add(toAdd);
 

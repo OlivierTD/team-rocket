@@ -10,22 +10,22 @@ import java.util.List;
 
 //temporary queue object that needs to be built upon
 
-public class QueueObject implements Serializable{
+public class QueueObject implements Serializable {
     private List<FeedItem> queue;
 
-    public QueueObject(){
+    public QueueObject() {
         this.queue = new ArrayList<>();
     }
 
-    public QueueObject(List<FeedItem> q){
+    public QueueObject(List<FeedItem> q) {
         this.queue = q;
     }
 
-    public void setQueueObject(List<FeedItem> q){
+    public void setQueueObject(List<FeedItem> q) {
         this.queue = q;
     }
 
-    public List<FeedItem> getQueueObject(){
+    public List<FeedItem> getQueueObject() {
         return this.queue;
     }
 

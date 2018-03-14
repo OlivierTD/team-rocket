@@ -3,6 +3,7 @@ package de.danoeh.antennapod.core.util;
 /**
  * Created by James on 2018-03-14.
  */
+
 import android.content.Context;
 
 import java.io.FileInputStream;
@@ -13,7 +14,8 @@ import java.io.ObjectOutputStream;
 
 public final class InternalStorage {
 
-    private InternalStorage(){}
+    private InternalStorage() {
+    }
 
     public static void writeObject(Context context, String key, Object object) throws IOException {
         FileOutputStream fos = context.openFileOutput(key, Context.MODE_PRIVATE);

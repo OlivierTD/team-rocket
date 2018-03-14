@@ -25,10 +25,10 @@ public class testCreateNewQueues {
 
 
     @Test
-    public void testCreateNewQueue(){
+    public void testCreateNewQueue() {
         QueueListFragment test = new QueueListFragment();
         test.createNewQueueTester();
         test.createNewQueueTester();
-        assertEquals(2,test.getQueuesList().size());
+        assertEquals(2, test.getQueuesList().size());
     }
 }
