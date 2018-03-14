@@ -163,7 +163,7 @@ public class suggestedPodcastsFragment extends Fragment{
                     JSONObject result = new JSONObject(resultString);
                     JSONArray j = result.getJSONArray("results");
 
-                    //missing: max number of podcasts per search
+                    //missing: max number of podcasts per search //ok done! podcasts = 5
 
                     for (int i = 0; i < 5; i++) {
                         JSONObject podcastJson = j.getJSONObject(i);
@@ -202,16 +202,12 @@ public class suggestedPodcastsFragment extends Fragment{
         for(int i=0; i <subsTitles.size(); i++){
             String query = subsTitles.get(i);
             search(query);
-
         }
-
-
-
     }
 
 
     //method missing: displaying the suggested podcasts on the HomePage
-    public void display(){
+    public void displaySuggestedPodcasts(){
 
     }
 

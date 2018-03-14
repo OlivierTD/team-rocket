@@ -194,7 +194,6 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
                     // it's not a number, this happens if we removed
                     // a label from the NAV_DRAWER_TAGS
                     // give them a nice default...
-                    loadFragment(QueueListFragment.TAG, null);
                     loadFragment(HomePageFragment.TAG, null);
                 }
             }
