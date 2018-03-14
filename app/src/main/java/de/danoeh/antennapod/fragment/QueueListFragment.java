@@ -3,12 +3,19 @@ package de.danoeh.antennapod.fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
+import de.danoeh.antennapod.core.util.InternalStorage;
+import android.os.Environment;
 
+import android.content.Context;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -23,6 +30,9 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
 
     public static final String TAG = "QueueListFragment";
 
+
+
+
     //List of queue fragments
 
     private List<QueueFragment> queueList = new ArrayList<>();
@@ -36,6 +46,16 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
         super.onCreate(savedInstanceState);
         setRetainInstance(true); // Retains fragment instance across Activity re-creation
         setHasOptionsMenu(true); // Fragment would like to participate in populating the options menu
+
+        //attempts to load from local storage
+        try {
+            queueList = (List<QueueFragment>) InternalStorage.readObject(this.getContext(), "queue");
+        }catch (IOException e) {
+            //Log.e(TAG, e.getMessage());
+        } catch (ClassNotFoundException e) {
+            //Log.e(TAG, e.getMessage());
+        }
+
     }
 
     // Called to have fragment instantiate its user interface view
@@ -66,12 +86,28 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
     @Override
     public void onStart(){
         super.onStart();
+        //attempts to load from local storage
+        try {
+            queueList = (List<QueueFragment>) InternalStorage.readObject(this.getContext(), "queue");
+        }catch (IOException e) {
+            //Log.e(TAG, e.getMessage());
+        } catch (ClassNotFoundException e) {
+            //Log.e(TAG, e.getMessage());
+        }
     }
 
     // Called when fragment is visible to the user and actively running
     @Override
     public void onResume(){
         super.onResume();
+        //attempts to load from local storage
+        try {
+            queueList = (List<QueueFragment>) InternalStorage.readObject(this.getContext(), "queue");
+        }catch (IOException e) {
+            //Log.e(TAG, e.getMessage());
+        } catch (ClassNotFoundException e) {
+            //Log.e(TAG, e.getMessage());
+        }
     }
 
     // Called when the fragment is no longer resumed
@@ -96,5 +132,17 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
     public void createNewQueue(){
         QueueFragment toAdd = new QueueFragment();
         this.getQueuesList().add(toAdd);
+
+        //attempts to store in local storage
+        try {
+            InternalStorage.writeObject(this.getContext(), "queue", queueList);
+        }catch (IOException e) {
+            //Log.e(TAG, e.getMessage());
+            if(this.getContext() == null){
+            String error = "context is null";
+            Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();}
+        }
+
+
     }
 }
