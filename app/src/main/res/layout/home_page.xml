@@ -35,4 +35,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="65dp"/> />
 
+    <fragment
+        android:id="@+id/suggestedPodcasts"
+        android:name="de.danoeh.antennapod.fragment.suggestedPodcastsFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </RelativeLayout>
