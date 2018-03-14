@@ -20,6 +20,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Array;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -122,7 +123,42 @@ public class suggestedPodcastsFragment extends Fragment{
         }
     }
 
-    //method missing: Getting keywords in the subscription titles
+    /**
+     *
+     * @param subsList
+     * Takes the list of podcasts that the user is subscribed to as a parameter
+     * Output: Returns a list of keywords of all the the subscriptions
+     * @return keywords
+     */
+    public ArrayList<String> getKeywords(DBReader.NavDrawerData subsList){
+        ArrayList<String> keywords = new ArrayList<String>();
+
+        //Variable x iterates through each title
+        //Variable i iterates through each title's characters
+        //variable j is an indicator of the last space that had a white space
+        for(int x=0;x<subsList.feeds.size();x++){
+
+            String temp;
+            temp = subsList.feeds.get(x).getTitle();
+            String keyword;
+            int j=0;
+
+            for(int i=0; i<temp.length();i++){
+                if((i-j) > 3){
+                    keyword = temp.substring(j,i);
+                    keywords.add(keyword);
+                    break;
+                }
+                else{
+                    if((i-j)<=3){
+                        j = i;
+                    }
+                }
+            }
+        }
+
+        return keywords;
+    }
 
     //method that search podcasts for a given query in the iTunes library
     //insert the podcasts in the arrayList podcasts
