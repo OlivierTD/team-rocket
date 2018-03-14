@@ -1,9 +1,7 @@
 package de.danoeh.antennapod.fragment;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,17 +11,12 @@ import android.widget.Toast;
 import de.danoeh.antennapod.core.feed.QueueObject;
 import de.danoeh.antennapod.core.util.InternalStorage;
 
-import android.os.Environment;
 
-import android.content.Context;
-
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
+
 import java.util.List;
-import java.util.ListIterator;
+
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
