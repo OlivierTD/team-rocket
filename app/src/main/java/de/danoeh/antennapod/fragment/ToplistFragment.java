@@ -46,6 +46,10 @@ public class ToplistFragment extends Fragment{
 
     private static final String API_URL = "https://itunes.apple.com/search?media=podcast&term=%s";
 
+    private TextView txtvError;
+    private Button butRetry;
+    private TextView txtvEmpty;
+    private ProgressBar progressBar;
 
     /**
      * Adapter responsible with the search results
@@ -70,7 +74,7 @@ public class ToplistFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.toplist_itunes, container, false);
-        gridView = (GridView) view.findViewById(R.id.gridView);
+        gridView = (GridView) view.findViewById(R.id.gridViewHome);
         adapter = new ItunesAdapter(getActivity(), new ArrayList<>());
         gridView.setAdapter(adapter);
 
@@ -87,6 +91,7 @@ public class ToplistFragment extends Fragment{
                 startActivity(intent);
             } else {
                 gridView.setVisibility(View.GONE);
+                progressBar.setVisibility(View.VISIBLE);
                 subscription = Observable.create((Observable.OnSubscribe<String>) subscriber -> {
                     OkHttpClient client = AntennapodHttpClient.getHttpClient();
                     Request.Builder httpReq = new Request.Builder()
@@ -128,6 +133,10 @@ public class ToplistFragment extends Fragment{
                         });
             }
         });
+        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
+        txtvError = (TextView) view.findViewById(R.id.txtvError);
+        butRetry = (Button) view.findViewById(R.id.butRetry);
+        txtvEmpty = (TextView) view.findViewById(android.R.id.empty);
 
         loadToplist();
 
