@@ -20,6 +20,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
@@ -114,6 +115,8 @@ public class ItemlistFragment extends ListFragment {
     private ImageView imgvCover;
 
     private TextView txtvInformation;
+
+    private Button shuffleButton;
 
     private Subscription subscription;
 
@@ -496,6 +499,7 @@ public class ItemlistFragment extends ListFragment {
         } else {
             txtvInformation.setVisibility(View.GONE);
         }
+        shuffleButton.setText(R.string.shuffle);
     }
 
     private void setupHeaderView() {
@@ -516,6 +520,7 @@ public class ItemlistFragment extends ListFragment {
         ImageButton butShowInfo = (ImageButton) header.findViewById(R.id.butShowInfo);
         txtvInformation = (TextView) header.findViewById(R.id.txtvInformation);
         txtvFailure = (IconTextView) header.findViewById(R.id.txtvFailure);
+        shuffleButton = (Button) header.findViewById(R.id.shuffleButton);
 
         txtvTitle.setText(feed.getTitle());
         txtvAuthor.setText(feed.getAuthor());
