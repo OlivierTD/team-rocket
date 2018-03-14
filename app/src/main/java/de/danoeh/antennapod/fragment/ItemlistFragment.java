@@ -10,6 +10,7 @@ import android.graphics.LightingColorFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
@@ -502,6 +503,14 @@ public class ItemlistFragment extends ListFragment {
         }
         playButton.setText(R.string.play_button);
         shuffleButton.setText(R.string.shuffle_button);
+        if(UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark) {
+            playButton.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_play_arrow_white_24dp), null, null, null);
+            shuffleButton.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_shuffle_white), null, null, null);
+        } else {
+            playButton.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_play_arrow_grey600_24dp), null, null, null);
+            shuffleButton.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_shuffle_grey), null, null, null);
+        }
+
     }
 
     private void setupHeaderView() {

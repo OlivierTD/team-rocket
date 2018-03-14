@@ -120,7 +120,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawableLeft="@drawable/ic_play_arrow_white_24dp"
             tools:text="Play"/>
 
         <Button
@@ -129,7 +128,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawableLeft="@drawable/ic_shuffle_white"
             tools:text="Shuffle"/>
 
     </LinearLayout>
