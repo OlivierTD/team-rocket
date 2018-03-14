@@ -105,11 +105,33 @@
         tools:text="(i) Information"
         />
 
-    <Button
-        android:id="@+id/shuffleButton"
+    <LinearLayout
+        android:id="@+id/buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/txtvInformation"
-        tools:text="Shuffle"/>
+        android:layout_below="@id/txtvInformation"
+        android:paddingLeft="75dp"
+        android:paddingRight="75dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/playButton"
+            android:width="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/ic_play_arrow_white_24dp"
+            tools:text="Play"/>
+
+        <Button
+            android:id="@+id/shuffleButton"
+            android:width="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/ic_shuffle_white"
+            tools:text="Shuffle"/>
+
+    </LinearLayout>
 
 </RelativeLayout>

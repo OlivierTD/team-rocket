@@ -116,6 +116,7 @@ public class ItemlistFragment extends ListFragment {
 
     private TextView txtvInformation;
 
+    private Button playButton;
     private Button shuffleButton;
 
     private Subscription subscription;
@@ -499,7 +500,8 @@ public class ItemlistFragment extends ListFragment {
         } else {
             txtvInformation.setVisibility(View.GONE);
         }
-        shuffleButton.setText(R.string.shuffle);
+        playButton.setText(R.string.play_button);
+        shuffleButton.setText(R.string.shuffle_button);
     }
 
     private void setupHeaderView() {
@@ -520,6 +522,7 @@ public class ItemlistFragment extends ListFragment {
         ImageButton butShowInfo = (ImageButton) header.findViewById(R.id.butShowInfo);
         txtvInformation = (TextView) header.findViewById(R.id.txtvInformation);
         txtvFailure = (IconTextView) header.findViewById(R.id.txtvFailure);
+        playButton = (Button) header.findViewById(R.id.playButton);
         shuffleButton = (Button) header.findViewById(R.id.shuffleButton);
 
         txtvTitle.setText(feed.getTitle());

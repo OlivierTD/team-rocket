@@ -147,7 +147,8 @@
     <string name="filtered_label">Filtered</string>
     <string name="refresh_failed_msg">{fa-exclamation-circle} Last Refresh failed</string>
     <string name="open_podcast">Open Podcast</string>
-    <string name="shuffle">Shuffle</string>
+    <string name="play_button">Play</string>
+    <string name="shuffle_button">Shuffle</string>
 
     <!-- actions on feeditems -->
     <string name="download_label">Download</string>
