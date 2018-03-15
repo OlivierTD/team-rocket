@@ -73,7 +73,7 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
         addButton.setOnClickListener(this);
 
         // Adapter to convert the ArrayList to views
-        queueAdapter = new QueuesAdapter(getActivity(), queueList);
+        queueAdapter = new QueuesAdapter(getActivity(), queueList, this);
         // Attach the adapter to the ListView
         lvQueue = (ListView) root.findViewById(R.id.queueList);
         lvQueue.setAdapter(queueAdapter);
@@ -83,6 +83,7 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
 
 
     //adds a queue to the list of queues
+    @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
     @Override
     public void onClick(View v) {
         //triggers the create
@@ -153,6 +154,18 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
         }
     }
 
+    // Removes an element in the list according to its position and stores new queue in storage
+    public void removeWithPos(int position){
+        this.queueList.remove(position);
+        //attempts to store in local storage
+        try {
+            InternalStorage.writeObject(this.getContext(), "queue", queueList);
+        } catch (IOException e) {
+            String error = "failed to store";
+            Toast.makeText(this.getContext(),error, Toast.LENGTH_SHORT).show();
+        }
+    }
+
     //for testing purposes, removes the internal storage mechanisms
     public void createNewQueueTester() {
         QueueObject toAdd = new QueueObject("Queue" + queueNumber);
@@ -160,4 +173,5 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
         queueNumber++;
 
     }
+
 }
