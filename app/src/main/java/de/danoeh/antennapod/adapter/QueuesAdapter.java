@@ -51,8 +51,9 @@ public class QueuesAdapter extends ArrayAdapter<QueueObject> {
             @Override
             public void onClick(View view) {
                 QueueFragment queueFragment = new QueueFragment();
+                int iD = queueListFragment.getId();
                 FragmentTransaction fragmentTransaction = queueListFragment.getFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.content, queueFragment);
+                fragmentTransaction.replace(iD, queueFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
