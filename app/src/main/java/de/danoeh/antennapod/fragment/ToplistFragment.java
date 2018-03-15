@@ -69,13 +69,13 @@ public class ToplistFragment extends Fragment {
     /**
      * Adapter responsible with the search results
      */
-    private ItunesAdapter adapter;
+    private ItunesAdapter adapter;  //search result view
     private GridView gridView;
 
     /**
      * List of podcasts retreived from the search
      */
-    private List<ItunesAdapter.Podcast> searchResults;
+    private List<ItunesAdapter.Podcast> searchResults;  //search result data
     private List<ItunesAdapter.Podcast> topList;
     private Subscription subscription;
 
@@ -267,6 +267,7 @@ public class ToplistFragment extends Fragment {
     //Search iTunes and add to result list
     private void search(String query) {
         adapter.clear();
+        searchResults = new ArrayList<>();
 
         if (subscription != null) {
             subscription.unsubscribe();
@@ -274,27 +275,6 @@ public class ToplistFragment extends Fragment {
 
         showOnlyProgressBar();
 
-        //FYYD search results
-        subscription =  client.searchPodcasts(query)
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> {
-                    progressBar.setVisibility(View.GONE);
-                    processSearchResult(result);
-                }, error -> {
-                    Log.e(TAG, Log.getStackTraceString(error));
-                    progressBar.setVisibility(View.GONE);
-                    txtvError.setText(error.toString());
-                    txtvError.setVisibility(View.VISIBLE);
-                    butRetry.setOnClickListener(v -> search(query));
-                    butRetry.setVisibility(View.VISIBLE);
-                });
-
-        gridView.setVisibility(View.GONE);
-        txtvError.setVisibility(View.GONE);
-        butRetry.setVisibility(View.GONE);
-        txtvEmpty.setVisibility(View.GONE);
-        progressBar.setVisibility(View.VISIBLE);
         subscription = rx.Observable.create((Observable.OnSubscribe<List<ItunesAdapter.Podcast>>) subscriber -> {
             String encodedQuery = null;
             try {
@@ -352,30 +332,24 @@ public class ToplistFragment extends Fragment {
                     butRetry.setOnClickListener(v -> search(query));
                     butRetry.setVisibility(View.VISIBLE);
                 });
-    }
-/*
 
-private void search(String query) {
-    if (subscription != null) {
-        subscription.unsubscribe();
+        //FYYD search results
+        subscription =  client.searchPodcasts(query)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    progressBar.setVisibility(View.GONE);
+                    processSearchResult(result);
+                }, error -> {
+                    Log.e(TAG, Log.getStackTraceString(error));
+                    progressBar.setVisibility(View.GONE);
+                    txtvError.setText(error.toString());
+                    txtvError.setVisibility(View.VISIBLE);
+                    butRetry.setOnClickListener(v -> search(query));
+                    butRetry.setVisibility(View.VISIBLE);
+                });
     }
-    showOnlyProgressBar();
-    subscription =  client.searchPodcasts(query)
-            .subscribeOn(Schedulers.newThread())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(result -> {
-                progressBar.setVisibility(View.GONE);
-                processSearchResult(result);
-            }, error -> {
-                Log.e(TAG, Log.getStackTraceString(error));
-                progressBar.setVisibility(View.GONE);
-                txtvError.setText(error.toString());
-                txtvError.setVisibility(View.VISIBLE);
-                butRetry.setOnClickListener(v -> search(query));
-                butRetry.setVisibility(View.VISIBLE);
-            });
-}
-*/
+
     private void showOnlyProgressBar() {
         gridView.setVisibility(View.GONE);
         txtvError.setVisibility(View.GONE);
@@ -386,8 +360,8 @@ private void search(String query) {
 
     //Add FYYD search to result list
     void processSearchResult(FyydResponse response) {
+        adapter.clear();
         if (!response.getData().isEmpty()) {
-            searchResults = new ArrayList<>();
             for (SearchHit searchHit : response.getData().values()) {
                 ItunesAdapter.Podcast podcastFYYD = ItunesAdapter.Podcast.fromSearch(searchHit);
                 searchResults.add(podcastFYYD);
@@ -398,8 +372,8 @@ private void search(String query) {
         for(ItunesAdapter.Podcast podcastFYYD : searchResults) {
             adapter.add(podcastFYYD);
         }
-//            adapter.notifyDataSetInvalidated();
-//        gridView.setVisibility(!searchResults.isEmpty() ? View.VISIBLE : View.GONE);
- //       txtvEmpty.setVisibility(searchResults.isEmpty() ? View.VISIBLE : View.GONE);
+            adapter.notifyDataSetInvalidated();
+        gridView.setVisibility(!searchResults.isEmpty() ? View.VISIBLE : View.GONE);
+        txtvEmpty.setVisibility(searchResults.isEmpty() ? View.VISIBLE : View.GONE);
     }
 }
