@@ -115,11 +115,11 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/shuffleButton"
+            android:id="@+id/randomEpisodeButton"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.5"
-            tools:text="Shuffle"/>
+            android:layout_weight="0.65"
+            tools:text="Random Episode"/>
 
     </LinearLayout>
 

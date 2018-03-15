@@ -148,7 +148,7 @@
     <string name="refresh_failed_msg">{fa-exclamation-circle} Last Refresh failed</string>
     <string name="open_podcast">Open Podcast</string>
     <string name="play_button">Play</string>
-    <string name="shuffle_button">Shuffle</string>
+    <string name="random_episode_button">Random Episode</string>
 
     <!-- actions on feeditems -->
     <string name="download_label">Download</string>

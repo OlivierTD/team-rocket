@@ -120,7 +120,7 @@ public class ItemlistFragment extends ListFragment {
 
     private TextView txtvInformation;
 
-    private Button shuffleButton;
+    private Button randomEpisodeButton;
 
     private Subscription subscription;
 
@@ -503,11 +503,11 @@ public class ItemlistFragment extends ListFragment {
         } else {
             txtvInformation.setVisibility(View.GONE);
         }
-        shuffleButton.setText(R.string.shuffle_button);
+        randomEpisodeButton.setText(R.string.random_episode_button);
         if(UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark) {
-            shuffleButton.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_shuffle_white), null, null, null);
+            randomEpisodeButton.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_random_white), null, null, null);
         } else {
-            shuffleButton.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_shuffle_grey), null, null, null);
+            randomEpisodeButton.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_random_grey), null, null, null);
         }
 
     }
@@ -530,7 +530,7 @@ public class ItemlistFragment extends ListFragment {
         ImageButton butShowInfo = (ImageButton) header.findViewById(R.id.butShowInfo);
         txtvInformation = (TextView) header.findViewById(R.id.txtvInformation);
         txtvFailure = (IconTextView) header.findViewById(R.id.txtvFailure);
-        shuffleButton = (Button) header.findViewById(R.id.shuffleButton);
+        randomEpisodeButton = (Button) header.findViewById(R.id.randomEpisodeButton);
 
         txtvTitle.setText(feed.getTitle());
         txtvAuthor.setText(feed.getAuthor());
@@ -553,7 +553,7 @@ public class ItemlistFragment extends ListFragment {
 
         MainActivity activity = (MainActivity) getActivity();
 
-        shuffleButton.setOnClickListener(v -> {
+        randomEpisodeButton.setOnClickListener(v -> {
             List<FeedItem> itemList = feed.getItems();
             Collections.shuffle(itemList);
 
