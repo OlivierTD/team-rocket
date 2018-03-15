@@ -166,12 +166,14 @@ public class CentralizedSearchFragment extends Fragment {
     void updateData(List<ItunesAdapter.Podcast> result) {
         this.searchResults = result;
         if (result != null && result.size() > 0) {
+            titleMessage.setVisibility(View.VISIBLE);
             gridView.setVisibility(View.VISIBLE);
             for (ItunesAdapter.Podcast p : result) {
                 adapter.add(p);
             }
             adapter.notifyDataSetInvalidated();
         } else {
+            titleMessage.setVisibility(View.GONE);
             gridView.setVisibility(View.GONE);
         }
     }
@@ -260,9 +262,6 @@ public class CentralizedSearchFragment extends Fragment {
                         ItunesAdapter.Podcast podcastiTunes = ItunesAdapter.Podcast.fromSearch(podcastJson);
                         podcastsiTunes.add(podcastiTunes);
                     }
-
-                    if (adapter.getCount() > 0)
-                        titleMessage.setVisibility(View.VISIBLE);
                 }
                 else {
                     String prefix = getString(R.string.error_msg_prefix);
@@ -338,6 +337,11 @@ public class CentralizedSearchFragment extends Fragment {
                     }
                     if (!duplicate)
                         searchResults.add(podcastFYYD);
+
+                    if (tempAdapter.getCount() > 0)
+                        titleMessage.setVisibility(View.VISIBLE);
+                    else
+                        titleMessage.setVisibility(View.GONE);
 
                     duplicate = false;
                 }
