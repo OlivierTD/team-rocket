@@ -1,6 +1,8 @@
 package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import java.util.ArrayList;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.QueueObject;
+import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.fragment.QueueListFragment;
 
 /**
@@ -43,6 +46,17 @@ public class QueuesAdapter extends ArrayAdapter<QueueObject> {
         Button deleteBtn = (Button) convertView.findViewById(R.id.queue_delete_button);
         // Populate the data into the template view using the data object
         queueName.setText(queue.name);
+        //set clickable, transfer to queueFragment on click
+        queueName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                QueueFragment queueFragment = new QueueFragment();
+                FragmentTransaction fragmentTransaction = queueListFragment.getFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.content, queueFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+        });
         deleteBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
