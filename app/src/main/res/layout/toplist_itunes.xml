@@ -27,7 +27,8 @@
         android:paddingTop="@dimen/list_vertical_padding"
         android:stretchMode="columnWidth"
         android:verticalSpacing="8dp"
-        tools:listitem="@layout/gpodnet_podcast_listitem" />
+        tools:listitem="@layout/gpodnet_podcast_listitem"
+        android:nestedScrollingEnabled="true"/>
 
     <TextView
         android:id="@id/android:empty"
