@@ -51,14 +51,14 @@ public class suggestedPodcastsFragment extends Fragment{
     private static final String API_URL = "https://itunes.apple.com/search?media=podcast&term=%s";
 
     private DBReader.NavDrawerData subsList;  //subscription list
-    private List<String> subsTitles; //the keywords in titles
-    private List<ItunesAdapter.Podcast> podcasts = new ArrayList<>(); //arrayList holding the suggested podcasts
+    private ArrayList<String> subsTitles; //the keywords in titles
 
 
     /**
      * needed attributes
      */
     private List<ItunesAdapter.Podcast> searchResults;
+    private List<ItunesAdapter.Podcast> suggestedPod;
     private Subscription subscription;
     private SubscriptionsAdapter subscriptionAdapter;
 
@@ -81,14 +81,91 @@ public class suggestedPodcastsFragment extends Fragment{
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        View root = inflater.inflate(R.layout.suggested_podcasts,container,false);
+    public void onDestroy() {
+        super.onDestroy();
+        if(subscription != null) {
+            subscription.unsubscribe();
+        }
+    }
 
-        return root;
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.suggested_podcasts, container, false);
+        gridView = (GridView) view.findViewById(R.id.gridViewHome);
+        adapter = new ItunesAdapter(getActivity(), new ArrayList<>());
+        gridView.setAdapter(adapter);
+
+        //Show information about the podcast when the list item is clicked
+        gridView.setOnItemClickListener((parent, view1, position, id) -> {
+            ItunesAdapter.Podcast podcast = searchResults.get(position);
+            if(podcast.feedUrl == null) {
+                return;
+            }
+            if (!podcast.feedUrl.contains("itunes.apple.com")) {
+                Intent intent = new Intent(getActivity(), OnlineFeedViewActivity.class);
+                intent.putExtra(OnlineFeedViewActivity.ARG_FEEDURL, podcast.feedUrl);
+                intent.putExtra(OnlineFeedViewActivity.ARG_TITLE, "iTunes");
+                startActivity(intent);
+            } else {
+                gridView.setVisibility(View.GONE);
+                progressBar.setVisibility(View.VISIBLE);
+                subscription = Observable.create((Observable.OnSubscribe<String>) subscriber -> {
+                    OkHttpClient client = AntennapodHttpClient.getHttpClient();
+                    Request.Builder httpReq = new Request.Builder()
+                            .url(podcast.feedUrl)
+                            .header("User-Agent", ClientConfig.USER_AGENT);
+                    try {
+                        Response response = client.newCall(httpReq.build()).execute();
+                        if (response.isSuccessful()) {
+                            String resultString = response.body().string();
+                            JSONObject result = new JSONObject(resultString);
+                            JSONObject results = result.getJSONArray("results").getJSONObject(0);
+                            String feedUrl = results.getString("feedUrl");
+                            subscriber.onNext(feedUrl);
+                        } else {
+                            String prefix = getString(R.string.error_msg_prefix);
+                            subscriber.onError(new IOException(prefix + response));
+                        }
+                    } catch (IOException | JSONException e) {
+                        subscriber.onError(e);
+                    }
+                    subscriber.onCompleted();
+                })
+                        .subscribeOn(Schedulers.newThread())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(feedUrl -> {
+                            gridView.setVisibility(View.VISIBLE);
+                            Intent intent = new Intent(getActivity(), OnlineFeedViewActivity.class);
+                            intent.putExtra(OnlineFeedViewActivity.ARG_FEEDURL, feedUrl);
+                            intent.putExtra(OnlineFeedViewActivity.ARG_TITLE, "iTunes");
+                            startActivity(intent);
+                        }, error -> {
+                            Log.e(TAG, Log.getStackTraceString(error));
+                            gridView.setVisibility(View.VISIBLE);
+                            String prefix = getString(R.string.error_msg_prefix);
+                            new MaterialDialog.Builder(getActivity())
+                                    .content(prefix + " " + error.getMessage())
+                                    .neutralText(android.R.string.ok)
+                                    .show();
+                        });
+            }
+        });
+        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
+        txtvError = (TextView) view.findViewById(R.id.txtvError);
+        butRetry = (Button) view.findViewById(R.id.butRetry);
+        txtvEmpty = (TextView) view.findViewById(android.R.id.empty);
+
+        loadSubscriptions();
+        searchPodcasts(getKeywords(subsList));
+        //loadPdcasts(); */
+
+        return view;
     }
 
 
-    //method that loads the user subscriptions
+    // load the subscription
+
     private void loadSubscriptions() {
         if(subscription != null) {
             subscription.unsubscribe();
@@ -103,6 +180,65 @@ public class suggestedPodcastsFragment extends Fragment{
     }
 
 
+    //method that loads the suggestedPodcasts
+   /* private void loadPdcasts() {
+        if(subscription != null) {
+            subscription.unsubscribe();
+        }
+
+        subscription = Observable.create((Observable.OnSubscribe<List<ItunesAdapter.Podcast>>) subscriber -> {
+            String lang = Locale.getDefault().getLanguage();
+            String url = "https://itunes.apple.com/" + lang + "/rss/toppodcasts/limit=25/explicit=true/json";
+            OkHttpClient client = AntennapodHttpClient.getHttpClient();
+            Request.Builder httpReq = new Request.Builder()
+                    .url(url)
+                    .header("User-Agent", ClientConfig.USER_AGENT);
+            List<ItunesAdapter.Podcast> results = new ArrayList<>();
+            try {
+                Response response = client.newCall(httpReq.build()).execute();
+                if(!response.isSuccessful()) {
+                    // toplist for language does not exist, fall back to united states
+                    url = "https://itunes.apple.com/us/rss/toppodcasts/limit=25/explicit=true/json";
+                    httpReq = new Request.Builder()
+                            .url(url)
+                            .header("User-Agent", ClientConfig.USER_AGENT);
+                    response = client.newCall(httpReq.build()).execute();
+                }
+                if(response.isSuccessful()) {
+                    String resultString = response.body().string();
+                    JSONObject result = new JSONObject(resultString);
+                    JSONObject feed = result.getJSONObject("feed");
+                    JSONArray entries = feed.getJSONArray("entry");
+
+                    for(int i=0; i < entries.length(); i++) {
+                        JSONObject json = entries.getJSONObject(i);
+                        ItunesAdapter.Podcast podcast = ItunesAdapter.Podcast.fromToplist(json);
+                        results.add(podcast);
+                    }
+                }
+                else {
+                    String prefix = getString(R.string.error_msg_prefix);
+                    subscriber.onError(new IOException(prefix + response));
+                }
+            } catch (IOException | JSONException e) {
+                subscriber.onError(e);
+            }
+            subscriber.onNext(results);
+            subscriber.onCompleted();
+        })
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(podcasts -> {
+                    suggestedPod = podcasts;
+                    updateData(suggestedPod);
+                }, error -> {
+                    Log.e(TAG, Log.getStackTraceString(error));
+                });
+
+
+
+    }
+*/
     /**
      * Replace adapter data with provided search results from SearchTask.
      * @param result List of Podcast objects containing search results
@@ -131,7 +267,7 @@ public class suggestedPodcastsFragment extends Fragment{
      * @return keywords
      */
     public ArrayList<String> getKeywords(DBReader.NavDrawerData subsList){
-        ArrayList<String> keywords = new ArrayList<String>();
+        subsTitles = new ArrayList<String>();
 
         //Variable x iterates through each title
         //Variable i iterates through each title's characters
@@ -146,7 +282,7 @@ public class suggestedPodcastsFragment extends Fragment{
             for(int i=0; i<temp.length();i++){
                 if((i-j) > 3){
                     keyword = temp.substring(j,i);
-                    keywords.add(keyword);
+                    subsTitles.add(keyword);
                     break;
                 }
                 else{
@@ -157,7 +293,7 @@ public class suggestedPodcastsFragment extends Fragment{
             }
         }
 
-        return keywords;
+        return subsTitles;
     }
 
     //method that search podcasts for a given query in the iTunes library
@@ -190,7 +326,7 @@ public class suggestedPodcastsFragment extends Fragment{
             Request.Builder httpReq = new Request.Builder()
                     .url(formattedUrl)
                     .header("User-Agent", ClientConfig.USER_AGENT);
-
+            List<ItunesAdapter.Podcast> podcasts = new ArrayList<>();
             try {
                 Response response = client.newCall(httpReq.build()).execute();
 
@@ -233,7 +369,7 @@ public class suggestedPodcastsFragment extends Fragment{
 
     //search method that looks for the keywords in the titles of subscribed podcasts
 
-    private void searchPodcasts (List<String> subsTitles){
+    private void searchPodcasts (ArrayList<String> subsTitles){
 
         for(int i=0; i <subsTitles.size(); i++){
             String query = subsTitles.get(i);
@@ -242,9 +378,6 @@ public class suggestedPodcastsFragment extends Fragment{
     }
 
 
-    //method missing: displaying the suggested podcasts on the HomePage
-    public void displaySuggestedPodcasts(){
 
-    }
 
 }

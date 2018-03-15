@@ -33,11 +33,17 @@
         android:name="de.danoeh.antennapod.fragment.ToplistFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="65dp"/> />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+         />
+
 
     <fragment
         android:id="@+id/suggestedPodcasts"
         android:name="de.danoeh.antennapod.fragment.suggestedPodcastsFragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView"
+        android:layout_alignStart="@+id/textView"
+        android:layout_below="@+id/imageView" />
 </RelativeLayout>
