@@ -1,3 +1,9 @@
+package centralSearchTest;
+
+import org.junit.Test;
+
+import de.danoeh.antennapod.fragment.CentralizedSearchFragment;
+
 import static org.junit.Assert.*;
 
 /**
@@ -5,4 +11,14 @@ import static org.junit.Assert.*;
  */
 public class CentralizedSearchFragmentTest {
 
+    CentralizedSearchFragment searchFragment;
+
+    @Test
+    public void search() throws Exception {
+        String query = "Joe Rogan";
+
+
+        searchFragment.search("");
+        searchFragment.search("query");
+    }
 }
