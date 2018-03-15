@@ -70,6 +70,9 @@ public class FeedItemlistAdapter extends BaseAdapter {
         normalBackGroundColor = ContextCompat.getColor(context, android.R.color.transparent);
     }
 
+    /*
+    @return number of episodes in podcast series
+     */
     @Override
     public int getCount() {
         return itemAccess.getCount();

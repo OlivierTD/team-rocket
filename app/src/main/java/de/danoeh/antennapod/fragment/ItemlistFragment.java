@@ -10,6 +10,7 @@ import android.graphics.LightingColorFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
@@ -20,6 +21,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
@@ -35,7 +37,10 @@ import com.joanzapata.iconify.widget.IconTextView;
 
 import org.apache.commons.lang3.Validate;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.FeedInfoActivity;
@@ -114,6 +119,8 @@ public class ItemlistFragment extends ListFragment {
     private ImageView imgvCover;
 
     private TextView txtvInformation;
+
+    private Button randomEpisodeButton;
 
     private Subscription subscription;
 
@@ -496,6 +503,13 @@ public class ItemlistFragment extends ListFragment {
         } else {
             txtvInformation.setVisibility(View.GONE);
         }
+        randomEpisodeButton.setText(R.string.random_episode_button);
+        if(UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark) {
+            randomEpisodeButton.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_random_white), null, null, null);
+        } else {
+            randomEpisodeButton.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_random_grey), null, null, null);
+        }
+
     }
 
     private void setupHeaderView() {
@@ -516,6 +530,7 @@ public class ItemlistFragment extends ListFragment {
         ImageButton butShowInfo = (ImageButton) header.findViewById(R.id.butShowInfo);
         txtvInformation = (TextView) header.findViewById(R.id.txtvInformation);
         txtvFailure = (IconTextView) header.findViewById(R.id.txtvFailure);
+        randomEpisodeButton = (Button) header.findViewById(R.id.randomEpisodeButton);
 
         txtvTitle.setText(feed.getTitle());
         txtvAuthor.setText(feed.getAuthor());
@@ -535,6 +550,39 @@ public class ItemlistFragment extends ListFragment {
             }
         });
         headerCreated = true;
+
+        MainActivity activity = (MainActivity) getActivity();
+
+        randomEpisodeButton.setOnClickListener(v -> {
+            List<FeedItem> itemList = feed.getItems();
+            Collections.shuffle(itemList);
+
+            List<FeedItem> oneEpisode = new ArrayList<>();
+            oneEpisode.add(itemList.get(0));
+
+            long[] ids = FeedItemUtil.getIds(oneEpisode);
+            activity.loadChildFragment(ItemFragment.newInstance(ids, 0));
+            activity.getSupportActionBar().setTitle(feed.getTitle());
+
+            DefaultActionButtonCallback actionButtonCallback = new DefaultActionButtonCallback(getActivity());
+
+            FeedItem item = oneEpisode.get(0);
+
+            actionButtonCallback.onActionButtonPressed(item, item.isTagged(FeedItem.TAG_QUEUE) ?
+                    LongList.of(item.getId()) : new LongList(0));
+
+            FeedMedia media = item.getMedia();
+
+            if (media != null && media.isDownloaded()) {
+                // playback was started, dialog should close itself
+                ((MainActivity) getActivity()).dismissChildFragment();
+            }
+            // if media isn't downloaded
+            else if (media != null) {
+                DBTasks.playMedia(getActivity(), media, true, true, true);
+                ((MainActivity) getActivity()).dismissChildFragment();
+            }
+        });
     }
 
     private void loadFeedImage() {
