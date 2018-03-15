@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -65,7 +64,6 @@ public class ToplistFragment extends Fragment {
     private TextView txtvError;
     private Button butRetry;
     private TextView txtvEmpty;
-    private ProgressBar progressBar;
     private TextView titleMessage;
 
     /**
@@ -107,7 +105,6 @@ public class ToplistFragment extends Fragment {
                 startActivity(intent);
             } else {
                 gridView.setVisibility(View.GONE);
-                progressBar.setVisibility(View.VISIBLE);
                 subscription = Observable.create((Observable.OnSubscribe<String>) subscriber -> {
                     OkHttpClient client = AntennapodHttpClient.getHttpClient();
                     Request.Builder httpReq = new Request.Builder()
@@ -149,7 +146,6 @@ public class ToplistFragment extends Fragment {
                         });
             }
         });
-        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         txtvError = (TextView) view.findViewById(R.id.txtvError);
         butRetry = (Button) view.findViewById(R.id.butRetry);
         txtvEmpty = (TextView) view.findViewById(android.R.id.empty);
