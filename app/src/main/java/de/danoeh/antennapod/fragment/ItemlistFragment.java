@@ -120,7 +120,6 @@ public class ItemlistFragment extends ListFragment {
 
     private TextView txtvInformation;
 
-    private Button playButton;
     private Button shuffleButton;
 
     private Subscription subscription;
@@ -504,13 +503,10 @@ public class ItemlistFragment extends ListFragment {
         } else {
             txtvInformation.setVisibility(View.GONE);
         }
-        playButton.setText(R.string.play_button);
         shuffleButton.setText(R.string.shuffle_button);
         if(UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark) {
-            playButton.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_play_arrow_white_24dp), null, null, null);
             shuffleButton.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_shuffle_white), null, null, null);
         } else {
-            playButton.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_play_arrow_grey600_24dp), null, null, null);
             shuffleButton.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_shuffle_grey), null, null, null);
         }
 
@@ -534,7 +530,6 @@ public class ItemlistFragment extends ListFragment {
         ImageButton butShowInfo = (ImageButton) header.findViewById(R.id.butShowInfo);
         txtvInformation = (TextView) header.findViewById(R.id.txtvInformation);
         txtvFailure = (IconTextView) header.findViewById(R.id.txtvFailure);
-        playButton = (Button) header.findViewById(R.id.playButton);
         shuffleButton = (Button) header.findViewById(R.id.shuffleButton);
 
         txtvTitle.setText(feed.getTitle());
@@ -557,35 +552,6 @@ public class ItemlistFragment extends ListFragment {
         headerCreated = true;
 
         MainActivity activity = (MainActivity) getActivity();
-
-        // When the Play button is pressed, the most recent episode begins playing
-        playButton.setOnClickListener(v -> {
-            List<FeedItem> itemList = feed.getItems();
-
-            long[] ids = FeedItemUtil.getIds(itemList);
-            activity.loadChildFragment(ItemFragment.newInstance(ids, 0));
-            activity.getSupportActionBar().setTitle(feed.getTitle());
-
-            DefaultActionButtonCallback actionButtonCallback = new DefaultActionButtonCallback(getActivity());
-
-            // first item
-            FeedItem item = itemList.get(0);
-
-            actionButtonCallback.onActionButtonPressed(item, item.isTagged(FeedItem.TAG_QUEUE) ?
-                    LongList.of(item.getId()) : new LongList(0));
-
-            FeedMedia media = item.getMedia();
-
-            if (media != null && media.isDownloaded()) {
-                // playback was started, dialog should close itself
-                ((MainActivity) getActivity()).dismissChildFragment();
-            }
-            // if media isn't downloaded
-            else if (media != null) {
-                DBTasks.playMedia(getActivity(), media, true, true, true);
-                ((MainActivity) getActivity()).dismissChildFragment();
-            }
-        });
 
         shuffleButton.setOnClickListener(v -> {
             List<FeedItem> itemList = feed.getItems();
