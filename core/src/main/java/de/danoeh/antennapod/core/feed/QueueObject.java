@@ -12,8 +12,10 @@ import java.util.List;
 
 public class QueueObject implements Serializable {
     private List<FeedItem> queue;
+    public String name;
 
-    public QueueObject() {
+    public QueueObject(String name) {
+        this.name = name;
         this.queue = new ArrayList<>();
     }
 
