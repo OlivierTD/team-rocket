@@ -5,10 +5,6 @@
     tools:context="de.danoeh.antennapod.fragment.QueueListFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/queue_list_fragment" />
 
     <Button
         android:id="@+id/addQueue"
@@ -17,6 +13,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:text="Create New Queue"/>
+
+    <ListView
+        android:id="@+id/queueList"
+        android:layout_width="match_parent"
+        android:layout_height="464dp" />
 
 
 </FrameLayout>
