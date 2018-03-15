@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ProgressBar;
@@ -65,19 +66,18 @@ public class ToplistFragment extends Fragment {
     private Button butRetry;
     private TextView txtvEmpty;
     private ProgressBar progressBar;
+    private TextView titleMessage;
 
     /**
      * Adapter responsible with the search results
      */
     private ItunesAdapter adapter;  //search result view
-    private GridView gridView;
-
-    /**
-     * List of podcasts retreived from the search
-     */
     private List<ItunesAdapter.Podcast> searchResults;  //search result data
-    private List<ItunesAdapter.Podcast> topList;
+
+    private List<ItunesAdapter.Podcast> topList; //holds toplist podcasts
     private Subscription subscription;
+
+    private GridView gridView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -90,6 +90,7 @@ public class ToplistFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.toplist_itunes, container, false);
         gridView = (GridView) view.findViewById(R.id.gridViewHome);
+        titleMessage = (TextView) view.findViewById(R.id.textTopItunes);
         adapter = new ItunesAdapter(getActivity(), new ArrayList<>());
         gridView.setAdapter(adapter);
 
@@ -206,6 +207,7 @@ public class ToplistFragment extends Fragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(podcasts -> {
                     topList = podcasts;
+                    titleMessage.setText("iTunes top podcasts");
                     updateData(topList);
                 }, error -> {
                     Log.e(TAG, Log.getStackTraceString(error));
@@ -264,7 +266,7 @@ public class ToplistFragment extends Fragment {
         });
     }
 
-    //Search iTunes and add to result list
+    //Search iTunes and FYYD
     private void search(String query) {
         adapter.clear();
         searchResults = new ArrayList<>();
@@ -305,6 +307,7 @@ public class ToplistFragment extends Fragment {
                     //Add iTunes result to list
                     for (int i = 0; i < j.length(); i++) {
                         JSONObject podcastJson = j.getJSONObject(i);
+
                         ItunesAdapter.Podcast podcastiTunes = ItunesAdapter.Podcast.fromSearch(podcastJson);
                         podcastsiTunes.add(podcastiTunes);
                     }
@@ -323,6 +326,7 @@ public class ToplistFragment extends Fragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(podcasts -> {
                     progressBar.setVisibility(View.GONE);
+                    titleMessage.setText("Search results");
                     updateData(podcasts);
                 }, error -> {
                     Log.e(TAG, Log.getStackTraceString(error));
@@ -360,15 +364,35 @@ public class ToplistFragment extends Fragment {
 
     //Add FYYD search to result list
     void processSearchResult(FyydResponse response) {
+        ItunesAdapter tempAdapter = new ItunesAdapter(getActivity(), new ArrayList<>());
+        List<ItunesAdapter.Podcast> tempSearchResults;
+        boolean duplicate = false;
+
+        for (int i = 0; i < adapter.getCount(); i++)
+            tempAdapter.add(adapter.getItem(i));
+
         adapter.clear();
+
+        //Add search results podcast to data list
         if (!response.getData().isEmpty()) {
             for (SearchHit searchHit : response.getData().values()) {
                 ItunesAdapter.Podcast podcastFYYD = ItunesAdapter.Podcast.fromSearch(searchHit);
-                searchResults.add(podcastFYYD);
+
+                //Add podcast if not already in result list from iTunes
+                for (int i = 0; i < tempAdapter.getCount(); i++){
+                    if (tempAdapter.getItem(i).title.toString().compareTo(podcastFYYD.title.toString()) == 0 || tempAdapter.getItem(i).feedUrl.toString().compareTo(podcastFYYD.feedUrl.toString()) == 0)
+                        duplicate = true;
+                }
+                if (!duplicate)
+                    searchResults.add(podcastFYYD);
+
+                duplicate = false;
             }
         } else {
             searchResults = emptyList();
         }
+
+        //Add search result podcast to view list
         for(ItunesAdapter.Podcast podcastFYYD : searchResults) {
             adapter.add(podcastFYYD);
         }
