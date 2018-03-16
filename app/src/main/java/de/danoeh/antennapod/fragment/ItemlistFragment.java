@@ -551,6 +551,10 @@ public class ItemlistFragment extends ListFragment {
         });
         headerCreated = true;
 
+        loadRandomEpisodeButton();
+    }
+
+    private void loadRandomEpisodeButton() {
         MainActivity activity = (MainActivity) getActivity();
 
         btnRandomEpisode.setOnClickListener(v -> {
