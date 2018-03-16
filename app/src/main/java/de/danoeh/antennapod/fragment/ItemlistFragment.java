@@ -112,7 +112,7 @@ public class ItemlistFragment extends ListFragment {
     private MoreContentListFooterUtil listFooter;
 
     private boolean isUpdatingFeed;
-    
+
     private TextView txtvTitle;
     private IconTextView txtvFailure;
     private ImageView imgvBackground;
@@ -554,7 +554,11 @@ public class ItemlistFragment extends ListFragment {
         loadRandomEpisodeButton(btnRandomEpisode);
     }
 
-    private void loadRandomEpisodeButton(Button button) {
+    public void loadRandomEpisodeButton(Button button) {
+        setRandomEpisodeOnClickListener(button);
+    }
+
+    private void setRandomEpisodeOnClickListener(Button button) {
         MainActivity activity = (MainActivity) getActivity();
 
         button.setOnClickListener(v -> {
