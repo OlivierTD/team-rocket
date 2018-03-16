@@ -15,10 +15,8 @@ public class CentralizedSearchFragmentTest {
 
     @Test
     public void search() throws Exception {
-        String query = "Joe Rogan";
-
-
-        searchFragment.search("");
-        searchFragment.search("query");
+        /*
+        TO DO
+        */
     }
 }
