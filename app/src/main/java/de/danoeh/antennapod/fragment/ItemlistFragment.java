@@ -555,16 +555,18 @@ public class ItemlistFragment extends ListFragment {
 
         randomEpisodeButton.setOnClickListener(v -> {
             List<FeedItem> itemList = feed.getItems();
-            Random rand = new Random();
-            int randomEpisodeNumber = rand.nextInt(itemList.size());
+            Collections.shuffle(itemList);
 
-            long[] ids = FeedItemUtil.getIds(itemList);
-            activity.loadChildFragment(ItemFragment.newInstance(ids, randomEpisodeNumber));
+            List<FeedItem> oneEpisode = new ArrayList<>();
+            oneEpisode.add(itemList.get(0));
+
+            long[] ids = FeedItemUtil.getIds(oneEpisode);
+            activity.loadChildFragment(ItemFragment.newInstance(ids, 0));
             activity.getSupportActionBar().setTitle(feed.getTitle());
 
             DefaultActionButtonCallback actionButtonCallback = new DefaultActionButtonCallback(getActivity());
 
-            FeedItem item = itemList.get(randomEpisodeNumber);
+            FeedItem item = oneEpisode.get(0);
 
             actionButtonCallback.onActionButtonPressed(item, item.isTagged(FeedItem.TAG_QUEUE) ?
                     LongList.of(item.getId()) : new LongList(0));

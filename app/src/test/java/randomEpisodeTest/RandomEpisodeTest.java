@@ -5,7 +5,6 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 import de.danoeh.antennapod.core.feed.FeedItem;
 
@@ -29,14 +28,8 @@ public class RandomEpisodeTest {
         itemList.add(item2);
         itemList.add(item3);
 
-        Random rand = new Random();
-        int randomEpisodeNumber;
-
-        FeedItem someEpisode = itemList.get(0);
-
-        while (someEpisode == itemList.get(0)) {
-            randomEpisodeNumber = rand.nextInt(itemList.size());
-            someEpisode = itemList.get(randomEpisodeNumber);
+        while (itemList.get(0) == item1) {
+            Collections.shuffle(itemList);
         }
 
         assertTrue("If the code reaches this line, then the test is a success.", true);
