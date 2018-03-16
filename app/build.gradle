@@ -123,6 +123,11 @@ android {
     dexOptions {
         jumboMode true
     }
+
+    //Allow unit tests without mocked data
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
 }
 
 configurations {
