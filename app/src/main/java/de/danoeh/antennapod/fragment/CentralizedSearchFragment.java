@@ -72,6 +72,9 @@ public class CentralizedSearchFragment extends Fragment {
     /**
      * Adapter responsible with the search results
      */
+    private List<ItunesAdapter.Podcast> FYYDSearchResult;
+    private List<ItunesAdapter.Podcast> iTunesSearchResult;
+
     private ItunesAdapter adapter;  //search result view
     private List<ItunesAdapter.Podcast> searchResults;  //search result data
 
@@ -218,7 +221,7 @@ public class CentralizedSearchFragment extends Fragment {
     }
 
     //Search iTunes and FYYD
-    private void search(String query) {
+    public void search(String query) {
         adapter.clear();
         searchResults = new ArrayList<>();
 
@@ -246,7 +249,7 @@ public class CentralizedSearchFragment extends Fragment {
             Request.Builder httpReq = new Request.Builder()
                     .url(formattedUrl)
                     .header("User-Agent", ClientConfig.USER_AGENT);
-            List<ItunesAdapter.Podcast> podcastsiTunes = new ArrayList<>();
+            iTunesSearchResult = new ArrayList<>();
             try {
                 Response response = client.newCall(httpReq.build()).execute();
 
@@ -260,7 +263,7 @@ public class CentralizedSearchFragment extends Fragment {
                         JSONObject podcastJson = j.getJSONObject(i);
 
                         ItunesAdapter.Podcast podcastiTunes = ItunesAdapter.Podcast.fromSearch(podcastJson);
-                        podcastsiTunes.add(podcastiTunes);
+                        iTunesSearchResult.add(podcastiTunes);
                     }
                 }
                 else {
@@ -270,7 +273,7 @@ public class CentralizedSearchFragment extends Fragment {
             } catch (IOException | JSONException e) {
                 subscriber.onError(e);
             }
-            subscriber.onNext(podcastsiTunes);
+            subscriber.onNext(iTunesSearchResult);
             subscriber.onCompleted();
         })
                 .subscribeOn(Schedulers.newThread())
@@ -316,7 +319,7 @@ public class CentralizedSearchFragment extends Fragment {
     //Add FYYD search to result list
     void processSearchResult(FyydResponse response) {
         ItunesAdapter tempAdapter = new ItunesAdapter(getActivity(), new ArrayList<>());
-        List<ItunesAdapter.Podcast> tempSearchResults;
+        FYYDSearchResult = new ArrayList<>();
         boolean duplicate = false;
 
         for (int i = 0; i < adapter.getCount(); i++)
@@ -351,6 +354,7 @@ public class CentralizedSearchFragment extends Fragment {
 
             //Add search result podcast to view list
             for(ItunesAdapter.Podcast podcastFYYD : searchResults) {
+                FYYDSearchResult.add(podcastFYYD);
                 adapter.add(podcastFYYD);
             }
             adapter.notifyDataSetInvalidated();
@@ -359,5 +363,17 @@ public class CentralizedSearchFragment extends Fragment {
         }catch (Exception e){
             System.out.println("Error: " + e);
         }
+    }
+
+    public int getSearchRestultSize(){
+        return adapter.getCount();
+    }
+
+    public List<ItunesAdapter.Podcast> getiTunesResultSize(){
+        return iTunesSearchResult;
+    }
+
+    public List<ItunesAdapter.Podcast> getFYYDResultSize(){
+        return FYYDSearchResult;
     }
 }
