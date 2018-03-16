@@ -316,7 +316,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 
         solo.waitForView(R.id.feedItemListHeader);
         solo.clickOnButton(R.id.btnRandomEpisode);
-
+    }
     public void testManageQueues(){
         //Navigate to queues page
         openNavDrawer();
