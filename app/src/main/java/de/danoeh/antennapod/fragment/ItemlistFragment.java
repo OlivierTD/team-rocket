@@ -120,7 +120,7 @@ public class ItemlistFragment extends ListFragment {
 
     private TextView txtvInformation;
 
-    private Button randomEpisodeButton;
+    private Button btnRandomEpisode;
 
     private Subscription subscription;
 
@@ -503,11 +503,11 @@ public class ItemlistFragment extends ListFragment {
         } else {
             txtvInformation.setVisibility(View.GONE);
         }
-        randomEpisodeButton.setText(R.string.random_episode_button);
+        btnRandomEpisode.setText(R.string.random_episode_button);
         if(UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark) {
-            randomEpisodeButton.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_random_white), null, null, null);
+            btnRandomEpisode.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_random_white), null, null, null);
         } else {
-            randomEpisodeButton.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_random_grey), null, null, null);
+            btnRandomEpisode.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_random_grey), null, null, null);
         }
 
     }
@@ -530,7 +530,7 @@ public class ItemlistFragment extends ListFragment {
         ImageButton butShowInfo = (ImageButton) header.findViewById(R.id.butShowInfo);
         txtvInformation = (TextView) header.findViewById(R.id.txtvInformation);
         txtvFailure = (IconTextView) header.findViewById(R.id.txtvFailure);
-        randomEpisodeButton = (Button) header.findViewById(R.id.randomEpisodeButton);
+        btnRandomEpisode = (Button) header.findViewById(R.id.btnRandomEpisode);
 
         txtvTitle.setText(feed.getTitle());
         txtvAuthor.setText(feed.getAuthor());
@@ -553,7 +553,7 @@ public class ItemlistFragment extends ListFragment {
 
         MainActivity activity = (MainActivity) getActivity();
 
-        randomEpisodeButton.setOnClickListener(v -> {
+        btnRandomEpisode.setOnClickListener(v -> {
             List<FeedItem> itemList = feed.getItems();
             Collections.shuffle(itemList);
 

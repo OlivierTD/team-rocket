@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:context="de.danoeh.antennapod.activity.MainActivity"
+    android:id="@+id/feedItemListHeader"
     tools:background="@android:color/darker_gray">
 
     <ImageView
@@ -115,7 +116,7 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/randomEpisodeButton"
+            android:id="@+id/btnRandomEpisode"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.65"

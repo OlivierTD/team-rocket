@@ -294,4 +294,26 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         //Download episode
         solo.clickOnText(solo.getString(R.string.download_label));
     }
+
+    public void testRandomEpisodeButton() {
+        openNavDrawer();
+        solo.clickOnText(solo.getString(R.string.homepage_label));
+
+        //wait for toplist fragment to load and scroll to bottom
+        solo.waitForView(android.R.id.list);
+
+        //open 1st podcast in list view
+        solo.clickInList(1);
+
+        //Subscribe to podcast
+        solo.waitForView(R.id.subscriptionLayout);
+        solo.clickOnButton(solo.getString(R.string.subscribe_label));
+
+        //Open podcast
+        solo.waitForView(R.id.subscriptionLayout);
+        solo.clickOnText(solo.getString(R.string.open_podcast));
+
+        solo.waitForView(R.id.feedItemListHeader);
+        solo.clickOnButton(R.id.btnRandomEpisode);
+    }
 }
