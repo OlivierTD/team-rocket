@@ -1,12 +1,14 @@
-package de.test.antennapod.dummy;
-import android.test.InstrumentationTestCase;
+package dummy;
+import org.junit.Test;
+import static junit.framework.Assert.assertEquals;
 
 /**
  * Created by Anania on 2/12/2018.
  */
 
-public class DummyTestAnania extends InstrumentationTestCase{
+public class DummyTestAnania {
 
+    @Test
     public void testAnania() {
 
         int y = 0;

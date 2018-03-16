@@ -5,16 +5,16 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textTopItunes"
+        android:id="@+id/textSearchResult"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="iTunes top podcasts"
+        android:text="search results"
         android:textSize="20sp"
         android:paddingTop="30dp"
         android:paddingLeft="15dp"/>
 
     <GridView
-        android:id="@+id/gridViewHome"
+        android:id="@+id/gridSearchResult"
         android:layout_width="match_parent"
         android:layout_height="265dp"
         android:clipToPadding="false"

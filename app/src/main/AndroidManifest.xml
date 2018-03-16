@@ -341,6 +341,11 @@
                 android:value="de.danoeh.antennapod.activity.PreferenceActivity"/>
         </activity>
 
+        <activity
+            android:name=".activity.TestActivity"
+            android:theme="@style/Theme.AppCompat">
+        </activity>
+
         <receiver android:name=".receiver.ConnectivityActionReceiver">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
