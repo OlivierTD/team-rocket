@@ -125,7 +125,7 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
     @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
     public void createNewQueue() {
         QueueObject toAdd = new QueueObject("Queue" + queueNumber);
-        queueNumber ++;
+        queueNumber++;
         this.queueList.add(toAdd);
         // Update adapter
         queuesAdapter.updateQueueList(this.queueList);
@@ -133,12 +133,12 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
     }
 
     // Removes an element in the list according to its position and stores new queue in storage
-    public void removeWithPos(int position){
+    public void removeWithPos(int position) {
         this.queueList.remove(position);
     }
 
     // Attempts to load data from local storage
-    private void loadList(){
+    private void loadList() {
         try {
             queueList = (ArrayList<QueueObject>) InternalStorage.readObject(this.getContext(), "queue");
         } catch (IOException e) {
@@ -147,7 +147,7 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
     }
 
     // Attempts to persist data to local storage
-    private void storeList(){
+    private void storeList() {
         try {
             InternalStorage.writeObject(this.getContext(), "queue", queueList);
         } catch (IOException e) {

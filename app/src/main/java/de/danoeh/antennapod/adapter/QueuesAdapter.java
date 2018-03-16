@@ -1,6 +1,8 @@
 package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import java.util.ArrayList;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.QueueObject;
+import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.fragment.QueueListFragment;
 
 /**
@@ -24,14 +27,14 @@ public class QueuesAdapter extends ArrayAdapter<QueueObject> {
     private ArrayList<QueueObject> queueList;
     private QueueListFragment queueListFragment;
 
-    public QueuesAdapter (Context context,  ArrayList<QueueObject> queueList, QueueListFragment queueListFragment){
+    public QueuesAdapter(Context context, ArrayList<QueueObject> queueList, QueueListFragment queueListFragment) {
         super(context, 0, queueList);
         this.queueList = queueList;
         this.queueListFragment = queueListFragment;
     }
 
     // Method that describes the translation between the data item and the View to display
-    public View getView(int position, View convertView, ViewGroup parent){
+    public View getView(int position, View convertView, ViewGroup parent) {
         // Get data item for this position
         QueueObject queue = getItem(position);
         // Check if existing view to reuse, otherwise inflate view
@@ -43,7 +46,20 @@ public class QueuesAdapter extends ArrayAdapter<QueueObject> {
         Button deleteBtn = (Button) convertView.findViewById(R.id.queue_delete_button);
         // Populate the data into the template view using the data object
         queueName.setText(queue.name);
-        deleteBtn.setOnClickListener(new View.OnClickListener(){
+        //set clickable, transfer to queueFragment on click
+        queueName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                QueueFragment queueFragment = new QueueFragment();
+                //gets ID of the queueListFragment in order to properly replace it
+                int iD = queueListFragment.getId();
+                FragmentTransaction fragmentTransaction = queueListFragment.getFragmentManager().beginTransaction();
+                fragmentTransaction.replace(iD, queueFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+        });
+        deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 removeQueue(position);
@@ -54,14 +70,14 @@ public class QueuesAdapter extends ArrayAdapter<QueueObject> {
     }
 
     // Used to update the ArrayList with a new ArrayList and make it display properly
-    public void updateQueueList(ArrayList<QueueObject> queueList){
+    public void updateQueueList(ArrayList<QueueObject> queueList) {
         this.queueList.clear();
         this.queueList.addAll(queueList);
         this.notifyDataSetChanged();
     }
 
     // Removes a queue in the list and updates the adapter
-    public void removeQueue(int position){
+    public void removeQueue(int position) {
         // Remove the element in the ArrayList
         this.queueListFragment.removeWithPos(position);
         // Update the adapter to display the correct list
@@ -69,7 +85,7 @@ public class QueuesAdapter extends ArrayAdapter<QueueObject> {
         this.notifyDataSetChanged();
     }
 
-    public ArrayList<QueueObject> getQueueList(){
+    public ArrayList<QueueObject> getQueueList() {
         return this.queueList;
     }
 
