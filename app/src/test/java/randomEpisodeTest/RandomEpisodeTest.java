@@ -24,7 +24,7 @@ public class RandomEpisodeTest {
 
         fragment.loadRandomEpisodeButton(mockButton);
 
-        // test that an arbitrary OnClickListener object is set of the button
+        // test that an arbitrary OnClickListener object is set on the button
         verify(mockButton).setOnClickListener((View.OnClickListener) any());
 
     }
