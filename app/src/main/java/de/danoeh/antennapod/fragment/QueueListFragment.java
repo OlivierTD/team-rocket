@@ -15,16 +15,10 @@ import de.danoeh.antennapod.adapter.QueuesAdapter;
 import de.danoeh.antennapod.core.feed.QueueObject;
 import de.danoeh.antennapod.core.util.InternalStorage;
 
-
 import java.io.IOException;
 import java.util.ArrayList;
 
-import java.util.List;
-
-
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MainActivity;
-
 
 public class QueueListFragment extends Fragment implements View.OnClickListener {
 
@@ -41,7 +35,7 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
     // List view for the list of queues
     ListView lvQueue;
     // Adapter for the ListView
-    QueuesAdapter queueAdapter;
+    private QueuesAdapter queuesAdapter;
 
     // Called to do initial creation of fragment
     @Override
@@ -53,11 +47,7 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
         setHasOptionsMenu(true); // Fragment would like to participate in populating the options menu
 
         //attempts to load from local storage
-        try {
-            queueList = (ArrayList<QueueObject>) InternalStorage.readObject(this.getContext(), "queue");
-        } catch (IOException e) {
-        } catch (ClassNotFoundException e) {
-        }
+        this.loadList();
 
     }
 
@@ -73,16 +63,16 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
         addButton.setOnClickListener(this);
 
         // Adapter to convert the ArrayList to views
-        queueAdapter = new QueuesAdapter(getActivity(), queueList);
+        queuesAdapter = new QueuesAdapter(getActivity(), queueList, this);
         // Attach the adapter to the ListView
         lvQueue = (ListView) root.findViewById(R.id.queueList);
-        lvQueue.setAdapter(queueAdapter);
+        lvQueue.setAdapter(queuesAdapter);
 
         return root;
     }
 
-
     //adds a queue to the list of queues
+    @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
     @Override
     public void onClick(View v) {
         //triggers the create
@@ -98,11 +88,7 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
     public void onStart() {
         super.onStart();
         //attempts to load from local storage
-        try {
-            queueList = (ArrayList<QueueObject>) InternalStorage.readObject(this.getContext(), "queue");
-        } catch (IOException e) {
-        } catch (ClassNotFoundException e) {
-        }
+        this.loadList();
     }
 
     // Called when fragment is visible to the user and actively running
@@ -110,16 +96,14 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
     public void onResume() {
         super.onResume();
         //attempts to load from local storage
-        try {
-            queueList = (ArrayList<QueueObject>) InternalStorage.readObject(this.getContext(), "queue");
-        } catch (IOException e) {
-        } catch (ClassNotFoundException e) {
-        }
+        this.loadList();
     }
 
     // Called when the fragment is no longer resumed
     @Override
     public void onPause() {
+        //attempts to store in local storage
+        this.storeList();
         super.onPause();
     }
 
@@ -129,6 +113,8 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
     */
     @Override
     public void onDestroyView() {
+        //attempts to store in local storage
+        this.storeList();
         super.onDestroyView();
     }
 
@@ -139,12 +125,29 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
     @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
     public void createNewQueue() {
         QueueObject toAdd = new QueueObject("Queue" + queueNumber);
-        queueNumber ++;
+        queueNumber++;
         this.queueList.add(toAdd);
         // Update adapter
-        queueAdapter.updateQueueList(this.queueList);
+        queuesAdapter.updateQueueList(this.queueList);
 
-        //attempts to store in local storage
+    }
+
+    // Removes an element in the list according to its position and stores new queue in storage
+    public void removeWithPos(int position) {
+        this.queueList.remove(position);
+    }
+
+    // Attempts to load data from local storage
+    private void loadList() {
+        try {
+            queueList = (ArrayList<QueueObject>) InternalStorage.readObject(this.getContext(), "queue");
+        } catch (IOException e) {
+        } catch (ClassNotFoundException e) {
+        }
+    }
+
+    // Attempts to persist data to local storage
+    private void storeList() {
         try {
             InternalStorage.writeObject(this.getContext(), "queue", queueList);
         } catch (IOException e) {
@@ -153,11 +156,8 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
         }
     }
 
-    //for testing purposes, removes the internal storage mechanisms
-    public void createNewQueueTester() {
-        QueueObject toAdd = new QueueObject("Queue" + queueNumber);
-        this.getQueuesList().add(toAdd);
-        queueNumber++;
-
+    public void setQueuesAdapter(QueuesAdapter queuesAdapter){
+        this.queuesAdapter = queuesAdapter;
     }
+
 }
