@@ -194,7 +194,7 @@ play {
 // about.html is templatized so that we can automatically insert
 // our version string in to it at build time.
 task filterAbout {
-    /*
+
 
     inputs.files files(["src/main/templates/about.html",
                         "src/main/AndroidManifest.xml"])
@@ -206,11 +206,11 @@ task filterAbout {
         from "src/main/templates/about.html"
         into "src/main/assets"
         filter(ReplaceTokens, tokens: [versionname: android.defaultConfig.versionName,
-//                                       commit     : "git rev-parse --short HEAD".execute().text,
+                                     commit     : "git rev-parse --short HEAD".execute().text,
                                        year       : new Date().format('yyyy')])
 
     }
-     */
+
 }
 
 task copyTextFiles(type: Copy) {
