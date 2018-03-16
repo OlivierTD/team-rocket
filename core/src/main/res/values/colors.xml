@@ -5,8 +5,8 @@
     <color name="gray">#808080</color>
 
     <!--New colors here -->
-    <color name="yellow">#b6d122</color>
-    <color name="pink">#ffa8bf</color>
+    <color name="yellow">#c4d716</color>
+    <color name="pink">#9e13cd</color>
 
     <color name="grey600">#757575</color>
     <color name="light_gray">#bfbfbf</color>
@@ -14,8 +14,8 @@
     <color name="holo_blue_light">#33B5E5</color>
     <color name="holo_blue_dark">#0099CC</color>
     <!--New colors here -->
-    <color name="holo_yellow">#bbcc00</color>
-    <color name="holo_pink">#bd14da</color>
+    <color name="holo_yellow">#636c01</color>
+    <color name="holo_pink">#460458</color>
 
     <color name="ics_gray">#858585</color>
     <color name="actionbar_gray">#DDDDDD</color>
@@ -31,7 +31,7 @@
 
        <color name="swipe_refresh_secondary_color_light">#EDEDED</color>
     <color name="swipe_refresh_secondary_color_dark">#060708</color>
-    <color name="new_indicator_green">#669900</color>
+    <color name="new_indicator_green">#b05fc2</color>
     <color name="image_readability_tint">#80000000</color>
 
     <!-- Use Gingerbread-orange -->
@@ -52,6 +52,15 @@
     <color name="highlight_pink">#ee00ff</color>
 
     <color name="antennapod_blue">#147BAF</color>
+    <color name="primary_dark_material_pink">#d900ff</color>
+    <color name="primary_material_pink">#a01fa6</color>
+    <color name="primary_material_yellow">#958610</color>
+    <color name="primary_dark_material_yellow">#d4d120</color>
+    <color name="background_material_pink">#c089c0</color>
+    <color name="colorBackgroundFloating">#d9cb60</color>
+    <color name="background_material_yellow">#b9af64</color>
+    <color name="colorBackgroundFloating_pink">#762269</color>
+    <color name="navigationBarColor_pink">#7813a0</color>
 
 
 </resources>

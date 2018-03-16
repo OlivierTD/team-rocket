@@ -120,11 +120,11 @@
     </style>
 
     <style name="Theme.AntennaPod.Yellow" parent="Theme.AppCompat">
-        <item name="colorAccent">@color/holo_blue_dark</item>
+        <item name="colorAccent">@color/holo_yellow</item>
         <item name="colorControlNormal">@color/yellow</item>
         <item name="buttonStyle">@style/Widget.AntennaPod.Button</item>
         <item name="progressBarTheme">@style/ProgressBarDark</item>
-        <item name="alertDialogTheme">@style/AntennaPod.Dialog.Dark</item>
+        <item name="alertDialogTheme">@style/AntennaPod.Dialog.Yellow</item>
         <item name="attr/action_bar_icon_color">@color/yellow</item>
         <item name="attr/action_about">@drawable/ic_info_white_24dp</item>g
         <item name="attr/action_search">@drawable/ic_search_white_24dp</item>
@@ -176,6 +176,9 @@
         <item name="attr/ic_sd_storage">@drawable/ic_sd_storage_white_36dp</item>
         <item name="attr/ic_create_new_folder">@drawable/ic_create_new_folder_white_24dp</item>
         <item name="attr/ic_cast_disconnect">@drawable/ic_cast_disconnect_white_36dp</item>
+        <item name="colorPrimary">@color/primary_material_yellow</item>
+        <item name="colorPrimaryDark">@color/primary_dark_material_yellow</item>
+        <item name="android:colorBackground">@color/background_material_yellow</item>
     </style>
 
 
@@ -184,7 +187,7 @@
         <item name="colorControlNormal">@color/pink</item>
         <item name="buttonStyle">@style/Widget.AntennaPod.Button</item>
         <item name="progressBarTheme">@style/ProgressBarDark</item>
-        <item name="alertDialogTheme">@style/AntennaPod.Dialog.Dark</item>
+        <item name="alertDialogTheme">@style/AntennaPod.Dialog.Pink</item>
         <item name="attr/action_bar_icon_color">@color/pink</item>
         <item name="attr/action_about">@drawable/ic_info_white_24dp</item>g
         <item name="attr/action_search">@drawable/ic_search_white_24dp</item>
@@ -236,6 +239,9 @@
         <item name="attr/ic_sd_storage">@drawable/ic_sd_storage_white_36dp</item>
         <item name="attr/ic_create_new_folder">@drawable/ic_create_new_folder_white_24dp</item>
         <item name="attr/ic_cast_disconnect">@drawable/ic_cast_disconnect_white_36dp</item>
+        <item name="colorPrimary">@color/new_indicator_green</item>
+        <item name="colorPrimaryDark">@color/primary_dark_material_pink</item>
+        <item name="android:colorBackground">@color/background_material_pink</item>
     </style>
 
     <style name="Theme.AntennaPod.Light.NoTitle" parent="Theme.AppCompat.Light.NoActionBar">
@@ -365,7 +371,7 @@
         <item name="colorAccent">@color/holo_yellow</item>
         <item name="colorControlNormal">@color/yellow</item>
         <item name="buttonStyle">@style/Widget.AntennaPod.Button</item>
-        <item name="alertDialogTheme">@style/AntennaPod.Dialog.Dark</item>
+        <item name="alertDialogTheme">@style/AntennaPod.Dialog.Yellow</item>
         <item name="attr/action_about">@drawable/ic_info_white_24dp</item>
         <item name="attr/action_search">@drawable/ic_search_white_24dp</item>
         <item name="attr/action_stream">@drawable/ic_settings_input_antenna_white_24dp</item>
@@ -416,6 +422,11 @@
         <item name="attr/ic_sd_storage">@drawable/ic_sd_storage_white_36dp</item>
         <item name="attr/ic_create_new_folder">@drawable/ic_create_new_folder_white_24dp</item>
         <item name="attr/ic_cast_disconnect">@drawable/ic_cast_disconnect_white_36dp</item>
+        <item name="android:colorBackground">@color/background_material_yellow</item>
+        <item name="colorPrimary">@color/primary_material_yellow</item>
+        <item name="colorPrimaryDark">@color/primary_dark_material_yellow</item>
+        <item name="android:colorForeground">@color/primary_dark_material_yellow</item>
+        <item name="android:textColorPrimary">@color/white</item>
     </style>
 
     <style name="Theme.AntennaPod.Pink.NoTitle" parent="Theme.AppCompat.NoActionBar">
@@ -425,7 +436,7 @@
         <item name="colorAccent">@color/holo_pink</item>
         <item name="colorControlNormal">@color/pink</item>
         <item name="buttonStyle">@style/Widget.AntennaPod.Button</item>
-        <item name="alertDialogTheme">@style/AntennaPod.Dialog.Dark</item>
+        <item name="alertDialogTheme">@style/AntennaPod.Dialog.Pink</item>
         <item name="attr/action_about">@drawable/ic_info_white_24dp</item>
         <item name="attr/action_search">@drawable/ic_search_white_24dp</item>
         <item name="attr/action_stream">@drawable/ic_settings_input_antenna_white_24dp</item>
@@ -476,6 +487,9 @@
         <item name="attr/ic_sd_storage">@drawable/ic_sd_storage_white_36dp</item>
         <item name="attr/ic_create_new_folder">@drawable/ic_create_new_folder_white_24dp</item>
         <item name="attr/ic_cast_disconnect">@drawable/ic_cast_disconnect_white_36dp</item>
+        <item name="colorPrimaryDark">@color/primary_dark_material_pink</item>
+        <item name="colorPrimary">@color/new_indicator_green</item>
+        <item name="android:colorBackground">@color/background_material_pink</item>
     </style>
 
     <style name="Theme.AntennaPod.Dark.Splash" parent="Theme.AppCompat.NoActionBar">
@@ -548,10 +562,16 @@
 
     <style name="AntennaPod.Dialog.Yellow" parent="Theme.AppCompat.Dialog">
         <item name="colorAccent">@color/holo_yellow</item>
+        <item name="colorPrimary">@color/primary_material_yellow</item>
+        <item name="colorPrimaryDark">@color/primary_dark_material_yellow</item>
+        <item name="android:colorBackground">@color/colorBackgroundFloating</item>
     </style>
 
     <style name="AntennaPod.Dialog.Pink" parent="Theme.AppCompat.Dialog">
         <item name="colorAccent">@color/holo_pink</item>
+        <item name="colorPrimaryDark">@color/primary_dark_material_pink</item>
+        <item name="colorPrimary">@color/primary_material_pink</item>
+        <item name="android:colorBackground">@color/colorBackgroundFloating_pink</item>
     </style>
 
     <style name="BigBlurryBackground">
