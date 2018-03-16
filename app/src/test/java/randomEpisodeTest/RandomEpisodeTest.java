@@ -30,11 +30,16 @@ public class RandomEpisodeTest {
         itemList.add(item3);
 
         Random rand = new Random();
-        int randomEpisodeNumber = rand.nextInt(itemList.size());
+        int randomEpisodeNumber;
 
-        assertTrue(itemList.get(randomEpisodeNumber) == item1
-                            || itemList.get(randomEpisodeNumber) == item2
-                            || itemList.get(randomEpisodeNumber) == item3);
+        FeedItem someEpisode = itemList.get(0);
+
+        while (someEpisode == itemList.get(0)) {
+            randomEpisodeNumber = rand.nextInt(itemList.size());
+            someEpisode = itemList.get(randomEpisodeNumber);
+        }
+
+        assertTrue("If the code reaches this line, then the test is a success.", true);
 
     }
 }
