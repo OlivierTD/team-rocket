@@ -60,6 +60,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         solo = new Solo(getInstrumentation(), getActivity());
     }
 
+
     @Override
     protected void tearDown() throws Exception {
         uiTestUtils.tearDown();
@@ -293,5 +294,30 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 
         //Download episode
         solo.clickOnText(solo.getString(R.string.download_label));
+    }
+
+    public void testManageQueues(){
+        //Navigate to queues page
+        openNavDrawer();
+        solo.clickOnText(solo.getString(R.string.queues_label));
+
+        solo.waitForView(R.id.queueList);
+
+        //Create new queue
+        solo.clickOnView(solo.getView(R.id.addQueue));
+        solo.waitForView(R.id.queue_name);
+        solo.clickOnView(solo.getView(R.id.addQueue));
+        solo.waitForView(R.id.queue_name);
+        solo.clickOnView(solo.getView(R.id.addQueue));
+        solo.waitForView(R.id.queue_name);
+
+        //Delete queue
+        solo.clickOnView(solo.getView(R.id.queue_delete_button));
+        solo.waitForView(R.id.queue_name);
+
+        //Access queue
+        solo.clickOnView(solo.getView(R.id.queue_name));
+        solo.waitForView(R.id.queue_fragment);
+
     }
 }
