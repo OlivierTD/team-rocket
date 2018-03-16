@@ -551,13 +551,13 @@ public class ItemlistFragment extends ListFragment {
         });
         headerCreated = true;
 
-        loadRandomEpisodeButton();
+        loadRandomEpisodeButton(btnRandomEpisode);
     }
 
-    private void loadRandomEpisodeButton() {
+    private void loadRandomEpisodeButton(Button button) {
         MainActivity activity = (MainActivity) getActivity();
 
-        btnRandomEpisode.setOnClickListener(v -> {
+        button.setOnClickListener(v -> {
             List<FeedItem> itemList = feed.getItems();
             Collections.shuffle(itemList);
 
