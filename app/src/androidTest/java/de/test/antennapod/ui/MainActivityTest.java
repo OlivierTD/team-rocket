@@ -316,6 +316,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 
         solo.waitForView(R.id.feedItemListHeader);
         solo.clickOnButton(R.id.btnRandomEpisode);
+    }
 
     public void testManageQueues(){
         //Navigate to queues page
@@ -341,4 +342,16 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         solo.waitForView(R.id.queue_fragment);
 
     }
+
+    public void testCentralSearch() {
+        //Navigate to queues page
+        openNavDrawer();
+        solo.clickOnText(solo.getString(R.string.homepage_label));
+
+    //    solo.clickOnActionBarItem(R.menu.itunes_search);
+
+
+        openNavDrawer();
+    }
+
 }

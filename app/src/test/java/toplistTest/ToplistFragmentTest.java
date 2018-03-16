@@ -33,18 +33,17 @@ public class ToplistFragmentTest{
     @Mock
     Bundle mockBundle;
 
-    @Mock
-    private ToplistFragment mockFragment;
+    private ToplistFragment testFragment;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        mockFragment = Mockito.mock(ToplistFragment.class);
+        testFragment = Mockito.mock(ToplistFragment.class);
     }
 
     @After
     public void tearDown() throws Exception {
-        mockFragment = null;
+        testFragment = null;
     }
 
     @Test
@@ -55,6 +54,6 @@ public class ToplistFragmentTest{
                 System.out.println("called with arguments: " + Arrays.toString(args));
                 return null;
             }
-        }).when(mockFragment).onCreateView(mockInflater, mockViewGroup, mockBundle);
+        }).when(testFragment).onCreateView(mockInflater, mockViewGroup, mockBundle);
     }
 }
