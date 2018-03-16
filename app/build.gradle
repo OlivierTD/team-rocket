@@ -45,7 +45,6 @@ android {
         versionName "${getMyVersionName()}"
         testApplicationId "de.test.antennapod"
         testInstrumentationRunner "de.test.antennapod.AntennaPodTestRunner"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         generatedDensities = []
     }
 
@@ -123,6 +122,11 @@ android {
 
     dexOptions {
         jumboMode true
+    }
+
+    //Allow unit tests without mocked data
+    testOptions {
+        unitTests.returnDefaultValues = true
     }
 }
 
