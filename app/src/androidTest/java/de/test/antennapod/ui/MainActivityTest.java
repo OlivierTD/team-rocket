@@ -319,7 +319,6 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         solo.waitForView(R.id.feedItemListHeader);
         solo.clickOnButton(R.id.btnRandomEpisode);
     }
-
     public void testManageQueues(){
         //Navigate to queues page
         openNavDrawer();
@@ -342,10 +341,9 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         //Access queue
         solo.clickOnView(solo.getView(R.id.queue_name));
         solo.waitForView(R.id.queue_fragment);
-
     }
-
-    public void testCentralSearch() throws Exception{
+  
+  public void testCentralSearch() throws Exception{
         //Navigate to queues page
         openNavDrawer();
         solo.clickOnText(solo.getString(R.string.homepage_label));
@@ -362,5 +360,4 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         //Scroll down home page
         homeView.scrollTo(0, homeView.getHeight());
     }
-
 }
