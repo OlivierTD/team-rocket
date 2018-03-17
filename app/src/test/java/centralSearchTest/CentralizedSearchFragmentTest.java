@@ -22,37 +22,7 @@ import static org.mockito.Mockito.verify;
  */
 public class CentralizedSearchFragmentTest {
 
-    private CentralizedSearchFragment searchFragment;
-    private ItunesAdapter mockSearchAdapter;
-    private FyydClient mockFYYDClient;
-
-    @Before
-    public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
-        searchFragment = new CentralizedSearchFragment();
-
-        //mock dependency
-        mockSearchAdapter = mock(ItunesAdapter.class);
-        mockFYYDClient = mock(FyydClient.class);
-
-        searchFragment.setSearchAdapter(mockSearchAdapter);
-        searchFragment.setFYYDClient(mockFYYDClient);
-        
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        searchFragment = null;
-    }
-
-    @Test
-    public void testSearch() throws Exception {
-        String empty = "";
-        String query = "Joe Rogan";
-
-        searchFragment.search(empty);
-        verify(searchFragment, times(1)).search("");
-        assertEquals(0, searchFragment.getSearchRestultSize());
+    
 
     }
 }
