@@ -300,8 +300,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         openNavDrawer();
         solo.clickOnText(solo.getString(R.string.homepage_label));
 
-        //wait for toplist fragment to load and scroll to bottom
-        solo.waitForView(android.R.id.list);
+        solo.waitForView(R.id.gridViewHome);
 
         //open 1st podcast in list view
         solo.clickInList(1);
@@ -315,8 +314,9 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         solo.clickOnText(solo.getString(R.string.open_podcast));
 
         solo.waitForView(R.id.feedItemListHeader);
-        solo.clickOnButton(R.id.btnRandomEpisode);
+        solo.clickOnView(solo.getView(R.id.btnRandomEpisode));
     }
+
     public void testManageQueues(){
         //Navigate to queues page
         openNavDrawer();
