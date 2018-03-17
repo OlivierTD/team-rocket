@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.FlakyTest;
+import android.widget.GridView;
 import android.widget.ListView;
+import android.widget.ScrollView;
 
 import com.robotium.solo.Solo;
 
@@ -343,15 +345,22 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 
     }
 
-    public void testCentralSearch() {
+    public void testCentralSearch() throws Exception{
         //Navigate to queues page
         openNavDrawer();
         solo.clickOnText(solo.getString(R.string.homepage_label));
 
-    //    solo.clickOnActionBarItem(R.menu.itunes_search);
+        solo.clickOnView(solo.getView(R.id.action_search));
+        solo.enterText(0, "Joe Rogan");
+        solo.pressSoftKeyboardSearchButton();
 
+        solo.sleep(1000);
 
-        openNavDrawer();
+        ScrollView homeView = (ScrollView) solo.getView(R.id.homeScrollView);
+        GridView searchResultView = (GridView) solo.getView(R.id.gridSearchResult);
+
+        //Scroll down home page
+        homeView.scrollTo(0, homeView.getHeight());
     }
 
 }
