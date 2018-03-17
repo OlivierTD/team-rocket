@@ -300,9 +300,6 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         openNavDrawer();
         solo.clickOnText(solo.getString(R.string.homepage_label));
 
-        //wait for toplist fragment to load and scroll to bottom
-        solo.waitForView(android.R.id.list);
-
         //open 1st podcast in list view
         solo.clickInList(1);
 
