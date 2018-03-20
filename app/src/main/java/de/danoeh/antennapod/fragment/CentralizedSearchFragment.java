@@ -189,7 +189,7 @@ public class CentralizedSearchFragment extends Fragment {
         MenuItem searchItem = menu.findItem(R.id.action_search);
         final SearchView sv = (SearchView) MenuItemCompat.getActionView(searchItem);
         MenuItemUtils.adjustTextColor(getActivity(), sv);
-        sv.setQueryHint("Search");
+   //     sv.setQueryHint(R.string.search_label);
         sv.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -261,9 +261,11 @@ public class CentralizedSearchFragment extends Fragment {
                     //Add iTunes result to list
                     for (int i = 0; i < j.length(); i++) {
                         JSONObject podcastJson = j.getJSONObject(i);
-
                         ItunesAdapter.Podcast podcastiTunes = ItunesAdapter.Podcast.fromSearch(podcastJson);
-                        iTunesSearchResult.add(podcastiTunes);
+
+                        //Only add podcasts with active connections
+                        if (podcastiTunes.feedUrl != null)
+                            iTunesSearchResult.add(podcastiTunes);
                     }
                 }
                 else {
@@ -331,12 +333,15 @@ public class CentralizedSearchFragment extends Fragment {
             //Add search results podcast to data list
             if (!response.getData().isEmpty()) {
                 for (SearchHit searchHit : response.getData().values()) {
+
                     ItunesAdapter.Podcast podcastFYYD = ItunesAdapter.Podcast.fromSearch(searchHit);
 
                     //Add podcast if not already in result list from iTunes
                     for (int i = 0; i < tempAdapter.getCount(); i++){
-                        if (tempAdapter.getItem(i).title.toString().compareTo(podcastFYYD.title.toString()) == 0 || tempAdapter.getItem(i).feedUrl.toString().compareTo(podcastFYYD.feedUrl.toString()) == 0)
-                            duplicate = true;
+                        if (tempAdapter.getItem(i).feedUrl != null) {
+                            if (tempAdapter.getItem(i).title.toString().compareTo(podcastFYYD.title.toString()) == 0 || tempAdapter.getItem(i).feedUrl.toString().compareTo(podcastFYYD.feedUrl.toString()) == 0)
+                                duplicate = true;
+                        }
                     }
                     if (!duplicate)
                         searchResults.add(podcastFYYD);
