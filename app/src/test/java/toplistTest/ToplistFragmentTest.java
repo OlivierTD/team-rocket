@@ -1,22 +1,60 @@
-package centralSearchTest;
+package toplistTest;
+
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
+
+import static org.mockito.Mockito.doAnswer;
 
 import org.junit.Test;
+import org.junit.After;
+import org.junit.Before;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
-import de.danoeh.antennapod.fragment.CentralizedSearchFragment;
+import java.util.Arrays;
 
-import static org.junit.Assert.*;
+import de.danoeh.antennapod.fragment.ToplistFragment;
 
 /**
- * Created by David on 2018-03-15.
+ * Created by David on 2018-03-07.
  */
-public class CentralizedSearchFragmentTest {
 
-    CentralizedSearchFragment searchFragment;
+public class ToplistFragmentTest{
+
+    //Mock values for onCreateView
+    @Mock
+    LayoutInflater mockInflater;
+    @Mock
+    ViewGroup mockViewGroup;
+    @Mock
+    Bundle mockBundle;
+
+    @Mock
+    private ToplistFragment mockFragment;
+
+    @Before
+    public void setUp() throws Exception {
+        MockitoAnnotations.initMocks(this);
+        mockFragment = Mockito.mock(ToplistFragment.class);
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        mockFragment = null;
+    }
 
     @Test
-    public void search() throws Exception {
-        /*
-        TO DO
-        */
+    public void testToplist(){
+        doAnswer(new Answer<Void>() {
+            public Void answer(InvocationOnMock invocation) {
+                Object[] args = invocation.getArguments();
+                System.out.println("called with arguments: " + Arrays.toString(args));
+                return null;
+            }
+        }).when(mockFragment).onCreateView(mockInflater, mockViewGroup, mockBundle);
     }
 }
