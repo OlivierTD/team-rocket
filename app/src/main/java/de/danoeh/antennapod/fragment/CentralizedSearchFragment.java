@@ -381,12 +381,4 @@ public class CentralizedSearchFragment extends Fragment {
     public List<ItunesAdapter.Podcast> getFYYDResultSize(){
         return FYYDSearchResult;
     }
-
-    public void setSearchAdapter(ItunesAdapter searchAdapter){
-        adapter = searchAdapter;
-    }
-
-    public void setFYYDClient(FyydClient client){
-        this.client = client;
-    }
 }
