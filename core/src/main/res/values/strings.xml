@@ -147,6 +147,8 @@
     <string name="filtered_label">Filtered</string>
     <string name="refresh_failed_msg">{fa-exclamation-circle} Last Refresh failed</string>
     <string name="open_podcast">Open Podcast</string>
+    <string name="play_button">Play</string>
+    <string name="random_episode_button">Random Episode</string>
 
     <!-- actions on feeditems -->
     <string name="download_label">Download</string>
@@ -376,6 +378,8 @@
     <string name="pref_episode_cache_title">Episode Cache</string>
     <string name="pref_theme_title_light">Light</string>
     <string name="pref_theme_title_dark">Dark</string>
+    <string name="pref_theme_title_yellow">Yellow</string>
+    <string name="pref_theme_title_pink">Pink</string>
     <string name="pref_episode_cache_unlimited">Unlimited</string>
     <string name="pref_update_interval_hours_plural">hours</string>
     <string name="pref_update_interval_hours_singular">hour</string>

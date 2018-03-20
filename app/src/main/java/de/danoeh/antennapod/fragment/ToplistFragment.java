@@ -3,13 +3,18 @@ package de.danoeh.antennapod.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -19,6 +24,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -28,6 +35,10 @@ import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
 import de.danoeh.antennapod.adapter.itunes.ItunesAdapter;
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
+import de.danoeh.antennapod.menuhandler.MenuItemUtils;
+import de.mfietz.fyydlin.FyydClient;
+import de.mfietz.fyydlin.FyydResponse;
+import de.mfietz.fyydlin.SearchHit;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -36,33 +47,35 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+import static java.util.Collections.emptyList;
+
 /**
  * Created by David on 2018-02-12.
  */
 
-public class ToplistFragment extends Fragment{
+public class ToplistFragment extends Fragment {
 
     private static final String TAG = "ItunesSearchFragment";
 
     private static final String API_URL = "https://itunes.apple.com/search?media=podcast&term=%s";
 
+    private FyydClient client = new FyydClient(AntennapodHttpClient.getHttpClient());
+
     private TextView txtvError;
     private Button butRetry;
     private TextView txtvEmpty;
-    private ProgressBar progressBar;
+    private TextView titleMessage;
 
     /**
      * Adapter responsible with the search results
      */
-    private ItunesAdapter adapter;
-    private GridView gridView;
+    private ItunesAdapter adapter;  //search result view
+    private List<ItunesAdapter.Podcast> searchResults;  //Toplist search result
 
-    /**
-     * List of podcasts retreived from the search
-     */
-    private List<ItunesAdapter.Podcast> searchResults;
-    private List<ItunesAdapter.Podcast> topList;
+    private List<ItunesAdapter.Podcast> topList; //holds toplist podcasts
     private Subscription subscription;
+
+    private GridView gridView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -75,13 +88,14 @@ public class ToplistFragment extends Fragment{
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.toplist_itunes, container, false);
         gridView = (GridView) view.findViewById(R.id.gridViewHome);
+        titleMessage = (TextView) view.findViewById(R.id.textTopItunes);
         adapter = new ItunesAdapter(getActivity(), new ArrayList<>());
         gridView.setAdapter(adapter);
 
         //Show information about the podcast when the list item is clicked
         gridView.setOnItemClickListener((parent, view1, position, id) -> {
             ItunesAdapter.Podcast podcast = searchResults.get(position);
-            if(podcast.feedUrl == null) {
+            if (podcast.feedUrl == null) {
                 return;
             }
             if (!podcast.feedUrl.contains("itunes.apple.com")) {
@@ -91,7 +105,6 @@ public class ToplistFragment extends Fragment{
                 startActivity(intent);
             } else {
                 gridView.setVisibility(View.GONE);
-                progressBar.setVisibility(View.VISIBLE);
                 subscription = Observable.create((Observable.OnSubscribe<String>) subscriber -> {
                     OkHttpClient client = AntennapodHttpClient.getHttpClient();
                     Request.Builder httpReq = new Request.Builder()
@@ -133,7 +146,6 @@ public class ToplistFragment extends Fragment{
                         });
             }
         });
-        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         txtvError = (TextView) view.findViewById(R.id.txtvError);
         butRetry = (Button) view.findViewById(R.id.butRetry);
         txtvEmpty = (TextView) view.findViewById(android.R.id.empty);
@@ -158,7 +170,7 @@ public class ToplistFragment extends Fragment{
             List<ItunesAdapter.Podcast> results = new ArrayList<>();
             try {
                 Response response = client.newCall(httpReq.build()).execute();
-                if(!response.isSuccessful()) {
+                if (!response.isSuccessful()) {
                     // toplist for language does not exist, fall back to united states
                     url = "https://itunes.apple.com/us/rss/toppodcasts/limit=25/explicit=true/json";
                     httpReq = new Request.Builder()
@@ -166,19 +178,18 @@ public class ToplistFragment extends Fragment{
                             .header("User-Agent", ClientConfig.USER_AGENT);
                     response = client.newCall(httpReq.build()).execute();
                 }
-                if(response.isSuccessful()) {
+                if (response.isSuccessful()) {
                     String resultString = response.body().string();
                     JSONObject result = new JSONObject(resultString);
                     JSONObject feed = result.getJSONObject("feed");
                     JSONArray entries = feed.getJSONArray("entry");
 
-                    for(int i=0; i < entries.length(); i++) {
+                    for (int i = 0; i < entries.length(); i++) {
                         JSONObject json = entries.getJSONObject(i);
                         ItunesAdapter.Podcast podcast = ItunesAdapter.Podcast.fromToplist(json);
                         results.add(podcast);
                     }
-                }
-                else {
+                } else {
                     String prefix = getString(R.string.error_msg_prefix);
                     subscriber.onError(new IOException(prefix + response));
                 }
@@ -192,6 +203,7 @@ public class ToplistFragment extends Fragment{
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(podcasts -> {
                     topList = podcasts;
+                    titleMessage.setText("iTunes top podcasts");
                     updateData(topList);
                 }, error -> {
                     Log.e(TAG, Log.getStackTraceString(error));
@@ -200,7 +212,6 @@ public class ToplistFragment extends Fragment{
 
     void updateData(List<ItunesAdapter.Podcast> result) {
         this.searchResults = result;
-        adapter.clear();
         if (result != null && result.size() > 0) {
             gridView.setVisibility(View.VISIBLE);
             for (ItunesAdapter.Podcast p : result) {
