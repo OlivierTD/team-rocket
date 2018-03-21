@@ -1,17 +1,17 @@
 package randomEpisodeTest;
 
+import android.view.View;
+import android.widget.Button;
+
+import org.mockito.*;
+import static org.mockito.Mockito.*;
+
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import de.danoeh.antennapod.core.feed.FeedItem;
-
-import static junit.framework.Assert.assertTrue;
+import de.danoeh.antennapod.fragment.ItemlistFragment;
 
 /**
- * Created by Vartan on 2018-03-15.
+ * Created by Vartan Benohanian on 2018-03-15.
  */
 
 public class RandomEpisodeTest {
@@ -19,20 +19,13 @@ public class RandomEpisodeTest {
     @Test
     public void testRandomEpisode(){
 
-        FeedItem item1 = new FeedItem();
-        FeedItem item2 = new FeedItem();
-        FeedItem item3 = new FeedItem();
+        ItemlistFragment fragment = new ItemlistFragment();
+        Button mockButton = Mockito.mock(Button.class);
 
-        List<FeedItem> itemList = new ArrayList<>();
-        itemList.add(item1);
-        itemList.add(item2);
-        itemList.add(item3);
+        fragment.loadRandomEpisodeButton(mockButton);
 
-        while (itemList.get(0) == item1) {
-            Collections.shuffle(itemList);
-        }
-
-        assertTrue("If the code reaches this line, then the test is a success.", true);
+        // test that an arbitrary OnClickListener object is set on the button
+        verify(mockButton).setOnClickListener((View.OnClickListener) any());
 
     }
 }

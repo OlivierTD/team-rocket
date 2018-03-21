@@ -45,7 +45,7 @@ public class QueuesAdapter extends ArrayAdapter<QueueObject> {
         TextView queueName = (TextView) convertView.findViewById(R.id.queue_name);
         Button deleteBtn = (Button) convertView.findViewById(R.id.queue_delete_button);
         // Populate the data into the template view using the data object
-        queueName.setText(queue.name);
+        queueName.setText(queue.getName());
         //set clickable, transfer to queueFragment on click
         queueName.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,6 +53,7 @@ public class QueuesAdapter extends ArrayAdapter<QueueObject> {
                 QueueFragment queueFragment = new QueueFragment();
                 //gets ID of the queueListFragment in order to properly replace it
                 int iD = queueListFragment.getId();
+                queueFragment.setQueueObject(queue);
                 FragmentTransaction fragmentTransaction = queueListFragment.getFragmentManager().beginTransaction();
                 fragmentTransaction.replace(iD, queueFragment);
                 fragmentTransaction.addToBackStack(null);

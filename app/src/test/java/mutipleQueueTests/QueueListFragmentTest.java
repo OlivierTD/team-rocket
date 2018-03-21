@@ -45,16 +45,16 @@ public class QueueListFragmentTest {
 
     @Test
     public void testCreateNewQueue() {
-        qlFragment.createNewQueue();
-        qlFragment.createNewQueue();
+        qlFragment.createNewQueue("Queue 1");
+        qlFragment.createNewQueue("Queue 2");
         verify(mockQueueAdapter, times(2)).updateQueueList(qlFragment.getQueuesList());
         assertEquals(2, qlFragment.getQueuesList().size());
     }
 
     @Test
     public void testDeleteNewQueue(){
-        qlFragment.createNewQueue();
-        qlFragment.createNewQueue();
+        qlFragment.createNewQueue("Queue 1");
+        qlFragment.createNewQueue("Queue 2");
         qlFragment.removeWithPos(1);
         verify(mockQueueAdapter, times(2)).updateQueueList(qlFragment.getQueuesList());
         assertEquals(1, qlFragment.getQueuesList().size());

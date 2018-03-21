@@ -343,7 +343,7 @@ public class CentralizedSearchFragment extends Fragment {
                                 duplicate = true;
                         }
                     }
-                    if (!duplicate)
+                    if (!duplicate && podcastFYYD.feedUrl != null)
                         searchResults.add(podcastFYYD);
 
                     if (tempAdapter.getCount() > 0)
