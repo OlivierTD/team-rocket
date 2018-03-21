@@ -380,7 +380,7 @@ public class QueueFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        ((MainActivity) getActivity()).getSupportActionBar().setTitle(queueObject.name);
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle(queueObject.getName());
 
         View root = inflater.inflate(R.layout.queue_fragment, container, false);
         infoBar = (TextView) root.findViewById(R.id.info_bar);
