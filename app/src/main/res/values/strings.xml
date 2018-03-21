@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name" translate="false">AntennaPod</string>
-
-    <string name="queue_list_fragment">Queue List Fragment!</string>
+    <string name="enter_valid_name">Please enter a valid name!</string>
+    <string name="enter_queue_name">Enter queue name!</string>
+    <string name="create">Create</string>
+    <string name="cancel">Cancel</string>
+    <string name="name_already_exists">A queue already has that name!</string>
+    <string name="queues">Queues</string>
 </resources>
