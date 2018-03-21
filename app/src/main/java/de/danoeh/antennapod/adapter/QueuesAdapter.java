@@ -1,6 +1,8 @@
 package de.danoeh.antennapod.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
@@ -63,7 +65,18 @@ public class QueuesAdapter extends ArrayAdapter<QueueObject> {
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                removeQueue(position);
+                AlertDialog confirmDialog = new AlertDialog.Builder(view.getContext())
+                        .setTitle(R.string.confirmation_title)
+                        .setMessage(R.string.delete_queue_confirmation_message)
+                        .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                removeQueue(position);
+                            }
+                        })
+                        .setNegativeButton(R.string.cancel, null)
+                        .create();
+                confirmDialog.show();
             }
         });
         // Return the completed view to render on screen
