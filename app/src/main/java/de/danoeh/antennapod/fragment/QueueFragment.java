@@ -40,6 +40,7 @@ import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.feed.QueueObject;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.service.download.Downloader;
@@ -90,6 +91,8 @@ public class QueueFragment extends Fragment {
     private LinearLayoutManager layoutManager;
     private ItemTouchHelper itemTouchHelper;
 
+    //Associating a QueueObject to the QueueFragments
+    private QueueObject queueObject;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -377,7 +380,7 @@ public class QueueFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.queue_label);
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle(queueObject.name);
 
         View root = inflater.inflate(R.layout.queue_fragment, container, false);
         infoBar = (TextView) root.findViewById(R.id.info_bar);
@@ -615,6 +618,10 @@ public class QueueFragment extends Fragment {
                         }
                     }
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
+    }
+
+    public void setQueueObject(QueueObject queueObject) {
+        this.queueObject = queueObject;
     }
 
 }

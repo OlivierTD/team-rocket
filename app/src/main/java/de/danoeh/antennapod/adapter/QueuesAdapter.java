@@ -53,6 +53,7 @@ public class QueuesAdapter extends ArrayAdapter<QueueObject> {
                 QueueFragment queueFragment = new QueueFragment();
                 //gets ID of the queueListFragment in order to properly replace it
                 int iD = queueListFragment.getId();
+                queueFragment.setQueueObject(queue);
                 FragmentTransaction fragmentTransaction = queueListFragment.getFragmentManager().beginTransaction();
                 fragmentTransaction.replace(iD, queueFragment);
                 fragmentTransaction.addToBackStack(null);
