@@ -16,7 +16,7 @@
         android:textSize="20sp" />
 
     <GridView
-        android:id="@+id/gridView"
+        android:id="@+id/gridViewHome"
         android:layout_width="match_parent"
         android:layout_height="265dp"
         android:layout_marginTop="5dp"
@@ -31,14 +31,6 @@
         android:verticalSpacing="8dp"
         tools:listitem="@layout/gpodnet_podcast_listitem" />
 
-    <TextView
-
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        android:gravity="center"
-        android:visibility="gone"
-        android:text="@string/search_status_no_results" />
 
     <ProgressBar
         android:id="@+id/progressBar"
