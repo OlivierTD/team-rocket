@@ -16,7 +16,7 @@
     <GridView
         android:id="@+id/gridSearchResult"
         android:layout_width="match_parent"
-        android:layout_height="265dp"
+        android:layout_height="500dp"
         android:clipToPadding="false"
         android:columnWidth="400dp"
         android:gravity="center"

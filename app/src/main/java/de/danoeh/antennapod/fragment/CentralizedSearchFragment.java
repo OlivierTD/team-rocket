@@ -261,9 +261,11 @@ public class CentralizedSearchFragment extends Fragment {
                     //Add iTunes result to list
                     for (int i = 0; i < j.length(); i++) {
                         JSONObject podcastJson = j.getJSONObject(i);
-
                         ItunesAdapter.Podcast podcastiTunes = ItunesAdapter.Podcast.fromSearch(podcastJson);
-                        iTunesSearchResult.add(podcastiTunes);
+
+                        //Only add podcasts with active connections
+                        if (podcastiTunes.feedUrl != null)
+                            iTunesSearchResult.add(podcastiTunes);
                     }
                 }
                 else {
@@ -331,14 +333,17 @@ public class CentralizedSearchFragment extends Fragment {
             //Add search results podcast to data list
             if (!response.getData().isEmpty()) {
                 for (SearchHit searchHit : response.getData().values()) {
+
                     ItunesAdapter.Podcast podcastFYYD = ItunesAdapter.Podcast.fromSearch(searchHit);
 
                     //Add podcast if not already in result list from iTunes
                     for (int i = 0; i < tempAdapter.getCount(); i++){
-                        if (tempAdapter.getItem(i).title.toString().compareTo(podcastFYYD.title.toString()) == 0 || tempAdapter.getItem(i).feedUrl.toString().compareTo(podcastFYYD.feedUrl.toString()) == 0)
-                            duplicate = true;
+                        if (tempAdapter.getItem(i).feedUrl != null) {
+                            if (tempAdapter.getItem(i).title.toString().compareTo(podcastFYYD.title.toString()) == 0 || tempAdapter.getItem(i).feedUrl.toString().compareTo(podcastFYYD.feedUrl.toString()) == 0)
+                                duplicate = true;
+                        }
                     }
-                    if (!duplicate)
+                    if (!duplicate && podcastFYYD.feedUrl != null)
                         searchResults.add(podcastFYYD);
 
                     if (tempAdapter.getCount() > 0)
