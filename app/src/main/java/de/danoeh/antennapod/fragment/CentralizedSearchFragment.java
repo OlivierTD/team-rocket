@@ -189,7 +189,7 @@ public class CentralizedSearchFragment extends Fragment {
         MenuItem searchItem = menu.findItem(R.id.action_search);
         final SearchView sv = (SearchView) MenuItemCompat.getActionView(searchItem);
         MenuItemUtils.adjustTextColor(getActivity(), sv);
-   //     sv.setQueryHint(R.string.search_label);
+        sv.setQueryHint(getString(R.string.home_search));
         sv.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
