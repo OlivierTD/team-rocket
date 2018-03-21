@@ -199,7 +199,7 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
     public boolean nameExists(String testName) {
         boolean flag = false;
         for (QueueObject queueObject : queueList) {
-            if (queueObject.name.equals(testName)) {
+            if (queueObject.getName().equals(testName)) {
                 flag = true;
             }
         }

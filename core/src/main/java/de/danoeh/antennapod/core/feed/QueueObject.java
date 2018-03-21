@@ -12,7 +12,7 @@ import java.util.List;
 
 public class QueueObject implements Serializable {
     private List<FeedItem> queue;
-    public String name;
+    private String name;
 
     public QueueObject(String name) {
         this.name = name;
@@ -29,6 +29,14 @@ public class QueueObject implements Serializable {
 
     public List<FeedItem> getQueueObject() {
         return this.queue;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
 }
