@@ -1,16 +1,22 @@
 package de.danoeh.antennapod.fragment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.QueuesAdapter;
 import de.danoeh.antennapod.core.feed.QueueObject;
 import de.danoeh.antennapod.core.util.InternalStorage;
@@ -23,8 +29,6 @@ import de.danoeh.antennapod.R;
 public class QueueListFragment extends Fragment implements View.OnClickListener {
 
     public static final String TAG = "QueueListFragment";
-    // To be modified later, I just want to see different numbers for each queues
-    static int queueNumber = 1;
 
     //List of queue fragments
     private ArrayList<QueueObject> queueList = new ArrayList<>();
@@ -57,6 +61,8 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
 
         super.onCreateView(inflater, container, savedInstanceState);
 
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.queues);
+
         View root = inflater.inflate(R.layout.fragment_queue_list, container, false);
 
         addButton = (Button) root.findViewById(R.id.addQueue);
@@ -75,12 +81,42 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
     @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
     @Override
     public void onClick(View v) {
-        //triggers the create
-        createNewQueue();
 
-        //this is for testing purposes primarily, prints a message on screen displaying the current size of the queuesList
-        String testMessage = Integer.toString(this.getQueuesList().size());
-        Toast.makeText(getActivity(), testMessage, Toast.LENGTH_SHORT).show();
+        //Create text field for our dialog box
+        final EditText enterName = new EditText(getActivity());
+        enterName.setInputType(InputType.TYPE_CLASS_TEXT);
+        enterName.setHint(R.string.enter_queue_name);
+
+        //Create the dialog to be shown to the user
+        AlertDialog enterNameDialog = new AlertDialog.Builder(getActivity())
+                .setView(enterName)
+                .setTitle(R.string.enter_queue_name)
+                .setPositiveButton(R.string.create, null)
+                .setNegativeButton(R.string.cancel, null)
+                .create();
+
+        //Pops out the keyboard
+        enterNameDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
+        //Display the dialog
+        enterNameDialog.show();
+
+        enterNameDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (enterName.getText().toString().equals("")) {
+                    Toast.makeText(getActivity(), R.string.enter_valid_name, Toast.LENGTH_SHORT).show();
+                }
+                else if (nameExists(enterName.getText().toString())) {
+                    Toast.makeText(getActivity(), R.string.name_already_exists, Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    createNewQueue(enterName.getText().toString());
+                    enterNameDialog.dismiss();
+                }
+            }
+        });
+
     }
 
     // Called when fragment is visible to the user
@@ -123,9 +159,8 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
     }
 
     @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
-    public void createNewQueue() {
-        QueueObject toAdd = new QueueObject("Queue" + queueNumber);
-        queueNumber++;
+    public void createNewQueue(String name) {
+        QueueObject toAdd = new QueueObject(name);
         this.queueList.add(toAdd);
         // Update adapter
         queuesAdapter.updateQueueList(this.queueList);
@@ -158,6 +193,17 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
 
     public void setQueuesAdapter(QueuesAdapter queuesAdapter){
         this.queuesAdapter = queuesAdapter;
+    }
+
+    //Will verify if there is a QueueObject in the list that already has the name
+    public boolean nameExists(String testName) {
+        boolean flag = false;
+        for (QueueObject queueObject : queueList) {
+            if (queueObject.name.equals(testName)) {
+                flag = true;
+            }
+        }
+        return flag;
     }
 
 }
