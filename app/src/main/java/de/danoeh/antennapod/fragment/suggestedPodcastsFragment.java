@@ -4,9 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ProgressBar;
@@ -27,10 +30,14 @@ import java.util.List;
 import java.util.Locale;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
+import de.danoeh.antennapod.adapter.NavListAdapter;
 import de.danoeh.antennapod.adapter.SubscriptionsAdapter;
 import de.danoeh.antennapod.adapter.itunes.ItunesAdapter;
 import de.danoeh.antennapod.core.ClientConfig;
+import de.danoeh.antennapod.core.feed.EventDistributor;
+import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.mfietz.fyydlin.FyydClient;
@@ -66,6 +73,7 @@ public class suggestedPodcastsFragment extends Fragment{
 
     private List<ItunesAdapter.Podcast> FYYDSearchResult;
     private List<ItunesAdapter.Podcast> iTunesSearchResult;
+    private SubscriptionsAdapter subscriptionAdapter;
 
 
     private FyydClient client = new FyydClient(AntennapodHttpClient.getHttpClient());
@@ -74,6 +82,12 @@ public class suggestedPodcastsFragment extends Fragment{
      */
     private List<ItunesAdapter.Podcast> searchResults;
     private Subscription subscription;
+    private DBReader.NavDrawerData navDrawerData;
+
+    private static final int EVENTS = EventDistributor.FEED_LIST_UPDATE
+            | EventDistributor.UNREAD_ITEMS_UPDATE;
+    private int mPosition = -1;
+
 
 
     /**
@@ -82,6 +96,7 @@ public class suggestedPodcastsFragment extends Fragment{
     private ItunesAdapter adapter;
     private GridView gridView;
     private ProgressBar progressBar;
+    private NavListAdapter navAdapter;
 
 
     @Override
@@ -158,12 +173,78 @@ public class suggestedPodcastsFragment extends Fragment{
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
 
 
-        search("joe rogan");
+        search(getFirst());
 
 
         return view;
 
     }
+
+    private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
+        @Override
+        public void update(EventDistributor eventDistributor, Integer arg) {
+            if ((EVENTS & arg) != 0) {
+                Log.d(TAG, "Received contentUpdate Intent.");
+                loadSubscriptions();
+            }
+        }
+    };
+
+    private void loadSubscriptions() {
+        if(subscription != null) {
+            subscription.unsubscribe();
+        }
+        subscription = Observable.fromCallable(DBReader::getNavDrawerData)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    navDrawerData = result;
+                    subscriptionAdapter.notifyDataSetChanged();
+                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        subscriptionAdapter = new SubscriptionsAdapter((MainActivity)getActivity(), itemAccess);
+
+        gridView.setAdapter(subscriptionAdapter);
+
+        loadSubscriptions();
+
+        gridView.setOnItemClickListener(subscriptionAdapter);
+
+        if (getActivity() instanceof MainActivity) {
+            ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.subscriptions_label);
+        }
+
+        EventDistributor.getInstance().register(contentUpdate);
+    }
+
+    private SubscriptionsAdapter.ItemAccess itemAccess = new SubscriptionsAdapter.ItemAccess() {
+        @Override
+        public int getCount() {
+            if (navDrawerData != null) {
+                return navDrawerData.feeds.size();
+            } else {
+                return 0;
+            }
+        }
+
+        @Override
+        public Feed getItem(int position) {
+            if (navDrawerData != null && 0 <= position && position < navDrawerData.feeds.size()) {
+                return navDrawerData.feeds.get(position);
+            } else {
+                return null;
+            }
+        }
+
+        @Override
+        public int getFeedCounter(long feedId) {
+            return navDrawerData != null ? navDrawerData.feedCounters.get(feedId) : 0;
+        }
+    };
 
     /**
      * Replace adapter data with provided search results from SearchTask.
@@ -322,6 +403,40 @@ public class suggestedPodcastsFragment extends Fragment{
         }catch (Exception e){
             System.out.println("Error: " + e);
         }
+    }
+
+    public String getFirst(){
+        //load the subscriptions
+        String first;
+        if(subscription != null) {
+            subscription.unsubscribe();
+        }
+        subscription = Observable.fromCallable(DBReader::getNavDrawerData)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    navDrawerData = result;
+                    subscriptionAdapter.notifyDataSetChanged();
+                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
+
+        if(navDrawerData != null){ //instead, try using subscriptionAdapter isn't null
+            Log.d(TAG, "Actually not null! Something inside!");
+            first = navDrawerData.feeds.get(0).getTitle();
+            return first;
+        }
+        else{
+            Log.d(TAG, "Nothing inside; SEARCHING FOR NULL!");
+            return null;
+        }
+
+        /*List<Feed> test = subscriptionList.feeds;
+        Object selectedObject = subscriptionAdapter.getItem(0);
+        Feed feed = (Feed) selectedObject;
+        first = feed.getFeedTitle();
+
+
+        //first = test.get(0).getTitle();
+        return first;*/
     }
 
 
