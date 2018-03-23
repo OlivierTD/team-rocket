@@ -15,6 +15,7 @@
         android:text="Suggested Podcasts"
         android:textSize="20sp" />
 
+
     <GridView
         android:id="@+id/gridViewHome"
         android:layout_width="match_parent"

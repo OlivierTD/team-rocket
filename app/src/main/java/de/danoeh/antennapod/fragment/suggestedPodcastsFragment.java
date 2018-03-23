@@ -33,7 +33,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
 import de.danoeh.antennapod.adapter.NavListAdapter;
-import de.danoeh.antennapod.adapter.SubscriptionsAdapter;
+import de.danoeh.antennapod.adapter.SuggestedAdapter;
 import de.danoeh.antennapod.adapter.itunes.ItunesAdapter;
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.feed.EventDistributor;
@@ -73,7 +73,7 @@ public class suggestedPodcastsFragment extends Fragment{
 
     private List<ItunesAdapter.Podcast> FYYDSearchResult;
     private List<ItunesAdapter.Podcast> iTunesSearchResult;
-    private SubscriptionsAdapter subscriptionAdapter;
+    private SuggestedAdapter sugAdapter;
 
 
     private FyydClient client = new FyydClient(AntennapodHttpClient.getHttpClient());
@@ -96,7 +96,7 @@ public class suggestedPodcastsFragment extends Fragment{
     private ItunesAdapter adapter;
     private GridView gridView;
     private ProgressBar progressBar;
-    private NavListAdapter navAdapter;
+
 
 
     @Override
@@ -199,20 +199,20 @@ public class suggestedPodcastsFragment extends Fragment{
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     navDrawerData = result;
-                    subscriptionAdapter.notifyDataSetChanged();
+                    sugAdapter.notifyDataSetChanged();
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        subscriptionAdapter = new SubscriptionsAdapter((MainActivity)getActivity(), itemAccess);
+        sugAdapter = new SuggestedAdapter((MainActivity)getActivity(), itemAccess);
 
-        gridView.setAdapter(subscriptionAdapter);
+        gridView.setAdapter(sugAdapter);
 
         loadSubscriptions();
 
-        gridView.setOnItemClickListener(subscriptionAdapter);
+        gridView.setOnItemClickListener(sugAdapter);
 
         if (getActivity() instanceof MainActivity) {
             ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.subscriptions_label);
@@ -221,7 +221,7 @@ public class suggestedPodcastsFragment extends Fragment{
         EventDistributor.getInstance().register(contentUpdate);
     }
 
-    private SubscriptionsAdapter.ItemAccess itemAccess = new SubscriptionsAdapter.ItemAccess() {
+    private SuggestedAdapter.ItemAccess itemAccess = new SuggestedAdapter.ItemAccess() {
         @Override
         public int getCount() {
             if (navDrawerData != null) {
@@ -416,7 +416,7 @@ public class suggestedPodcastsFragment extends Fragment{
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     navDrawerData = result;
-                    subscriptionAdapter.notifyDataSetChanged();
+                    sugAdapter.notifyDataSetChanged();
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
 
         if(navDrawerData != null){ //instead, try using subscriptionAdapter isn't null
@@ -438,6 +438,42 @@ public class suggestedPodcastsFragment extends Fragment{
         //first = test.get(0).getTitle();
         return first;*/
     }
+
+
+
+
+
+
+
+
+
+//    public ArrayList<String> getKeywords(String first){
+//
+//        ArrayList<String> words = new ArrayList<String>();
+//        String temp;
+//        String keyword;
+//        int j=0;
+//        //char space = " ";
+//
+//        for(int i=0; i<first.length();i++){
+//
+//            if((i-j) > 3){
+//                temp = temp.substring(j,i);
+//                words.add(keyword);
+//                break;
+//            }
+//            else{
+//                if((i-j)<=3){
+//                    j = i;
+//                }
+//            }
+//        }
+
+
+
+
+
+
 
 
 
