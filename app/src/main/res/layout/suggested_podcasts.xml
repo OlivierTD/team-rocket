@@ -30,6 +30,7 @@
         android:paddingTop="@dimen/list_vertical_padding"
         android:stretchMode="columnWidth"
         android:verticalSpacing="8dp"
+        android:nestedScrollingEnabled="true"
         tools:listitem="@layout/gpodnet_podcast_listitem" />
 
 

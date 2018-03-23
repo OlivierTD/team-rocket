@@ -2,6 +2,7 @@ package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,8 @@ public class SuggestedAdapter extends BaseAdapter implements AdapterView.OnItemC
 
     private final WeakReference<MainActivity> mainActivityRef;
     private final SuggestedAdapter.ItemAccess itemAccess;
+
+    private TextView txt;
 
     public SuggestedAdapter(MainActivity mainActivity, SuggestedAdapter.ItemAccess itemAccess) {
         this.mainActivityRef = new WeakReference<>(mainActivity);
@@ -94,31 +97,37 @@ public class SuggestedAdapter extends BaseAdapter implements AdapterView.OnItemC
             holder.feedTitle = (TextView) convertView.findViewById(R.id.theTitle);
             holder.imageView = (ImageView) convertView.findViewById(R.id.theImage);
             holder.count = (TriangleLabelView) convertView.findViewById(R.id.triangleCountView);
-
+            txt = (TextView)convertView.findViewById(R.id.title2);
             convertView.setTag(holder);
         } else {
             holder = (SuggestedAdapter.Holder) convertView.getTag();
         }
 
         if (position == getAddTilePosition()) {
-            holder.feedTitle.setText("{md-add 500%}\n\n" + mainActivityRef.get().getString(R.string.add_feed_label));
+            holder.feedTitle.setText("");
             holder.feedTitle.setVisibility(View.INVISIBLE);
-            // prevent any accidental re-use of old values (not sure how that would happen...)
+
             holder.count.setPrimaryText("");
-            // make it go away, we don't need it for add feed
             holder.count.setVisibility(View.INVISIBLE);
 
-            // when this holder is reused, we could else end up with a cover image
+            txt.setText(" ");
+            txt.setVisibility(View.INVISIBLE);
             Glide.clear(holder.imageView);
 
             return convertView;
+            //i do not want to display anything when this position is loaded
         }
 
         final Feed feed = (Feed) getItem(position);
         if (feed == null) return null;
 
+        String title;
         holder.feedTitle.setText(feed.getTitle());
-        holder.feedTitle.setVisibility(View.VISIBLE);
+        title = feed.getTitle();
+        Log.d("testing", "just wondering if the title is displayed properly"+title);
+        txt.setText(title);
+        txt.setVisibility(View.VISIBLE);
+       // holder.feedTitle.setVisibility(View.VISIBLE);
 
         holder.count.setVisibility(View.GONE);
 
@@ -137,7 +146,6 @@ public class SuggestedAdapter extends BaseAdapter implements AdapterView.OnItemC
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (position == getAddTilePosition()) {
-            mainActivityRef.get().loadChildFragment(new AddFeedFragment());
         } else {
             Fragment fragment = ItemlistFragment.newInstance(getItemId(position));
             mainActivityRef.get().loadChildFragment(fragment);

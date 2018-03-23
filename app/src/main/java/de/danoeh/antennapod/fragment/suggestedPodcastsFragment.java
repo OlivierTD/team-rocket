@@ -4,16 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
@@ -23,16 +18,13 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Array;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
-import de.danoeh.antennapod.adapter.NavListAdapter;
 import de.danoeh.antennapod.adapter.SuggestedAdapter;
 import de.danoeh.antennapod.adapter.itunes.ItunesAdapter;
 import de.danoeh.antennapod.core.ClientConfig;
@@ -57,15 +49,8 @@ import static java.util.Collections.emptyList;
  * Created by Sai Shan on 2018-03-08.
  */
 
-/**
- -need the scroll bar
- -pull subscribed podcasts
 
-
-
- */
-
-public class suggestedPodcastsFragment extends Fragment{
+public class suggestedPodcastsFragment extends Fragment {
 
     private static final String TAG = "sugPodcastsFragment";
     private static final String API_URL = "https://itunes.apple.com/search?media=podcast&term=%s";
@@ -77,9 +62,7 @@ public class suggestedPodcastsFragment extends Fragment{
 
 
     private FyydClient client = new FyydClient(AntennapodHttpClient.getHttpClient());
-    /**
-     * needed attributes
-     */
+
     private List<ItunesAdapter.Podcast> searchResults;
     private Subscription subscription;
     private DBReader.NavDrawerData navDrawerData;
@@ -88,15 +71,9 @@ public class suggestedPodcastsFragment extends Fragment{
             | EventDistributor.UNREAD_ITEMS_UPDATE;
     private int mPosition = -1;
 
-
-
-    /**
-     * Adapter responsible with the search results
-     */
     private ItunesAdapter adapter;
     private GridView gridView;
     private ProgressBar progressBar;
-
 
 
     @Override
@@ -114,11 +91,10 @@ public class suggestedPodcastsFragment extends Fragment{
         adapter = new ItunesAdapter(getActivity(), new ArrayList<>());
         gridView.setAdapter(adapter);
 
-
         //Show information about the podcast when the list item is clicked
         gridView.setOnItemClickListener((parent, view1, position, id) -> {
             ItunesAdapter.Podcast podcast = searchResults.get(position);
-            if(podcast.feedUrl == null) {
+            if (podcast.feedUrl == null) {
                 return;
             }
             if (!podcast.feedUrl.contains("itunes.apple.com")) {
@@ -173,7 +149,7 @@ public class suggestedPodcastsFragment extends Fragment{
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
 
 
-        search(getFirst());
+        //search(getFirst());
 
 
         return view;
@@ -191,7 +167,7 @@ public class suggestedPodcastsFragment extends Fragment{
     };
 
     private void loadSubscriptions() {
-        if(subscription != null) {
+        if (subscription != null) {
             subscription.unsubscribe();
         }
         subscription = Observable.fromCallable(DBReader::getNavDrawerData)
@@ -206,7 +182,7 @@ public class suggestedPodcastsFragment extends Fragment{
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        sugAdapter = new SuggestedAdapter((MainActivity)getActivity(), itemAccess);
+        sugAdapter = new SuggestedAdapter((MainActivity) getActivity(), itemAccess);
 
         gridView.setAdapter(sugAdapter);
 
@@ -248,6 +224,7 @@ public class suggestedPodcastsFragment extends Fragment{
 
     /**
      * Replace adapter data with provided search results from SearchTask.
+     *
      * @param result List of Podcast objects containing search results
      */
     void updateData(List<ItunesAdapter.Podcast> result) {
@@ -268,7 +245,7 @@ public class suggestedPodcastsFragment extends Fragment{
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(subscription != null) {
+        if (subscription != null) {
             subscription.unsubscribe();
         }
     }
@@ -305,20 +282,18 @@ public class suggestedPodcastsFragment extends Fragment{
             try {
                 Response response = client.newCall(httpReq.build()).execute();
 
-                if(response.isSuccessful()) {
+                if (response.isSuccessful()) {
                     String resultString = response.body().string();
                     JSONObject result = new JSONObject(resultString);
                     JSONArray j = result.getJSONArray("results");
 
                     //Add iTunes result to list
-                    for (int i = 0; i < j.length(); i++) {
+                    for (int i = 0; i < 3; i++) {
                         JSONObject podcastJson = j.getJSONObject(i);
-
                         ItunesAdapter.Podcast podcastiTunes = ItunesAdapter.Podcast.fromSearch(podcastJson);
                         iTunesSearchResult.add(podcastiTunes);
                     }
-                }
-                else {
+                } else {
                     String prefix = getString(R.string.error_msg_prefix);
                     subscriber.onError(new IOException(prefix + response));
                 }
@@ -332,17 +307,14 @@ public class suggestedPodcastsFragment extends Fragment{
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(podcasts -> {
                     progressBar.setVisibility(View.GONE);
-                   // titleMessage.setText("Search results");
                     updateData(podcasts);
                 }, error -> {
                     Log.e(TAG, Log.getStackTraceString(error));
                     progressBar.setVisibility(View.GONE);
-                    //butRetry.setOnClickListener(v -> search(query));
-                    //butRetry.setVisibility(View.VISIBLE);
                 });
 
         //FYYD search results
-        subscription =  client.searchPodcasts(query)
+        subscription = client.searchPodcasts(query)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
@@ -351,12 +323,10 @@ public class suggestedPodcastsFragment extends Fragment{
                 }, error -> {
                     Log.e(TAG, Log.getStackTraceString(error));
                     progressBar.setVisibility(View.GONE);
-//                    butRetry.setOnClickListener(v -> search(query));
-//                    butRetry.setVisibility(View.VISIBLE);
                 });
     }
 
-    //Add FYYD search to result list
+    //Add FYYD search to result list and remove the ones that are duplicated
     void processSearchResult(FyydResponse response) {
         ItunesAdapter tempAdapter = new ItunesAdapter(getActivity(), new ArrayList<>());
         FYYDSearchResult = new ArrayList<>();
@@ -367,48 +337,41 @@ public class suggestedPodcastsFragment extends Fragment{
 
         adapter.clear();
 
-        try{
+        try {
             //Add search results podcast to data list
             if (!response.getData().isEmpty()) {
                 for (SearchHit searchHit : response.getData().values()) {
                     ItunesAdapter.Podcast podcastFYYD = ItunesAdapter.Podcast.fromSearch(searchHit);
 
                     //Add podcast if not already in result list from iTunes
-                    for (int i = 0; i < tempAdapter.getCount(); i++){
+                    for (int i = 0; i < tempAdapter.getCount(); i++) {
                         if (tempAdapter.getItem(i).title.toString().compareTo(podcastFYYD.title.toString()) == 0 || tempAdapter.getItem(i).feedUrl.toString().compareTo(podcastFYYD.feedUrl.toString()) == 0)
                             duplicate = true;
                     }
                     if (!duplicate)
                         searchResults.add(podcastFYYD);
-
-//                    if (tempAdapter.getCount() > 0)
-//                        //titleMessage.setVisibility(View.VISIBLE);
-//                    //else
-//                        //titleMessage.setVisibility(View.GONE);
-
-                    duplicate = false;
+                        duplicate = false;
                 }
             } else {
                 searchResults = emptyList();
             }
 
             //Add search result podcast to view list
-            for(ItunesAdapter.Podcast podcastFYYD : searchResults) {
+            for (ItunesAdapter.Podcast podcastFYYD : searchResults) {
                 FYYDSearchResult.add(podcastFYYD);
                 adapter.add(podcastFYYD);
             }
             adapter.notifyDataSetInvalidated();
             gridView.setVisibility(!searchResults.isEmpty() ? View.VISIBLE : View.GONE);
-            //.setVisibility(searchResults.isEmpty() ? View.VISIBLE : View.GONE);
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("Error: " + e);
         }
     }
 
-    public String getFirst(){
-        //load the subscriptions
+    public String getFirst() {
+        //load the subscriptions using the suggestedAdapter
         String first;
-        if(subscription != null) {
+        if (subscription != null) {
             subscription.unsubscribe();
         }
         subscription = Observable.fromCallable(DBReader::getNavDrawerData)
@@ -419,12 +382,11 @@ public class suggestedPodcastsFragment extends Fragment{
                     sugAdapter.notifyDataSetChanged();
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
 
-        if(navDrawerData != null){ //instead, try using subscriptionAdapter isn't null
+        if (navDrawerData != null) { //instead, try using subscriptionAdapter isn't null
             Log.d(TAG, "Actually not null! Something inside!");
             first = navDrawerData.feeds.get(0).getTitle();
-            return first;
-        }
-        else{
+            return getKeywords(first);
+        } else {
             Log.d(TAG, "Nothing inside; SEARCHING FOR NULL!");
             return null;
         }
@@ -434,47 +396,36 @@ public class suggestedPodcastsFragment extends Fragment{
         Feed feed = (Feed) selectedObject;
         first = feed.getFeedTitle();
 
-
         //first = test.get(0).getTitle();
         return first;*/
     }
 
 
+    public String getKeywords(String first) {
 
+        String temp = "";
+        int j = 0;
 
+        if(first.length() <= 3){
+            return first;
+        }
+        else {
+            for (int i = 0; i < first.length(); i++) {
 
-
-
-
-
-//    public ArrayList<String> getKeywords(String first){
-//
-//        ArrayList<String> words = new ArrayList<String>();
-//        String temp;
-//        String keyword;
-//        int j=0;
-//        //char space = " ";
-//
-//        for(int i=0; i<first.length();i++){
-//
-//            if((i-j) > 3){
-//                temp = temp.substring(j,i);
-//                words.add(keyword);
-//                break;
-//            }
-//            else{
-//                if((i-j)<=3){
-//                    j = i;
-//                }
-//            }
-//        }
-
-
-
-
-
-
-
+                if (Character.isWhitespace(first.charAt(i + 1))) {
+                    if ((i - j) > 3) {
+                        temp = first.substring(j, i);
+                        break;
+                    } else {
+                        if ((i - j) <= 3) {
+                            j = i;
+                        }
+                    }
+                }
+            }
+        }
+        return temp;
+    }
 
 
 
