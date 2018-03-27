@@ -4,10 +4,14 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
+import android.renderscript.ScriptGroup;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.text.InputType;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -68,6 +72,7 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
         addButton = (Button) root.findViewById(R.id.addQueue);
         addButton.setOnClickListener(this);
 
+
         // Adapter to convert the ArrayList to views
         queuesAdapter = new QueuesAdapter(getActivity(), queueList, this);
         // Attach the adapter to the ListView
@@ -75,6 +80,14 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
         lvQueue.setAdapter(queuesAdapter);
 
         return root;
+    }
+
+    //Shows the toolbar on top
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.queue_toolbar, menu);
+
     }
 
     //adds a queue to the list of queues
@@ -205,5 +218,9 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
         }
         return flag;
     }
+
+
+
+
 
 }
