@@ -57,9 +57,7 @@ import static java.util.Collections.emptyList;
 
 public class CentralizedSearchFragment extends Fragment {
 
-    private static final String TAG = "ItunesSearchFragment";
-
-    private static final String API_URL = "https://itunes.apple.com/search?media=podcast&term=%s";
+    private static final String TAG = "CentralSearchFragmnet";
 
     private FyydClient client = new FyydClient(AntennapodHttpClient.getHttpClient());
 
@@ -236,6 +234,8 @@ public class CentralizedSearchFragment extends Fragment {
 
     //Search iTunes
     private void searchItunes(String query){
+        String API_URL = getString(R.string.itunes_search_api);
+
         showOnlyProgressBar();
 
         subscription = rx.Observable.create((Observable.OnSubscribe<List<ItunesAdapter.Podcast>>) subscriber -> {
