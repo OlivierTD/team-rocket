@@ -70,8 +70,8 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
 
         View root = inflater.inflate(R.layout.fragment_queue_list, container, false);
 
-        addButton = (Button) root.findViewById(R.id.addQueue);
-        addButton.setOnClickListener(this);
+        //addButton = (Button) root.findViewById(R.id.addQueue);
+        //addButton.setOnClickListener(this);
 
 
         // Adapter to convert the ArrayList to views
@@ -104,8 +104,6 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
                 return super.onOptionsItemSelected(item);
         }
     }
-
-
 
     //adds a queue to the list of queues
     @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
@@ -275,9 +273,6 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
         }
         return flag;
     }
-
-
-
 
 
 }
