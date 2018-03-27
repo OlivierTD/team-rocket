@@ -3,6 +3,8 @@
     <string name="app_name" translate="false">AntennaPod</string>
     <string name="enter_valid_name">Please enter a valid name!</string>
     <string name="enter_queue_name">Enter queue name!</string>
+    <string name="enter_custom_theme_name">Name your new theme!</string>
+    <string name="theme_already_exists">A theme already has that name!</string>
     <string name="create">Create</string>
     <string name="cancel">Cancel</string>
     <string name="name_already_exists">A queue already has that name!</string>
