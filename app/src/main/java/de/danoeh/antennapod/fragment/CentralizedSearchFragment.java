@@ -166,6 +166,7 @@ public class CentralizedSearchFragment extends Fragment {
         return view;
     }
 
+    //Update adapter with iTunes search results
     void updateData(List<ItunesAdapter.Podcast> result) {
         this.searchResults = result;
         if (result != null && result.size() > 0) {
@@ -229,6 +230,12 @@ public class CentralizedSearchFragment extends Fragment {
             subscription.unsubscribe();
         }
 
+        searchItunes(query);
+        searchFYYD(query);
+    }
+
+    //Search iTunes
+    private void searchItunes(String query){
         showOnlyProgressBar();
 
         subscription = rx.Observable.create((Observable.OnSubscribe<List<ItunesAdapter.Podcast>>) subscriber -> {
@@ -292,7 +299,10 @@ public class CentralizedSearchFragment extends Fragment {
                     butRetry.setOnClickListener(v -> search(query));
                     butRetry.setVisibility(View.VISIBLE);
                 });
+    }
 
+    //Search FYYD
+    private void searchFYYD(String query){
         //FYYD search results
         subscription =  client.searchPodcasts(query)
                 .subscribeOn(Schedulers.newThread())
@@ -318,7 +328,7 @@ public class CentralizedSearchFragment extends Fragment {
         progressBar.setVisibility(View.VISIBLE);
     }
 
-    //Add FYYD search to result list
+    //Update adapter with FYYD search results
     void processSearchResult(FyydResponse response) {
         ItunesAdapter tempAdapter = new ItunesAdapter(getActivity(), new ArrayList<>());
         FYYDSearchResult = new ArrayList<>();
