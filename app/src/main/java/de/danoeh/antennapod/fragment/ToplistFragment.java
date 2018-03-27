@@ -55,11 +55,7 @@ import static java.util.Collections.emptyList;
 
 public class ToplistFragment extends Fragment {
 
-    private static final String TAG = "ItunesSearchFragment";
-
-    private static final String API_URL = "https://itunes.apple.com/search?media=podcast&term=%s";
-
-    private FyydClient client = new FyydClient(AntennapodHttpClient.getHttpClient());
+    private static final String TAG = "ItunesToplist";
 
     private TextView txtvError;
     private Button butRetry;
