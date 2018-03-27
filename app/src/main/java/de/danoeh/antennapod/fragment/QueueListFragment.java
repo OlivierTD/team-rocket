@@ -95,7 +95,7 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.addingQueue:
+            case R.id.addQueue:
                 Log.d("Queue", "Adding queue");
                 addFromMenu();
                 return true;

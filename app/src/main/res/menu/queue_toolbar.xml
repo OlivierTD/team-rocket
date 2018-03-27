@@ -3,7 +3,7 @@
     xmlns:custom="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/addingQueue"
+        android:id="@+id/addQueue"
         android:icon="@drawable/ic_add_grey600_24dp"
         android:title="Add Queue"
         custom:showAsAction="ifRoom" />
