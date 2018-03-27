@@ -8,6 +8,7 @@ import android.renderscript.ScriptGroup;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -82,13 +83,29 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
         return root;
     }
 
-    //Shows the toolbar on top
+    //Shows the menu on top
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.queue_toolbar, menu);
-
     }
+
+    //Allows to click the button
+    @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.addingQueue:
+                Log.d("Queue", "Adding queue");
+                addFromMenu();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
 
     //adds a queue to the list of queues
     @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
@@ -132,6 +149,46 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
 
     }
 
+
+    //Method called in the onOptionsItemSelected in order add queues from the top menu
+    @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
+    public void addFromMenu(){
+        final EditText enterName = new EditText(getActivity());
+        enterName.setInputType(InputType.TYPE_CLASS_TEXT);
+        enterName.setHint(R.string.enter_queue_name);
+
+        //Create the dialog to be shown to the user
+        AlertDialog enterNameDialog = new AlertDialog.Builder(getActivity())
+                .setView(enterName)
+                .setTitle(R.string.enter_queue_name)
+                .setPositiveButton(R.string.create, null)
+                .setNegativeButton(R.string.cancel, null)
+                .create();
+
+        //Pops out the keyboard
+        enterNameDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
+        //Display the dialog
+        enterNameDialog.show();
+
+        enterNameDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (enterName.getText().toString().equals("")) {
+                    Toast.makeText(getActivity(), R.string.enter_valid_name, Toast.LENGTH_SHORT).show();
+                }
+                else if (nameExists(enterName.getText().toString())) {
+                    Toast.makeText(getActivity(), R.string.name_already_exists, Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    createNewQueue(enterName.getText().toString());
+                    enterNameDialog.dismiss();
+                }
+            }
+        });
+
+
+    }
     // Called when fragment is visible to the user
     @Override
     public void onStart() {
