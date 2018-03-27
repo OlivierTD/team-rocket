@@ -10,4 +10,7 @@
     <string name="confirmation_title">Confirmation</string>
     <string name="delete_queue_confirmation_message">Are you sure you want to delete this queue?</string>
     <string name="confirm">Confirm</string>
+
+    <string name="itunes_search_query">hello motto</string>
+    <string-array name="random_dictionnary"></string-array>
 </resources>
