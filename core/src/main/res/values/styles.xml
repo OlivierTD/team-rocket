@@ -59,6 +59,7 @@
         <item name="attr/ic_create_new_folder">@drawable/ic_create_new_folder_grey600_24dp</item>
         <item name="attr/ic_cast_disconnect">@drawable/ic_cast_disconnect_grey600_36dp</item>
         <item name="attr/ic_home">@drawable/ic_home_grey</item>
+        <item name="attr/ic_stats">@drawable/ic_stats_grey</item>
     </style>
 
     <style name="Theme.AntennaPod.Dark" parent="Theme.AppCompat">
@@ -119,6 +120,7 @@
         <item name="attr/ic_create_new_folder">@drawable/ic_create_new_folder_white_24dp</item>
         <item name="attr/ic_cast_disconnect">@drawable/ic_cast_disconnect_white_36dp</item>
         <item name="attr/ic_home">@drawable/ic_home_white</item>
+        <item name="attr/ic_stats">@drawable/ic_stats_white</item>
     </style>
 
     <style name="Theme.AntennaPod.Yellow" parent="Theme.AppCompat">
@@ -182,6 +184,7 @@
         <item name="colorPrimaryDark">@color/primary_dark_material_yellow</item>
         <item name="android:colorBackground">@color/background_material_yellow</item>
         <item name="attr/ic_home">@drawable/ic_home_white</item>
+        <item name="attr/ic_stats">@drawable/ic_stats_white</item>
     </style>
 
 
@@ -246,6 +249,7 @@
         <item name="colorPrimaryDark">@color/primary_dark_material_pink</item>
         <item name="android:colorBackground">@color/background_material_pink</item>
         <item name="attr/ic_home">@drawable/ic_home_white</item>
+        <item name="attr/ic_stats">@drawable/ic_stats_white</item>
     </style>
 
     <style name="Theme.AntennaPod.Light.NoTitle" parent="Theme.AppCompat.Light.NoActionBar">
@@ -307,6 +311,7 @@
         <item name="attr/ic_create_new_folder">@drawable/ic_create_new_folder_grey600_24dp</item>
         <item name="attr/ic_cast_disconnect">@drawable/ic_cast_disconnect_grey600_36dp</item>
         <item name="attr/ic_home">@drawable/ic_home_grey</item>
+        <item name="attr/ic_stats">@drawable/ic_stats_grey</item>
     </style>
 
     <style name="Theme.AntennaPod.Dark.NoTitle" parent="Theme.AppCompat.NoActionBar">
@@ -368,6 +373,7 @@
         <item name="attr/ic_create_new_folder">@drawable/ic_create_new_folder_white_24dp</item>
         <item name="attr/ic_cast_disconnect">@drawable/ic_cast_disconnect_white_36dp</item>
         <item name="attr/ic_home">@drawable/ic_home_white</item>
+        <item name="attr/ic_stats">@drawable/ic_stats_white</item>
     </style>
 
     <style name="Theme.AntennaPod.Yellow.NoTitle" parent="Theme.AppCompat.NoActionBar">
@@ -434,6 +440,7 @@
         <item name="android:colorForeground">@color/primary_dark_material_yellow</item>
         <item name="android:textColorPrimary">@color/white</item>
         <item name="attr/ic_home">@drawable/ic_home_white</item>
+        <item name="attr/ic_stats">@drawable/ic_stats_white</item>
     </style>
 
     <style name="Theme.AntennaPod.Pink.NoTitle" parent="Theme.AppCompat.NoActionBar">
@@ -498,6 +505,7 @@
         <item name="colorPrimary">@color/new_indicator_green</item>
         <item name="android:colorBackground">@color/background_material_pink</item>
         <item name="attr/ic_home">@drawable/ic_home_white</item>
+        <item name="attr/ic_stats">@drawable/ic_stats_white</item>
     </style>
 
     <style name="Theme.AntennaPod.Dark.Splash" parent="Theme.AppCompat.NoActionBar">
