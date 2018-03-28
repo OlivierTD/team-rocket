@@ -1,10 +1,8 @@
 package de.danoeh.antennapod.fragment;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
-import android.renderscript.ScriptGroup;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.text.InputType;
@@ -16,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -31,15 +28,12 @@ import java.util.ArrayList;
 
 import de.danoeh.antennapod.R;
 
-public class QueueListFragment extends Fragment implements View.OnClickListener {
+public class QueueListFragment extends Fragment {
 
     public static final String TAG = "QueueListFragment";
 
     //List of queue fragments
     private ArrayList<QueueObject> queueList = new ArrayList<>();
-
-    //button to add queues to list
-    private Button addButton;
 
     // List view for the list of queues
     ListView lvQueue;
@@ -70,10 +64,6 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
 
         View root = inflater.inflate(R.layout.fragment_queue_list, container, false);
 
-        //addButton = (Button) root.findViewById(R.id.addQueue);
-        //addButton.setOnClickListener(this);
-
-
         // Adapter to convert the ArrayList to views
         queuesAdapter = new QueuesAdapter(getActivity(), queueList, this);
         // Attach the adapter to the ListView
@@ -90,7 +80,7 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
         inflater.inflate(R.menu.queue_toolbar, menu);
     }
 
-    //Allows to click the button
+    //Allows to click the button on the menu on top
     @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -103,48 +93,6 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    //adds a queue to the list of queues
-    @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
-    @Override
-    public void onClick(View v) {
-
-        //Create text field for our dialog box
-        final EditText enterName = new EditText(getActivity());
-        enterName.setInputType(InputType.TYPE_CLASS_TEXT);
-        enterName.setHint(R.string.enter_queue_name);
-
-        //Create the dialog to be shown to the user
-        AlertDialog enterNameDialog = new AlertDialog.Builder(getActivity())
-                .setView(enterName)
-                .setTitle(R.string.enter_queue_name)
-                .setPositiveButton(R.string.create, null)
-                .setNegativeButton(R.string.cancel, null)
-                .create();
-
-        //Pops out the keyboard
-        enterNameDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-
-        //Display the dialog
-        enterNameDialog.show();
-
-        enterNameDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (enterName.getText().toString().equals("")) {
-                    Toast.makeText(getActivity(), R.string.enter_valid_name, Toast.LENGTH_SHORT).show();
-                }
-                else if (nameExists(enterName.getText().toString())) {
-                    Toast.makeText(getActivity(), R.string.name_already_exists, Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    createNewQueue(enterName.getText().toString());
-                    enterNameDialog.dismiss();
-                }
-            }
-        });
-
     }
 
 
