@@ -34,11 +34,18 @@
             android:textSize="25dp"/>
 
         <fragment
-            android:id="@+id/fragment2"
+            android:id="@+id/randomEpisodeFragment"
+            android:name="de.danoeh.antennapod.fragment.RandomEpisodeFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="75dp" />
+
+        <fragment
+            android:id="@+id/topListFragment"
             android:name="de.danoeh.antennapod.fragment.ToplistFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="65dp"/>
+            android:layout_below="@+id/randomEpisodeFragment"/>
 
         <fragment
             android:id="@+id/centralizedFragment"
@@ -47,7 +54,9 @@
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/textView"
             android:layout_alignStart="@+id/textView"
-            android:layout_below="@+id/fragment2"
+            android:layout_below="@+id/topListFragment"
             android:layout_marginTop="22dp" />
+
+
     </RelativeLayout>
 </ScrollView>
