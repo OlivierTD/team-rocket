@@ -189,7 +189,7 @@ public class CentralizedSearchFragment extends Fragment {
         MenuItem searchItem = menu.findItem(R.id.action_search);
         final SearchView sv = (SearchView) MenuItemCompat.getActionView(searchItem);
         MenuItemUtils.adjustTextColor(getActivity(), sv);
-        sv.setQueryHint(getString(R.string.search_itunes_label));
+        sv.setQueryHint(getString(R.string.home_search));
         sv.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -380,5 +380,13 @@ public class CentralizedSearchFragment extends Fragment {
 
     public List<ItunesAdapter.Podcast> getFYYDResultSize(){
         return FYYDSearchResult;
+    }
+
+    public void setSearchAdapter(ItunesAdapter searchAdapter){
+        adapter = searchAdapter;
+    }
+
+    public void setFYYDClient(FyydClient client){
+        this.client = client;
     }
 }

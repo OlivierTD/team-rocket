@@ -7,6 +7,7 @@
     <string name="cancel">Cancel</string>
     <string name="name_already_exists">A queue already has that name!</string>
     <string name="queues">Queues</string>
+    <string name="home_search">Search</string>
     <string name="confirmation_title">Confirmation</string>
     <string name="delete_queue_confirmation_message">Are you sure you want to delete this queue?</string>
     <string name="confirm">Confirm</string>
