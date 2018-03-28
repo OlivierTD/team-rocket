@@ -2,12 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/customThemeTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:text="Custom Theme Creator"
         android:textAlignment="center"
         android:textSize="30sp"
@@ -35,55 +37,52 @@
         android:id="@+id/colot_1_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Color 1"
+        android:gravity="center"
+        android:text="Pick your first color!"
         android:textAlignment="center"
         android:textSize="18sp"
         android:textStyle="bold" />
 
-    <EditText
-        android:id="@+id/custom_color_1"
+    <Button
+        android:id="@+id/custom_theme_color_1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="#" />
+        android:text="Color 1" />
 
     <TextView
         android:id="@+id/colot_2_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Color 2"
+        android:gravity="center"
+        android:text="Pick your second  color!"
         android:textAlignment="center"
         android:textSize="18sp"
         android:textStyle="bold" />
 
-    <EditText
-        android:id="@+id/custom_color_2"
+    <Button
+        android:id="@+id/custom_theme_color_2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="#" />
+        android:text="Color 2" />
 
     <TextView
         android:id="@+id/colot_3_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Color 3"
+        android:gravity="center"
+        android:text="Pick your third color!"
         android:textAlignment="center"
         android:textSize="18sp"
         android:textStyle="bold" />
 
-    <EditText
-        android:id="@+id/custom_color_3"
+    <Button
+        android:id="@+id/custom_theme_color_3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="#" />
+        android:text="Color 3" />
 
     <Button
-        android:id="@+id/custom_theme_save"
+        android:id="@+id/custom_theme_create"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Create!" />
