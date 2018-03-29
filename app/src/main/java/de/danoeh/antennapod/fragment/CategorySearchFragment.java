@@ -47,7 +47,7 @@ public class CategorySearchFragment extends Fragment {
 
     //https://github.com/eazyliving/fyyd-api/blob/master/README.md
 
-    private int id;
+    private String id;
 
     //adapters for the view
     private ItunesAdapter adapter;
@@ -62,7 +62,7 @@ public class CategorySearchFragment extends Fragment {
     private Subscription subscription;
 
     //setters and getters for the id attribute
-    public void setId(int id){
+    public void setId(String id){
         this.id = id;
     }
 
@@ -177,7 +177,7 @@ public class CategorySearchFragment extends Fragment {
         adapter = null;
     }
 
-    private void search(int id) {
+    private void search(String id) {
         if (subscription != null) {
             subscription.unsubscribe();
         }
@@ -188,7 +188,9 @@ public class CategorySearchFragment extends Fragment {
         progressBar.setVisibility(View.VISIBLE);
         subscription = rx.Observable.create((Observable.OnSubscribe<List<ItunesAdapter.Podcast>>) subscriber -> {
 
-            API_URL = "http://itunes.apple.com/WebObjects/MZStoreServices.woa/ws/genres?id=" +id;
+            //API_URL = "https://itunes.apple.com/search?term=Check&country=us&entity=podcast&genreId="+id;
+            API_URL="https://itunes.apple.com/search?term="+id+"&media=podcast&attibute=genreIndex";
+            Log.d("here", "the url"+ API_URL);
 
             //Spaces in the query need to be replaced with '+' character.
             String formattedUrl = String.format(API_URL).replace(' ', '+');

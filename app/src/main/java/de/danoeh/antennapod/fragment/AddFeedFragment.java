@@ -69,39 +69,51 @@ public class AddFeedFragment extends Fragment {
             startActivity(intent);
         });
 
-        butCategorySearch.setOnClickListener(v -> alertSimpleListView());
+        butCategorySearch.setOnClickListener(v -> alertSimpleListView(activity));
 
         return root;
     }
 
 
-    public void alertSimpleListView() {
+    public void alertSimpleListView(MainActivity activity) {
 
         //array holding the categories
-        final CharSequence[] categories = { "Arts", "Comedy", "Education", "Kids and family", "Health", "TV and Film", "Music", "News and Politics", "Religion and Spirituality" ,"Science and Medicine", "Sports", "Technology", "Business", "Games and Hobbies", "Society and Culture", "Government and Organizations" };
-        //array holding the categories IDs to search for in the itunes API
-        final int[] categoriesNum = {1301, 1303, 1304, 1305, 1307, 1309, 1310, 1311, 1314, 1315, 1316, 1318, 1321, 1323, 1324, 1325};
+        final CharSequence[] categories = { "Arts", "Comedy", "Education", "Kids & family", "Health", "TV & Film", "Music", "News & Politics", "Religion & Spirituality" ,"Science & Medicine", "Sports", "Technology", "Business", "Games & Hobbies", "Society & Culture", "Government & Organizations" };
 
         //creating the alert dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
+
         //setting its title
         builder.setTitle("Select the category of your choice");
+
         //setting the categories in the dialog
-        builder.setItems(categories, new DialogInterface.OnClickListener() {
+        builder.setSingleChoiceItems(categories, 0, new DialogInterface.OnClickListener() {
 
             //handle of when clicking on the desired category
             public void onClick(DialogInterface dialog, int item) {
-                Log.d("idk","is it going here");
-
+                String category = (categories[item].toString());
+                category = String.format(category).replace('&', ' ');
+                category = String.format(category).replace(' ', '+');
                 CategorySearchFragment cat = new CategorySearchFragment();
-                cat.setId(categoriesNum[item]);
-
+                cat.setId(category);
+                activity.loadChildFragment(cat);
+                dialog.dismiss();
             }
-        }).show();
+        });
+
+//        builder.setPositiveButton("Search", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int i) {
+//                CategorySearchFragment cat = new CategorySearchFragment();
+//
+//                Log.d("i number", "the item number is "+i);
+//                cat.setId(categoriesNum[i]);
+//                    activity.loadChildFragment(cat);
+//                }
+//        });
+
+        builder.show();
     }
 
-    public void createSearchForm(int id){
-        CategorySearchFragment cat = new CategorySearchFragment();
-        cat.setId(id);
-    }
+
 }
