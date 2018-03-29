@@ -219,7 +219,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
 
     private String getLastNavFragment() {
         SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        String lastFragment = prefs.getString(PREF_LAST_FRAGMENT_TAG, QueueListFragment.TAG);
+        String lastFragment = prefs.getString(PREF_LAST_FRAGMENT_TAG, HomePageFragment.TAG);
         Log.d(TAG, "getLastNavFragment() -> " + lastFragment);
         return lastFragment;
     }
