@@ -61,7 +61,7 @@ public class CustomThemeFragment extends Fragment implements View.OnClickListene
                         // Do something with the selected color
                     }
                 });
-                cpd1.setTitle("Pick your firstc color!");
+                cpd1.setTitle("Pick your first color!");
                 cpd1.show();
 
 
