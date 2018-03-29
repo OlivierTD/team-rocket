@@ -159,6 +159,8 @@
         <item>@string/add_feed_label</item>
         <item>@string/statistics_label</item>
         <item>@string/subscriptions_list_label</item>
+        <item>@string/custom_theme_label</item>
+
     </string-array>
 
     <string-array name="nav_drawer_feed_order_options">
