@@ -107,7 +107,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
             PlaybackHistoryFragment.TAG,
             AddFeedFragment.TAG,
             NavListAdapter.SUBSCRIPTION_LIST_TAG,
-            CustomThemeFragment.TAG
+            CustomThemeFragment.TAG,
             StatisticsFragment.TAG
 
     };
