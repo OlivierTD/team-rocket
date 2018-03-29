@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.FlakyTest;
+import android.widget.GridView;
 import android.widget.ListView;
+import android.widget.ScrollView;
 
 import com.robotium.solo.Solo;
 
@@ -339,6 +341,27 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         //Access queue
         solo.clickOnView(solo.getView(R.id.queue_name));
         solo.waitForView(R.id.queue_fragment);
+
+    }
+
+
+    public void testCategorySearch (){
+
+        //open nav bar
+        openNavDrawer();
+
+        //open search podcast page
+        solo.clickOnText(solo.getString(R.string.add_feed_label));
+
+        //Click on the "category" button to open the dialog
+        solo.clickOnView(solo.getView(R.id.butCategorySearch));
+
+        //select second in list
+        solo.clickInList(2);
+
+        solo.sleep(2000);
+
+
 
     }
 }

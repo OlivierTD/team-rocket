@@ -40,12 +40,8 @@ import rx.schedulers.Schedulers;
 
 public class CategorySearchFragment extends Fragment {
 
+    private static String API_URL;
     public static final String TAG = "CategorySearchFragment";
-
-    private static String API_URL = "http://itunes.apple.com/WebObjects/MZStoreServices.woa/ws/genres?id="; //need to add a id
-    //genre mapping : https://affiliate.itunes.apple.com/resources/documentation/genre-mapping/
-
-    //https://github.com/eazyliving/fyyd-api/blob/master/README.md
 
     private String id;
 
@@ -188,9 +184,8 @@ public class CategorySearchFragment extends Fragment {
         progressBar.setVisibility(View.VISIBLE);
         subscription = rx.Observable.create((Observable.OnSubscribe<List<ItunesAdapter.Podcast>>) subscriber -> {
 
-            //API_URL = "https://itunes.apple.com/search?term=Check&country=us&entity=podcast&genreId="+id;
+
             API_URL="https://itunes.apple.com/search?term="+id+"&media=podcast&attibute=genreIndex";
-            Log.d("here", "the url"+ API_URL);
 
             //Spaces in the query need to be replaced with '+' character.
             String formattedUrl = String.format(API_URL).replace(' ', '+');
