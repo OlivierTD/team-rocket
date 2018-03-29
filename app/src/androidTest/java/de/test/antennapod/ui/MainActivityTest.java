@@ -379,6 +379,24 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         solo.sleep(2000);
 
 
+        solo.clickInList(2);
+
+        solo.sleep(1000);
+        
+        //Subscribe to podcast
+        solo.clickOnButton(solo.getString(R.string.subscribe_label));
+
+        //Open podcast
+        solo.waitForView(R.id.subscriptionLayout);
+        solo.clickOnText(solo.getString(R.string.open_podcast));
+
+        //open 1st episode in list
+        solo.clickInList(2);
+
+        //Download episode
+        solo.clickOnText(solo.getString(R.string.download_label));
+
+
 
     }
 }
