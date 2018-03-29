@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -33,7 +34,7 @@ public class StatisticsFragment extends Fragment implements AdapterView.OnItemCl
 
     private Subscription subscription;
     private TextView totalTimeTextView;
-    private ListView feedStatisticsList;
+    private LinearLayout feedStatisticsList;
     private ProgressBar progressBar;
     private StatisticsListAdapter listAdapter;
     private boolean countAll = false;
@@ -52,16 +53,16 @@ public class StatisticsFragment extends Fragment implements AdapterView.OnItemCl
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View root = inflater.inflate(R.layout.statistics_activity, container, false);
+        View root = inflater.inflate(R.layout.statistics_list, container, false);
 
-        totalTimeTextView = (TextView) root.findViewById(R.id.total_time);
-        feedStatisticsList = (ListView) root.findViewById(R.id.statistics_list);
-        progressBar = (ProgressBar) root.findViewById(R.id.progressBar);
+        feedStatisticsList = (LinearLayout) root.findViewById(R.id.list);
         listAdapter = new StatisticsListAdapter(getActivity());
         listAdapter.setCountAll(countAll);
-        feedStatisticsList.setAdapter(listAdapter);
-        feedStatisticsList.setOnItemClickListener(this);
-//
+//        feedStatisticsList.setAdapter(listAdapter);
+//        feedStatisticsList.setOnItemClickListener(this);
+
+
+
         return root;
     }
 
@@ -78,17 +79,17 @@ public class StatisticsFragment extends Fragment implements AdapterView.OnItemCl
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//        DBReader.StatisticsItem stats = listAdapter.getItem(position);
-//
-//        AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
-//        dialog.setTitle(stats.feed.getTitle());
-//        dialog.setMessage(getString(R.string.statistics_details_dialog,
-//                countAll ? stats.episodesStartedIncludingMarked : stats.episodesStarted,
-//                stats.episodes,
-//                Converter.shortLocalizedDuration(getActivity(), countAll ?
-//                        stats.timePlayedCountAll : stats.timePlayed),
-//                Converter.shortLocalizedDuration(getActivity(), stats.time)));
-//        dialog.setPositiveButton(android.R.string.ok, null);
-//        dialog.show();
+        DBReader.StatisticsItem stats = listAdapter.getItem(position);
+
+        AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+        dialog.setTitle(stats.feed.getTitle());
+        dialog.setMessage(getString(R.string.statistics_details_dialog,
+                countAll ? stats.episodesStartedIncludingMarked : stats.episodesStarted,
+                stats.episodes,
+                Converter.shortLocalizedDuration(getActivity(), countAll ?
+                        stats.timePlayedCountAll : stats.timePlayed),
+                Converter.shortLocalizedDuration(getActivity(), stats.time)));
+        dialog.setPositiveButton(android.R.string.ok, null);
+        dialog.show();
     }
 }
