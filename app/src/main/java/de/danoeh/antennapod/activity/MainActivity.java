@@ -63,6 +63,7 @@ import de.danoeh.antennapod.fragment.HomePageFragment;
 import de.danoeh.antennapod.fragment.ItemlistFragment;
 import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
 import de.danoeh.antennapod.fragment.QueueListFragment;
+import de.danoeh.antennapod.fragment.StatisticsFragment;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
 import de.danoeh.antennapod.preferences.PreferenceController;
@@ -103,6 +104,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
             DownloadsFragment.TAG,
             PlaybackHistoryFragment.TAG,
             AddFeedFragment.TAG,
+            StatisticsFragment.TAG,
             NavListAdapter.SUBSCRIPTION_LIST_TAG
     };
 
@@ -301,6 +303,9 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
                 break;
             case PlaybackHistoryFragment.TAG:
                 fragment = new PlaybackHistoryFragment();
+                break;
+            case StatisticsFragment.TAG:
+                fragment = new StatisticsFragment();
                 break;
             case AddFeedFragment.TAG:
                 fragment = new AddFeedFragment();
@@ -527,6 +532,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
                 case DownloadsFragment.TAG:
                 case PlaybackHistoryFragment.TAG:
                 case AddFeedFragment.TAG:
+                case StatisticsFragment.TAG:
                 case SubscriptionFragment.TAG:
                     return retVal;
                 default:
