@@ -4,21 +4,31 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.TextView;
+
+import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.StatisticsListAdapter;
 
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.Converter;
+import rx.Observable;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -33,9 +43,7 @@ public class StatisticsFragment extends Fragment implements AdapterView.OnItemCl
     private static final String PREF_COUNT_ALL = "countAll";
 
     private Subscription subscription;
-    private TextView totalTimeTextView;
-    private LinearLayout feedStatisticsList;
-    private ProgressBar progressBar;
+    private ListView feedStatisticsList;
     private StatisticsListAdapter listAdapter;
     private boolean countAll = false;
     private SharedPreferences prefs;
@@ -55,15 +63,22 @@ public class StatisticsFragment extends Fragment implements AdapterView.OnItemCl
         super.onCreateView(inflater, container, savedInstanceState);
         View root = inflater.inflate(R.layout.statistics_list, container, false);
 
-        feedStatisticsList = (LinearLayout) root.findViewById(R.id.list);
+        return root;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        prefs = getContext().getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        countAll = prefs.getBoolean(PREF_COUNT_ALL, false);
+
+        feedStatisticsList = (ListView) getView().findViewById(R.id.list);
         listAdapter = new StatisticsListAdapter(getActivity());
         listAdapter.setCountAll(countAll);
-//        feedStatisticsList.setAdapter(listAdapter);
-//        feedStatisticsList.setOnItemClickListener(this);
+        feedStatisticsList.setAdapter(listAdapter);
+        feedStatisticsList.setOnItemClickListener(this);
 
-
-
-        return root;
     }
 
     @Override
@@ -71,10 +86,70 @@ public class StatisticsFragment extends Fragment implements AdapterView.OnItemCl
         super.onStart();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        refreshStatistics();
+    }
 
     @Override
     public void onDestroyView(){
         super.onDestroyView();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            getActivity().finish();
+            return true;
+        } else if (item.getItemId() == R.id.statistics_mode) {
+            selectStatisticsMode();
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void selectStatisticsMode() {
+        View contentView = View.inflate(getActivity(), R.layout.statistics_mode_select_dialog, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setView(contentView);
+        builder.setTitle(R.string.statistics_mode);
+
+        if (countAll) {
+            ((RadioButton) contentView.findViewById(R.id.statistics_mode_count_all)).setChecked(true);
+        } else {
+            ((RadioButton) contentView.findViewById(R.id.statistics_mode_normal)).setChecked(true);
+        }
+
+        builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
+            countAll = ((RadioButton) contentView.findViewById(R.id.statistics_mode_count_all)).isChecked();
+            listAdapter.setCountAll(countAll);
+            prefs.edit().putBoolean(PREF_COUNT_ALL, countAll).apply();
+            refreshStatistics();
+        });
+
+        builder.show();
+    }
+
+    private void refreshStatistics() {
+        feedStatisticsList.setVisibility(View.GONE);
+        loadStatistics();
+    }
+
+    private void loadStatistics() {
+        if (subscription != null) {
+            subscription.unsubscribe();
+        }
+        subscription = Observable.fromCallable(() -> DBReader.getStatistics(countAll))
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    if (result != null) {
+                        listAdapter.update(result.feedTime);
+                        feedStatisticsList.setVisibility(View.VISIBLE);
+                    }
+                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
     @Override
