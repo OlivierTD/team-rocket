@@ -139,7 +139,7 @@ public final class DBTasks {
                 context.startActivity(PlaybackService.getPlayerActivityIntent(
                         context, media));
             }
-            DBWriter.addQueueItemAt(context, media.getItem().getId(), 0, false);
+
         } catch (MediaFileNotFoundException e) {
             e.printStackTrace();
             if (media.isPlaying()) {
