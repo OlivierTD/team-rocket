@@ -18,6 +18,8 @@ import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 import de.danoeh.antennapod.R;
@@ -43,8 +45,13 @@ public class StatisticsFragment extends Fragment implements AdapterView.OnItemCl
     private static final String PREF_COUNT_ALL = "countAll";
 
     private Subscription subscription;
+
+    private TextView numberOfPodcastsString;
     private TextView numberOfPodcasts;
+
+    private TextView totalTimeStringTextView;
     private TextView totalTimeTextView;
+
     private ListView feedStatisticsList;
     private StatisticsListAdapter listAdapter;
     private boolean countAll = false;
@@ -75,7 +82,9 @@ public class StatisticsFragment extends Fragment implements AdapterView.OnItemCl
         prefs = getContext().getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         countAll = prefs.getBoolean(PREF_COUNT_ALL, false);
 
+        numberOfPodcastsString = (TextView) getView().findViewById(R.id.number_of_subscriptions_string);
         numberOfPodcasts = (TextView) getView().findViewById(R.id.number_of_subscriptions);
+        totalTimeStringTextView = (TextView) getView().findViewById(R.id.total_time_string);
         totalTimeTextView = (TextView) getView().findViewById(R.id.total_time);
         feedStatisticsList = (ListView) getView().findViewById(R.id.statistics_list);
         listAdapter = new StatisticsListAdapter(getActivity());
@@ -136,7 +145,9 @@ public class StatisticsFragment extends Fragment implements AdapterView.OnItemCl
     }
 
     private void refreshStatistics() {
+        numberOfPodcastsString.setVisibility(View.GONE);
         numberOfPodcasts.setVisibility(View.GONE);
+        totalTimeStringTextView.setVisibility(View.GONE);
         totalTimeTextView.setVisibility(View.GONE);
         feedStatisticsList.setVisibility(View.GONE);
         loadStatistics();
@@ -151,15 +162,18 @@ public class StatisticsFragment extends Fragment implements AdapterView.OnItemCl
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     if (result != null) {
-                        totalTimeTextView.setText(getString(R.string.total_time_listened_to_podcasts) + " ");
-                        totalTimeTextView.append(Converter
+                        totalTimeStringTextView.setText(getString(R.string.total_time_listened_to_podcasts));
+                        totalTimeTextView.setText(Converter
                                 .shortLocalizedDuration(getActivity(), countAll ? result.totalTimeCountAll : result.totalTime));
                         listAdapter.update(result.feedTime);
+                        numberOfPodcastsString.setVisibility(View.VISIBLE);
                         numberOfPodcasts.setVisibility(View.VISIBLE);
+                        totalTimeStringTextView.setVisibility(View.VISIBLE);
                         totalTimeTextView.setVisibility(View.VISIBLE);
                         feedStatisticsList.setVisibility(View.VISIBLE);
                         int numberOfSubscriptions = feedStatisticsList.getAdapter().getCount();
-                        numberOfPodcasts.setText(getString(R.string.statistics_number_of_subscriptions) + " " + numberOfSubscriptions);
+                        numberOfPodcastsString.setText(getString(R.string.statistics_number_of_subscriptions));
+                        numberOfPodcasts.setText(numberOfSubscriptions + "");
                     }
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
