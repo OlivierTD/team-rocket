@@ -11,6 +11,9 @@
         <item name="colorPrimaryDark">@color/primary_dark_material_yellow</item>
         <item name="android:navigationBarColor">@color/yellow</item>
         <item name="android:colorBackground">@color/colorBackgroundFloating</item>
+        <item name="attr/ic_home">@drawable/ic_home_white</item>
+        <item name="attr/ic_custom_theme">@drawable/ic_custom_theme_white</item>
+
     </style>
 
     <style name="AntennaPod.Dialog.Pink" parent="Theme.AppCompat.Dialog">
@@ -19,6 +22,8 @@
         <item name="colorPrimary">@color/primary_material_pink</item>
         <item name="android:navigationBarColor">@color/pink</item>
         <item name="android:colorBackground">@color/colorBackgroundFloating_pink</item>
+        <item name="attr/ic_home">@drawable/ic_home_white</item>
+        <item name="attr/ic_custom_theme">@drawable/ic_custom_theme_white</item>
     </style>
 
     <style name="Theme.AntennaPod.Yellow.NoTitle" parent="Theme.AppCompat.NoActionBar">
@@ -90,7 +95,9 @@
         <item name="android:statusBarColor">@color/yellow</item>
         <item name="android:textColorPrimary">@color/white</item>
         <item name="attr/ic_home">@drawable/ic_home_white</item>
+        <item name="attr/ic_custom_theme">@drawable/ic_custom_theme_white</item>
         <item name="attr/ic_stats">@drawable/ic_stats_white</item>
+
     </style>
 
     <style name="Theme.AntennaPod.Pink" parent="Theme.AppCompat">
@@ -158,7 +165,9 @@
         <item name="android:colorBackground">@color/background_material_pink</item>
         <item name="android:navigationBarColor">@color/navigationBarColor_pink</item>
         <item name="attr/ic_home">@drawable/ic_home_white</item>
+        <item name="attr/ic_custom_theme">@drawable/ic_custom_theme_white</item>
         <item name="attr/ic_stats">@drawable/ic_stats_white</item>
+
     </style>
 
     <style name="Theme.AntennaPod.Yellow" parent="Theme.AppCompat">
@@ -226,7 +235,9 @@
         <item name="android:colorBackground">@color/background_material_yellow</item>
         <item name="android:navigationBarColor">@color/yellow</item>
         <item name="attr/ic_home">@drawable/ic_home_white</item>
+        <item name="attr/ic_custom_theme">@drawable/ic_custom_theme_white</item>
         <item name="attr/ic_stats">@drawable/ic_stats_white</item>
+
     </style>
 
 </resources>
