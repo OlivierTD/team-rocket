@@ -76,10 +76,7 @@ public class AddFeedFragment extends Fragment {
 
 
     public void alertSimpleListView(MainActivity activity) {
-
-//        //array holding the categories
-//        final CharSequence[] categories = { "Arts", "Comedy", "Education", "Kids & family", "Health", "TV & Film", "Music", "News & Politics", "Religion & Spirituality" ,"Science & Medicine", "Sports", "Technology", "Business", "Games & Hobbies", "Society & Culture", "Government & Organizations" };
-
+        
         //creating the alert dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
 
