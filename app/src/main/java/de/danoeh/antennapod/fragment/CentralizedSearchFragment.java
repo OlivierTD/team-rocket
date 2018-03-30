@@ -164,22 +164,6 @@ public class CentralizedSearchFragment extends Fragment {
         return view;
     }
 
-    //Update adapter with iTunes search results
-    void updateData(List<ItunesAdapter.Podcast> result) {
-        this.searchResults = result;
-        if (result != null && result.size() > 0) {
-            titleMessage.setVisibility(View.VISIBLE);
-            gridView.setVisibility(View.VISIBLE);
-            for (ItunesAdapter.Podcast p : result) {
-                adapter.add(p);
-            }
-            adapter.notifyDataSetInvalidated();
-        } else {
-            titleMessage.setVisibility(View.GONE);
-            gridView.setVisibility(View.GONE);
-        }
-    }
-
     //Search bar event handler
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -219,7 +203,15 @@ public class CentralizedSearchFragment extends Fragment {
         });
     }
 
-    //Search iTunes and FYYD
+    private void showOnlyProgressBar() {
+        gridView.setVisibility(View.GONE);
+        txtvError.setVisibility(View.GONE);
+        butRetry.setVisibility(View.GONE);
+        txtvEmpty.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    //Search libraries
     public void search(String query) {
         adapter.clear();
         searchResults = new ArrayList<>();
@@ -228,13 +220,16 @@ public class CentralizedSearchFragment extends Fragment {
             subscription.unsubscribe();
         }
 
-        searchItunes(query);
+        iTunesSearchResult = searchItunes(query);
+        updateData(iTunesSearchResult);
+
         searchFYYD(query);
     }
 
     //Search iTunes
-    private void searchItunes(String query){
+    public List<ItunesAdapter.Podcast> searchItunes(String query){
         String API_URL = getString(R.string.itunes_search_api);
+        List<ItunesAdapter.Podcast> resultList = new ArrayList<>();
 
         showOnlyProgressBar();
 
@@ -256,7 +251,6 @@ public class CentralizedSearchFragment extends Fragment {
             Request.Builder httpReq = new Request.Builder()
                     .url(formattedUrl)
                     .header("User-Agent", ClientConfig.USER_AGENT);
-            iTunesSearchResult = new ArrayList<>();
             try {
                 Response response = client.newCall(httpReq.build()).execute();
 
@@ -272,7 +266,7 @@ public class CentralizedSearchFragment extends Fragment {
 
                         //Only add podcasts with active connections
                         if (podcastiTunes.feedUrl != null)
-                            iTunesSearchResult.add(podcastiTunes);
+                            resultList.add(podcastiTunes);
                     }
                 }
                 else {
@@ -282,7 +276,7 @@ public class CentralizedSearchFragment extends Fragment {
             } catch (IOException | JSONException e) {
                 subscriber.onError(e);
             }
-            subscriber.onNext(iTunesSearchResult);
+            subscriber.onNext(resultList);
             subscriber.onCompleted();
         })
                 .subscribeOn(Schedulers.newThread())
@@ -290,7 +284,6 @@ public class CentralizedSearchFragment extends Fragment {
                 .subscribe(podcasts -> {
                     progressBar.setVisibility(View.GONE);
                     titleMessage.setText("Search results");
-                    updateData(podcasts);
                 }, error -> {
                     Log.e(TAG, Log.getStackTraceString(error));
                     progressBar.setVisibility(View.GONE);
@@ -299,11 +292,10 @@ public class CentralizedSearchFragment extends Fragment {
                     butRetry.setOnClickListener(v -> search(query));
                     butRetry.setVisibility(View.VISIBLE);
                 });
+        return resultList;
     }
 
-    //Search FYYD
-    private void searchFYYD(String query){
-        //FYYD search results
+    public void searchFYYD(String query){
         subscription =  client.searchPodcasts(query)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -320,12 +312,20 @@ public class CentralizedSearchFragment extends Fragment {
                 });
     }
 
-    private void showOnlyProgressBar() {
-        gridView.setVisibility(View.GONE);
-        txtvError.setVisibility(View.GONE);
-        butRetry.setVisibility(View.GONE);
-        txtvEmpty.setVisibility(View.GONE);
-        progressBar.setVisibility(View.VISIBLE);
+    //Update adapter with iTunes search results
+    void updateData(List<ItunesAdapter.Podcast> result) {
+        this.searchResults = result;
+        if (result != null && result.size() > 0) {
+            titleMessage.setVisibility(View.VISIBLE);
+            gridView.setVisibility(View.VISIBLE);
+            for (ItunesAdapter.Podcast p : result) {
+                adapter.add(p);
+            }
+            adapter.notifyDataSetInvalidated();
+        } else {
+            titleMessage.setVisibility(View.GONE);
+            gridView.setVisibility(View.GONE);
+        }
     }
 
     //Update adapter with FYYD search results
