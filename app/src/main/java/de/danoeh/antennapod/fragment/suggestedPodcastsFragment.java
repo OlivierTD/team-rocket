@@ -23,12 +23,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
-import de.danoeh.antennapod.adapter.SuggestedAdapter;
 import de.danoeh.antennapod.adapter.itunes.ItunesAdapter;
 import de.danoeh.antennapod.core.ClientConfig;
-import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -53,27 +50,22 @@ import static java.util.Collections.emptyList;
 public class suggestedPodcastsFragment extends Fragment {
 
     private static final String TAG = "sugPodcastsFragment";
-    private static final String API_URL = "https://itunes.apple.com/search?media=podcast&term=%s";
 
 
     private List<ItunesAdapter.Podcast> FYYDSearchResult;
     private List<ItunesAdapter.Podcast> iTunesSearchResult;
-    private SuggestedAdapter sugAdapter;
-
 
     private FyydClient client = new FyydClient(AntennapodHttpClient.getHttpClient());
 
     private List<ItunesAdapter.Podcast> searchResults;
     private Subscription subscription;
-    private DBReader.NavDrawerData navDrawerData;
-
-    private static final int EVENTS = EventDistributor.FEED_LIST_UPDATE
-            | EventDistributor.UNREAD_ITEMS_UPDATE;
-    private int mPosition = -1;
 
     private ItunesAdapter adapter;
     private GridView gridView;
     private ProgressBar progressBar;
+
+    //array holding categories of the user
+    private ArrayList<String > userCategories = new ArrayList<String>();
 
 
     @Override
@@ -149,78 +141,32 @@ public class suggestedPodcastsFragment extends Fragment {
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
 
 
-        //search(getFirst());
+        suggestedPodcastSearch(userCategories);
 
 
         return view;
 
     }
 
-    private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
-        @Override
-        public void update(EventDistributor eventDistributor, Integer arg) {
-            if ((EVENTS & arg) != 0) {
-                Log.d(TAG, "Received contentUpdate Intent.");
-                loadSubscriptions();
-            }
-        }
-    };
 
-    private void loadSubscriptions() {
-        if (subscription != null) {
-            subscription.unsubscribe();
+    //method that perform the search for all categories based on the users podcasts
+    public void suggestedPodcastSearch(ArrayList<String> userCat){
+
+        //fetching the list of subscribed podcast by the user
+        List<Feed> feed  = DBReader.getFeedList();//works
+
+        //add category of each feed to the ArrayList<String> userCategories
+        for(int i = 0; i < feed.size(); i++){
+            categorySearch(feed.get(i).getTitle());
         }
-        subscription = Observable.fromCallable(DBReader::getNavDrawerData)
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> {
-                    navDrawerData = result;
-                    sugAdapter.notifyDataSetChanged();
-                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
+
+        //search for podcasts for each categories
+        for(int i = 0; i<userCat.size(); i++){
+            search(userCat.get(i));
+        }
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        sugAdapter = new SuggestedAdapter((MainActivity) getActivity(), itemAccess);
 
-        gridView.setAdapter(sugAdapter);
-
-        loadSubscriptions();
-
-        gridView.setOnItemClickListener(sugAdapter);
-
-        if (getActivity() instanceof MainActivity) {
-            ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.subscriptions_label);
-        }
-
-        EventDistributor.getInstance().register(contentUpdate);
-    }
-
-    private SuggestedAdapter.ItemAccess itemAccess = new SuggestedAdapter.ItemAccess() {
-        @Override
-        public int getCount() {
-            if (navDrawerData != null) {
-                return navDrawerData.feeds.size();
-            } else {
-                return 0;
-            }
-        }
-
-        @Override
-        public Feed getItem(int position) {
-            if (navDrawerData != null && 0 <= position && position < navDrawerData.feeds.size()) {
-                return navDrawerData.feeds.get(position);
-            } else {
-                return null;
-            }
-        }
-
-        @Override
-        public int getFeedCounter(long feedId) {
-            return navDrawerData != null ? navDrawerData.feedCounters.get(feedId) : 0;
-        }
-    };
 
     /**
      * Replace adapter data with provided search results from SearchTask.
@@ -271,8 +217,11 @@ public class suggestedPodcastsFragment extends Fragment {
                 encodedQuery = query; // failsafe
             }
 
+            String API_URL = "https://itunes.apple.com/search?term="+query+"&media=podcast&attibute=genreIndex";
+
+
             //Spaces in the query need to be replaced with '+' character.
-            String formattedUrl = String.format(API_URL, query).replace(' ', '+');
+            String formattedUrl = String.format(API_URL).replace(' ', '+');
 
             OkHttpClient client = AntennapodHttpClient.getHttpClient();
             Request.Builder httpReq = new Request.Builder()
@@ -368,68 +317,61 @@ public class suggestedPodcastsFragment extends Fragment {
         }
     }
 
-    public String getFirst() {
-        //load the subscriptions using the suggestedAdapter
-        String first;
+    //search category
+    public void categorySearch(String title123) {
+        Log.d("feed","never going here");
         if (subscription != null) {
             subscription.unsubscribe();
         }
-        subscription = Observable.fromCallable(DBReader::getNavDrawerData)
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> {
-                    navDrawerData = result;
-                    sugAdapter.notifyDataSetChanged();
-                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
 
-        if (navDrawerData != null) { //instead, try using subscriptionAdapter isn't null
-            Log.d(TAG, "Actually not null! Something inside!");
-            first = navDrawerData.feeds.get(0).getTitle();
-            return getKeywords(first);
-        } else {
-            Log.d(TAG, "Nothing inside; SEARCHING FOR NULL!");
-            return null;
-        }
+        subscription = rx.Observable.create((Observable.OnSubscribe<List<ItunesAdapter.Podcast>>) subscriber -> {
 
-        /*List<Feed> test = subscriptionList.feeds;
-        Object selectedObject = subscriptionAdapter.getItem(0);
-        Feed feed = (Feed) selectedObject;
-        first = feed.getFeedTitle();
+            String API_URL = "https://itunes.apple.com/search?media=podcast&term="+title123;
 
-        //first = test.get(0).getTitle();
-        return first;*/
-    }
+            //Spaces in the query need to be replaced with '+' character.
+            String formattedUrl = String.format(API_URL).replace(' ', '+');
 
+            OkHttpClient client = AntennapodHttpClient.getHttpClient();
+            Request.Builder httpReq = new Request.Builder()
+                    .url(formattedUrl)
+                    .header("User-Agent", ClientConfig.USER_AGENT);
+            try {
+                Response response = client.newCall(httpReq.build()).execute();
 
-    public String getKeywords(String first) {
+                if (response.isSuccessful()) {
+                    String resultString = response.body().string();
+                    JSONObject result = new JSONObject(resultString);
+                    JSONArray j = result.getJSONArray("results");
 
-        String temp = "";
-        int j = 0;
-
-        if(first.length() <= 3){
-            return first;
-        }
-        else {
-            for (int i = 0; i < first.length(); i++) {
-
-                if (Character.isWhitespace(first.charAt(i + 1))) {
-                    if ((i - j) > 3) {
-                        temp = first.substring(j, i);
-                        break;
-                    } else {
-                        if ((i - j) <= 3) {
-                            j = i;
+                    //get primaryGenreName from the given category
+                    for (int i = 0; i < j.length(); i++) {
+                        JSONObject podcastJson = j.getJSONObject(i);
+                        String titre = podcastJson.optString("collectionName", "");
+                        Log.d("feed","ok??");
+                        if(titre.equalsIgnoreCase(title123)){
+                            Log.d("feed","is it going here ");
+                            String cate = podcastJson.optString("primaryGenreName", "");
+                            userCategories.add(cate);
+                            Log.d("feed","is cate a variable " +cate);
+                            break;
                         }
                     }
+                } else {
+                    String prefix = getString(R.string.error_msg_prefix);
+                    subscriber.onError(new IOException(prefix + response));
                 }
+            } catch (IOException | JSONException e) {
+                subscriber.onError(e);
             }
-        }
-        return temp;
+            subscriber.onCompleted();
+        })
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(podcasts -> {
+                }, error -> {
+                    Log.e(TAG, Log.getStackTraceString(error));
+                });
     }
-
-
-
-
 
 }
 
