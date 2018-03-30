@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.FlakyTest;
+import android.widget.GridView;
 import android.widget.ListView;
+import android.widget.ScrollView;
 
 import com.robotium.solo.Solo;
 
@@ -339,6 +341,62 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         //Access queue
         solo.clickOnView(solo.getView(R.id.queue_name));
         solo.waitForView(R.id.queue_fragment);
+    }
+
+  public void testCentralSearch() throws Exception{
+        //Navigate to queues page
+        openNavDrawer();
+        solo.clickOnText(solo.getString(R.string.homepage_label));
+
+        solo.clickOnView(solo.getView(R.id.action_search));
+        solo.enterText(0, "Joe Rogan");
+        solo.pressSoftKeyboardSearchButton();
+
+        solo.sleep(1000);
+
+        ScrollView homeView = (ScrollView) solo.getView(R.id.homeScrollView);
+        GridView searchResultView = (GridView) solo.getView(R.id.gridSearchResult);
+
+        //Scroll down home page
+        homeView.scrollTo(0, homeView.getHeight());
+    }
+
+
+    public void testCategorySearch (){
+
+        //open nav bar
+        openNavDrawer();
+
+        //open search podcast page
+        solo.clickOnText(solo.getString(R.string.add_feed_label));
+
+        //Click on the "category" button to open the dialog
+        solo.clickOnView(solo.getView(R.id.butCategorySearch));
+
+        //select second in list
+        solo.clickInList(2);
+
+        solo.sleep(2000);
+
+
+        solo.clickInList(2);
+
+        solo.sleep(1000);
+        
+        //Subscribe to podcast
+        solo.clickOnButton(solo.getString(R.string.subscribe_label));
+
+        //Open podcast
+        solo.waitForView(R.id.subscriptionLayout);
+        solo.clickOnText(solo.getString(R.string.open_podcast));
+
+        //open 1st episode in list
+        solo.clickInList(2);
+
+        //Download episode
+        solo.clickOnText(solo.getString(R.string.download_label));
+
+
 
     }
 }

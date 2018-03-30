@@ -1007,10 +1007,6 @@ public class DownloadService extends Service {
 
                 DBWriter.setFeedMedia(media).get();
 
-                if (item != null && UserPreferences.enqueueDownloadedEpisodes() &&
-                        !DBTasks.isInQueue(DownloadService.this, item.getId())) {
-                    DBWriter.addQueueItem(DownloadService.this, item).get();
-                }
             } catch (InterruptedException e) {
                 Log.e(TAG, "MediaHandlerThread was interrupted");
             } catch (ExecutionException e) {

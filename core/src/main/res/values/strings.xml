@@ -8,7 +8,7 @@
     <string name="provider_authority" translate="false">de.danoeh.antennapod.provider</string>
     <string name="feeds_label">Feeds</string>
     <string name="statistics_label">Statistics</string>
-    <string name="add_feed_label">Add Podcast</string>
+    <string name="add_feed_label">Search Podcast</string>
     <string name="episodes_label">Episodes</string>
     <string name="all_episodes_short_label">All</string>
     <string name="favorite_episodes_label">Favorites</string>
@@ -109,9 +109,13 @@
     <string name="feedurl_label">Feed URL</string>
     <string name="etxtFeedurlHint">www.example.com/feed</string>
     <string name="txtvfeedurl_label">Add Podcast by URL</string>
-    <string name="podcastdirectories_label">Find Podcast in Directory</string>
-    <string name="podcastdirectories_descr">For new podcasts, you can search iTunes or fyyd, or browse gpodder.net by name, category or popularity.</string>
+    <string name="podcastdirectories_label">Browse gpodder.net</string>
+    <string name="podcastdirectories_descr">For new podcasts, you can browse gpodder.net by name, category or popularity.</string>
     <string name="browse_gpoddernet_label">Browse gpodder.net</string>
+    <string name="category_search_label">Find Podcasts by Categories</string>
+    <string name="category_search_descr">Browse podcasts by categories.</string>
+    <string name="category_search_but">CATEGORIES</string>
+
 
     <!-- Actions on feeds -->
     <string name="mark_all_read_label">Mark all as played</string>
@@ -307,6 +311,7 @@
     <string name="queues_label">Queues</string>
     <string name="queue_label">Queue</string>
     <string name="homepage_label">Home</string>
+    <string name="custom_theme_label">Custom Theme</string>
     <string name="services_label">Services</string>
     <string name="flattr_label">Flattr</string>
     <string name="pref_episode_cleanup_title">Episode Cleanup</string>
