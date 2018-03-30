@@ -198,6 +198,8 @@ dependencies {
     compile "com.github.AntennaPod:AntennaPod-AudioPlayer:$audioPlayerVersion"
 
     compile 'com.github.mfietz:fyydlin:v0.3'
+
+    compile 'com.google.code.gson:gson:2.8.0'
 }
 
 play {

@@ -40,7 +40,7 @@ import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.feed.QueueObject;
+import de.danoeh.antennapod.core.feed.Queue;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.service.download.Downloader;
@@ -92,7 +92,7 @@ public class QueueFragment extends Fragment {
     private ItemTouchHelper itemTouchHelper;
 
     //Associating a QueueObject to the QueueFragments
-    private QueueObject queueObject;
+    private Queue queueObject;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -620,8 +620,8 @@ public class QueueFragment extends Fragment {
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
-    public void setQueueObject(QueueObject queueObject) {
-        this.queueObject = queueObject;
+    public void setQueue(Queue queue) {
+        this.queueObject = queue;
     }
 
 }
