@@ -58,8 +58,10 @@ import de.danoeh.antennapod.dialog.RenameFeedDialog;
 import de.danoeh.antennapod.fragment.AddFeedFragment;
 import de.danoeh.antennapod.fragment.DownloadsFragment;
 import de.danoeh.antennapod.fragment.EpisodesFragment;
+import de.danoeh.antennapod.fragment.CustomThemeFragment;
 import de.danoeh.antennapod.fragment.ExternalPlayerFragment;
 import de.danoeh.antennapod.fragment.HomePageFragment;
+import de.danoeh.antennapod.fragment.CustomThemeFragment;
 import de.danoeh.antennapod.fragment.ItemlistFragment;
 import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
 import de.danoeh.antennapod.fragment.QueueListFragment;
@@ -104,8 +106,10 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
             DownloadsFragment.TAG,
             PlaybackHistoryFragment.TAG,
             AddFeedFragment.TAG,
-            StatisticsFragment.TAG,
-            NavListAdapter.SUBSCRIPTION_LIST_TAG
+            NavListAdapter.SUBSCRIPTION_LIST_TAG,
+            CustomThemeFragment.TAG,
+            StatisticsFragment.TAG
+
     };
 
     private Toolbar toolbar;
@@ -314,6 +318,10 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
                 SubscriptionFragment subscriptionFragment = new SubscriptionFragment();
                 fragment = subscriptionFragment;
                 break;
+            case CustomThemeFragment.TAG:
+                 CustomThemeFragment customThemeFragment = new CustomThemeFragment();
+                 fragment = customThemeFragment;
+                 break;
             default:
                 // default to the queue
                 tag = QueueListFragment.TAG;
@@ -534,6 +542,8 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
                 case AddFeedFragment.TAG:
                 case StatisticsFragment.TAG:
                 case SubscriptionFragment.TAG:
+                    return retVal;
+                case CustomThemeFragment.TAG:
                     return retVal;
                 default:
                     requestCastButton(MenuItem.SHOW_AS_ACTION_NEVER);

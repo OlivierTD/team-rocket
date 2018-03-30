@@ -266,10 +266,6 @@ public class UserPreferences {
         return prefs.getBoolean(PREF_SHOW_DOWNLOAD_REPORT, true);
     }
 
-    public static boolean enqueueDownloadedEpisodes() {
-        return prefs.getBoolean(PREF_ENQUEUE_DOWNLOADED, true);
-    }
-
     public static boolean enqueueAtFront() {
         return prefs.getBoolean(PREF_QUEUE_ADD_TO_FRONT, false);
     }
