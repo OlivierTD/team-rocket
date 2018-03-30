@@ -43,7 +43,9 @@ public class StatisticsFragment extends Fragment implements AdapterView.OnItemCl
     private static final String PREF_COUNT_ALL = "countAll";
 
     private Subscription subscription;
+//    private TextView totalTimeTextView;
     private ListView feedStatisticsList;
+//    private ProgressBar progressBar;
     private StatisticsListAdapter listAdapter;
     private boolean countAll = false;
     private SharedPreferences prefs;
@@ -61,7 +63,7 @@ public class StatisticsFragment extends Fragment implements AdapterView.OnItemCl
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View root = inflater.inflate(R.layout.statistics_list, container, false);
+        View root = inflater.inflate(R.layout.statistics_layout, container, false);
 
         return root;
     }
@@ -73,7 +75,9 @@ public class StatisticsFragment extends Fragment implements AdapterView.OnItemCl
         prefs = getContext().getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         countAll = prefs.getBoolean(PREF_COUNT_ALL, false);
 
-        feedStatisticsList = (ListView) getView().findViewById(R.id.list);
+//        totalTimeTextView = (TextView) getView().findViewById(R.id.total_time);
+        feedStatisticsList = (ListView) getView().findViewById(R.id.statistics_list);
+//        progressBar = (ProgressBar) getView().findViewById(R.id.progressBar);
         listAdapter = new StatisticsListAdapter(getActivity());
         listAdapter.setCountAll(countAll);
         feedStatisticsList.setAdapter(listAdapter);
@@ -133,6 +137,8 @@ public class StatisticsFragment extends Fragment implements AdapterView.OnItemCl
     }
 
     private void refreshStatistics() {
+//        progressBar.setVisibility(View.VISIBLE);
+//        totalTimeTextView.setVisibility(View.GONE);
         feedStatisticsList.setVisibility(View.GONE);
         loadStatistics();
     }
@@ -146,7 +152,11 @@ public class StatisticsFragment extends Fragment implements AdapterView.OnItemCl
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     if (result != null) {
+//                        totalTimeTextView.setText(Converter
+//                                .shortLocalizedDuration(this, countAll ? result.totalTimeCountAll : result.totalTime));
                         listAdapter.update(result.feedTime);
+//                        progressBar.setVisibility(View.GONE);
+//                        totalTimeTextView.setVisibility(View.VISIBLE);
                         feedStatisticsList.setVisibility(View.VISIBLE);
                     }
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
