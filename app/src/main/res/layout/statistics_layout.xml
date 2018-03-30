@@ -8,16 +8,22 @@
     android:paddingTop="8dp">
 
     <TextView
+        android:id="@+id/number_of_subscriptions"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:text="@string/statistics_number_of_subscriptions"
-        android:id="@+id/number_of_subscriptions"/>
+        android:layout_height="@dimen/listitem_iconwithtext_height"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/listitem_icon_leftpadding"
+        android:textSize="16dp"
+        tools:text="@string/statistics_number_of_subscriptions" />
 
     <TextView
+        android:id="@+id/total_time"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:text="@string/total_time_listened_to_podcasts"
-        android:id="@+id/total_time"/>
+        android:layout_height="@dimen/listitem_iconwithtext_height"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/listitem_icon_leftpadding"
+        android:textSize="16dp"
+        tools:text="@string/total_time_listened_to_podcasts" />
 
     <ListView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/statistics_list"
