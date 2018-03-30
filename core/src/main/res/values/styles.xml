@@ -60,6 +60,7 @@
         <item name="attr/ic_cast_disconnect">@drawable/ic_cast_disconnect_grey600_36dp</item>
         <item name="attr/ic_home">@drawable/ic_home_grey</item>
         <item name="attr/ic_stats">@drawable/ic_stats_grey</item>
+        <item name="attr/ic_search">@drawable/ic_search_grey600_24dp</item>
     </style>
 
     <style name="Theme.AntennaPod.Dark" parent="Theme.AppCompat">
@@ -121,6 +122,7 @@
         <item name="attr/ic_cast_disconnect">@drawable/ic_cast_disconnect_white_36dp</item>
         <item name="attr/ic_home">@drawable/ic_home_white</item>
         <item name="attr/ic_stats">@drawable/ic_stats_white</item>
+        <item name="attr/ic_search">@drawable/ic_search_white_24dp</item>
     </style>
 
     <style name="Theme.AntennaPod.Yellow" parent="Theme.AppCompat">
@@ -185,6 +187,7 @@
         <item name="android:colorBackground">@color/background_material_yellow</item>
         <item name="attr/ic_home">@drawable/ic_home_white</item>
         <item name="attr/ic_stats">@drawable/ic_stats_white</item>
+        <item name="attr/ic_search">@drawable/ic_search_white_24dp</item>
     </style>
 
 
@@ -250,6 +253,7 @@
         <item name="android:colorBackground">@color/background_material_pink</item>
         <item name="attr/ic_home">@drawable/ic_home_white</item>
         <item name="attr/ic_stats">@drawable/ic_stats_white</item>
+        <item name="attr/ic_search">@drawable/ic_search_white_24dp</item>
     </style>
 
     <style name="Theme.AntennaPod.Light.NoTitle" parent="Theme.AppCompat.Light.NoActionBar">
@@ -312,6 +316,7 @@
         <item name="attr/ic_cast_disconnect">@drawable/ic_cast_disconnect_grey600_36dp</item>
         <item name="attr/ic_home">@drawable/ic_home_grey</item>
         <item name="attr/ic_stats">@drawable/ic_stats_grey</item>
+        <item name="attr/ic_search">@drawable/ic_search_grey600_24dp</item>
     </style>
 
     <style name="Theme.AntennaPod.Dark.NoTitle" parent="Theme.AppCompat.NoActionBar">
@@ -374,6 +379,7 @@
         <item name="attr/ic_cast_disconnect">@drawable/ic_cast_disconnect_white_36dp</item>
         <item name="attr/ic_home">@drawable/ic_home_white</item>
         <item name="attr/ic_stats">@drawable/ic_stats_white</item>
+        <item name="attr/ic_search">@drawable/ic_search_white_24dp</item>
     </style>
 
     <style name="Theme.AntennaPod.Yellow.NoTitle" parent="Theme.AppCompat.NoActionBar">
@@ -441,6 +447,7 @@
         <item name="android:textColorPrimary">@color/white</item>
         <item name="attr/ic_home">@drawable/ic_home_white</item>
         <item name="attr/ic_stats">@drawable/ic_stats_white</item>
+        <item name="attr/ic_search">@drawable/ic_search_white_24dp</item>
     </style>
 
     <style name="Theme.AntennaPod.Pink.NoTitle" parent="Theme.AppCompat.NoActionBar">
@@ -506,6 +513,7 @@
         <item name="android:colorBackground">@color/background_material_pink</item>
         <item name="attr/ic_home">@drawable/ic_home_white</item>
         <item name="attr/ic_stats">@drawable/ic_stats_white</item>
+        <item name="attr/ic_search">@drawable/ic_search_white_24dp</item>
     </style>
 
     <style name="Theme.AntennaPod.Dark.Splash" parent="Theme.AppCompat.NoActionBar">

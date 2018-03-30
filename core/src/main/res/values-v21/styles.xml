@@ -91,6 +91,7 @@
         <item name="android:textColorPrimary">@color/white</item>
         <item name="attr/ic_home">@drawable/ic_home_white</item>
         <item name="attr/ic_stats">@drawable/ic_stats_white</item>
+        <item name="attr/ic_search">@drawable/ic_search_white_24dp</item>
     </style>
 
     <style name="Theme.AntennaPod.Pink" parent="Theme.AppCompat">
@@ -159,6 +160,7 @@
         <item name="android:navigationBarColor">@color/navigationBarColor_pink</item>
         <item name="attr/ic_home">@drawable/ic_home_white</item>
         <item name="attr/ic_stats">@drawable/ic_stats_white</item>
+        <item name="attr/ic_search">@drawable/ic_search_white_24dp</item>
     </style>
 
     <style name="Theme.AntennaPod.Yellow" parent="Theme.AppCompat">
@@ -227,6 +229,7 @@
         <item name="android:navigationBarColor">@color/yellow</item>
         <item name="attr/ic_home">@drawable/ic_home_white</item>
         <item name="attr/ic_stats">@drawable/ic_stats_white</item>
+        <item name="attr/ic_search">@drawable/ic_search_white_24dp</item>
     </style>
 
 </resources>
