@@ -124,11 +124,7 @@
         <item name="attr/ic_home">@drawable/ic_home_white</item>
         <item name="attr/ic_custom_theme">@drawable/ic_custom_theme_white</item>
         <item name="attr/ic_stats">@drawable/ic_stats_white</item>
-<<<<<<< HEAD
         <item name="attr/ic_search">@drawable/ic_search_white_24dp</item>
-=======
-
->>>>>>> 02fccd39e58e0716684323abdb0c0a0617563f02
     </style>
 
     <style name="Theme.AntennaPod.Yellow" parent="Theme.AppCompat">
@@ -194,11 +190,9 @@
         <item name="attr/ic_home">@drawable/ic_home_white</item>
         <item name="attr/ic_custom_theme">@drawable/ic_custom_theme_white</item>
         <item name="attr/ic_stats">@drawable/ic_stats_white</item>
-<<<<<<< HEAD
-        <item name="attr/ic_search">@drawable/ic_search_white_24dp</item>
-=======
 
->>>>>>> 02fccd39e58e0716684323abdb0c0a0617563f02
+        <item name="attr/ic_search">@drawable/ic_search_white_24dp</item>
+
     </style>
 
 
@@ -329,11 +323,8 @@
         <item name="attr/ic_home">@drawable/ic_home_grey</item>
         <item name="attr/ic_custom_theme">@drawable/ic_custom_theme_grey</item>
         <item name="attr/ic_stats">@drawable/ic_stats_grey</item>
-<<<<<<< HEAD
-        <item name="attr/ic_search">@drawable/ic_search_grey600_24dp</item>
-=======
 
->>>>>>> 02fccd39e58e0716684323abdb0c0a0617563f02
+        <item name="attr/ic_search">@drawable/ic_search_grey600_24dp</item>
     </style>
 
     <style name="Theme.AntennaPod.Dark.NoTitle" parent="Theme.AppCompat.NoActionBar">
@@ -397,11 +388,9 @@
         <item name="attr/ic_home">@drawable/ic_home_white</item>
         <item name="attr/ic_custom_theme">@drawable/ic_custom_theme_white</item>
         <item name="attr/ic_stats">@drawable/ic_stats_white</item>
-<<<<<<< HEAD
-        <item name="attr/ic_search">@drawable/ic_search_white_24dp</item>
-=======
 
->>>>>>> 02fccd39e58e0716684323abdb0c0a0617563f02
+        <item name="attr/ic_search">@drawable/ic_search_white_24dp</item>
+
     </style>
 
     <style name="Theme.AntennaPod.Yellow.NoTitle" parent="Theme.AppCompat.NoActionBar">
@@ -470,11 +459,7 @@
         <item name="attr/ic_home">@drawable/ic_home_white</item>
         <item name="attr/ic_custom_theme">@drawable/ic_custom_theme_white</item>
         <item name="attr/ic_stats">@drawable/ic_stats_white</item>
-<<<<<<< HEAD
         <item name="attr/ic_search">@drawable/ic_search_white_24dp</item>
-=======
-
->>>>>>> 02fccd39e58e0716684323abdb0c0a0617563f02
     </style>
 
     <style name="Theme.AntennaPod.Pink.NoTitle" parent="Theme.AppCompat.NoActionBar">
