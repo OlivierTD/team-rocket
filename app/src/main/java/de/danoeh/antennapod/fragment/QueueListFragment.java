@@ -1,7 +1,8 @@
 package de.danoeh.antennapod.fragment;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -16,12 +17,14 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.QueuesAdapter;
-import de.danoeh.antennapod.core.feed.QueueObject;
-import de.danoeh.antennapod.core.util.InternalStorage;
+import de.danoeh.antennapod.core.feed.Queue;
 
-import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import de.danoeh.antennapod.R;
@@ -31,7 +34,7 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
     public static final String TAG = "QueueListFragment";
 
     //List of queue fragments
-    private ArrayList<QueueObject> queueList = new ArrayList<>();
+    private ArrayList<Queue> queueList = new ArrayList<>();
 
     //button to add queues to list
     private Button addButton;
@@ -154,13 +157,13 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
         super.onDestroyView();
     }
 
-    public ArrayList<QueueObject> getQueuesList() {
+    public ArrayList<Queue> getQueuesList() {
         return this.queueList;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
     public void createNewQueue(String name) {
-        QueueObject toAdd = new QueueObject(name);
+        Queue toAdd = new Queue(name);
         this.queueList.add(toAdd);
         // Update adapter
         queuesAdapter.updateQueueList(this.queueList);
@@ -174,21 +177,26 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
 
     // Attempts to load data from local storage
     private void loadList() {
-        try {
-            queueList = (ArrayList<QueueObject>) InternalStorage.readObject(this.getContext(), "queue");
-        } catch (IOException e) {
-        } catch (ClassNotFoundException e) {
+        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("shared preferences", Context.MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString("queue list", null);
+        Type type = new TypeToken<ArrayList<Queue>>() {}.getType();
+        queueList = gson.fromJson(json, type);
+
+        if (queueList == null) {
+            queueList = new ArrayList<>();
         }
     }
 
     // Attempts to persist data to local storage
     private void storeList() {
-        try {
-            InternalStorage.writeObject(this.getContext(), "queue", queueList);
-        } catch (IOException e) {
-            String error = "failed to store";
-            Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
-        }
+        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("shared preferences", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(queueList);
+        editor.putString("queue list", json);
+        editor.apply();
+
     }
 
     public void setQueuesAdapter(QueuesAdapter queuesAdapter){
@@ -198,7 +206,7 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
     //Will verify if there is a QueueObject in the list that already has the name
     public boolean nameExists(String testName) {
         boolean flag = false;
-        for (QueueObject queueObject : queueList) {
+        for (Queue queueObject : queueList) {
             if (queueObject.getName().equals(testName)) {
                 flag = true;
             }
