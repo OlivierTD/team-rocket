@@ -43,9 +43,10 @@ public class StatisticsFragment extends Fragment implements AdapterView.OnItemCl
     private static final String PREF_COUNT_ALL = "countAll";
 
     private Subscription subscription;
-//    private TextView totalTimeTextView;
+    private TextView numberOfPodcasts;
+    private TextView totalTimeTextView;
     private ListView feedStatisticsList;
-//    private ProgressBar progressBar;
+    private ProgressBar progressBar;
     private StatisticsListAdapter listAdapter;
     private boolean countAll = false;
     private SharedPreferences prefs;
@@ -75,14 +76,14 @@ public class StatisticsFragment extends Fragment implements AdapterView.OnItemCl
         prefs = getContext().getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         countAll = prefs.getBoolean(PREF_COUNT_ALL, false);
 
-//        totalTimeTextView = (TextView) getView().findViewById(R.id.total_time);
+        numberOfPodcasts = (TextView) getView().findViewById(R.id.number_of_subscriptions);
+        totalTimeTextView = (TextView) getView().findViewById(R.id.total_time);
         feedStatisticsList = (ListView) getView().findViewById(R.id.statistics_list);
 //        progressBar = (ProgressBar) getView().findViewById(R.id.progressBar);
         listAdapter = new StatisticsListAdapter(getActivity());
         listAdapter.setCountAll(countAll);
         feedStatisticsList.setAdapter(listAdapter);
         feedStatisticsList.setOnItemClickListener(this);
-
     }
 
     @Override
@@ -138,6 +139,7 @@ public class StatisticsFragment extends Fragment implements AdapterView.OnItemCl
 
     private void refreshStatistics() {
 //        progressBar.setVisibility(View.VISIBLE);
+        numberOfPodcasts.setVisibility(View.GONE);
 //        totalTimeTextView.setVisibility(View.GONE);
         feedStatisticsList.setVisibility(View.GONE);
         loadStatistics();
@@ -156,8 +158,11 @@ public class StatisticsFragment extends Fragment implements AdapterView.OnItemCl
 //                                .shortLocalizedDuration(this, countAll ? result.totalTimeCountAll : result.totalTime));
                         listAdapter.update(result.feedTime);
 //                        progressBar.setVisibility(View.GONE);
+                        numberOfPodcasts.setVisibility(View.VISIBLE);
 //                        totalTimeTextView.setVisibility(View.VISIBLE);
                         feedStatisticsList.setVisibility(View.VISIBLE);
+                        int numberOfSubscriptions = feedStatisticsList.getAdapter().getCount();
+                        numberOfPodcasts.setText(getString(R.string.statistics_number_of_subscriptions) + " " + numberOfSubscriptions);
                     }
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
