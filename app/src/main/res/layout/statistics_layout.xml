@@ -5,13 +5,15 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingBottom="8dp"
-    android:paddingTop="8dp">
+    android:paddingTop="16dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/listitem_iconwithtext_height"
+        android:layout_marginBottom="16dp"
         android:layout_marginLeft="@dimen/statistics_leftpadding"
         android:layout_marginRight="@dimen/statistics_rightpadding"
+        android:background="@drawable/customborder"
         android:gravity="center_vertical">
 
         <TextView
@@ -34,8 +36,10 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/listitem_iconwithtext_height"
+        android:layout_marginBottom="16dp"
         android:layout_marginLeft="@dimen/statistics_leftpadding"
         android:layout_marginRight="@dimen/statistics_rightpadding"
+        android:background="@drawable/customborder"
         android:gravity="center_vertical">
 
         <TextView
