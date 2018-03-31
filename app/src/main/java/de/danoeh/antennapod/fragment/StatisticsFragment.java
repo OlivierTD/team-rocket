@@ -109,6 +109,14 @@ public class StatisticsFragment extends Fragment implements AdapterView.OnItemCl
         super.onDestroyView();
     }
 
+    public void setListAdapter(StatisticsListAdapter listAdapter) {
+        this.listAdapter = listAdapter;
+    }
+
+    public StatisticsListAdapter getListAdapter() {
+        return listAdapter;
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
@@ -122,7 +130,7 @@ public class StatisticsFragment extends Fragment implements AdapterView.OnItemCl
         }
     }
 
-    private void selectStatisticsMode() {
+    public void selectStatisticsMode() {
         View contentView = View.inflate(getActivity(), R.layout.statistics_mode_select_dialog, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(contentView);
