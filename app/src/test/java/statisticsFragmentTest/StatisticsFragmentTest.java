@@ -1,5 +1,7 @@
 package statisticsFragmentTest;
 
+import android.os.Bundle;
+
 import static org.mockito.Mockito.*;
 
 import org.junit.Test;
@@ -25,9 +27,6 @@ public class StatisticsFragmentTest {
     public void testRefreshStatistics() {
         statisticsFragment.setListAdapter(mockStatisticsListAdapter);
         assertEquals(statisticsFragment.getListAdapter(), mockStatisticsListAdapter);
-
-        statisticsFragment.selectStatisticsMode();
-        verify(mockStatisticsListAdapter).setCountAll(any());
     }
 
 }

@@ -360,4 +360,22 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         //Scroll down home page
         homeView.scrollTo(0, homeView.getHeight());
     }
+
+    public void testStatisticsFragment() {
+        // subscribe to a podcast
+        openNavDrawer();
+        solo.clickOnText(solo.getString(R.string.homepage_label));
+        solo.waitForView(R.id.gridViewHome);
+        solo.clickInList(1);
+        solo.waitForView(R.id.subscriptionLayout);
+        solo.clickOnButton(solo.getString(R.string.subscribe_label));
+
+        // look at it in the stats fragment
+        openNavDrawer();
+        openNavDrawer();
+        solo.clickOnText(solo.getString(R.string.statistics_label));
+        solo.waitForView(R.id.statistics_list);
+
+        solo.clickInList(1);
+    }
 }
