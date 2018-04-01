@@ -130,7 +130,7 @@ public class StatisticsFragment extends Fragment implements AdapterView.OnItemCl
         }
     }
 
-    public void selectStatisticsMode() {
+    private void selectStatisticsMode() {
         View contentView = View.inflate(getActivity(), R.layout.statistics_mode_select_dialog, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(contentView);
