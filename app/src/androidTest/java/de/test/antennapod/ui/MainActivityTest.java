@@ -341,4 +341,20 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         solo.waitForView(R.id.queue_fragment);
 
     }
+
+    public void testRandomPodcast(){
+        //Navigate to home page
+        openNavDrawer();
+        solo.clickOnText(solo.getString(R.string.homepage_label));
+
+        //Check random podcast category - cancel
+        solo.clickOnView(solo.getView(R.id.btnRandomPodcast));
+        solo.clickOnText(solo.getString(R.string.cancel));
+
+        //Check random podcast category - OK
+        solo.clickOnView(solo.getView(R.id.btnRandomPodcast));
+        solo.clickOnText(solo.getString(R.string.confirm));
+
+        solo.waitForView(R.id.subscriptionLayout);
+    }
 }
