@@ -6,10 +6,10 @@
     android:layout_height="match_parent">
 
     <Button
-        android:id="@+id/btnPlayRandom"
+        android:id="@+id/btnRandomPodcast"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Play random episode"
+        android:text="random podcast"
         android:textSize="15sp"
         android:paddingTop="15dp"
         android:paddingBottom="15dp"
