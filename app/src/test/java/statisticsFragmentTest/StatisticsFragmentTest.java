@@ -25,9 +25,6 @@ public class StatisticsFragmentTest {
     public void testRefreshStatistics() {
         statisticsFragment.setListAdapter(mockStatisticsListAdapter);
         assertEquals(statisticsFragment.getListAdapter(), mockStatisticsListAdapter);
-
-        statisticsFragment.selectStatisticsMode();
-        verify(mockStatisticsListAdapter).setCountAll(any());
     }
 
 }
