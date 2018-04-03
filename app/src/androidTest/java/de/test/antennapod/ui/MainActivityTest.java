@@ -422,6 +422,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         solo.clickOnButton(solo.getString(R.string.subscribe_label));
 
         // look at it in the stats fragment
+        // twice to press the back button, then the hamburger button
         openNavDrawer();
         openNavDrawer();
         solo.clickOnText(solo.getString(R.string.statistics_label));
