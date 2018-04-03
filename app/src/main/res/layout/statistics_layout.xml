@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="8dp"
+    android:paddingTop="16dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/listitem_iconwithtext_height"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="@dimen/statistics_leftpadding"
+        android:layout_marginRight="@dimen/statistics_rightpadding"
+        android:background="@drawable/customborder"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/number_of_subscriptions_string"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            tools:text="@string/statistics_number_of_subscriptions" />
+
+        <TextView
+            android:id="@+id/number_of_subscriptions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:textSize="16dp"
+            tools:text="6" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/listitem_iconwithtext_height"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="@dimen/statistics_leftpadding"
+        android:layout_marginRight="@dimen/statistics_rightpadding"
+        android:background="@drawable/customborder"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/total_time_string"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            tools:text="@string/total_time_listened_to_podcasts" />
+
+        <TextView
+            android:id="@+id/total_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:textSize="16dp"
+            tools:text="24.9 hours" />
+
+    </RelativeLayout>
+
+    <ListView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/statistics_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="de.danoeh.antennapod.activity.MainActivity" />
+
+</LinearLayout>

@@ -504,10 +504,10 @@ public class ItemlistFragment extends ListFragment {
             txtvInformation.setVisibility(View.GONE);
         }
         btnRandomEpisode.setText(R.string.random_episode_button);
-        if(UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark) {
-            btnRandomEpisode.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_random_white), null, null, null);
-        } else {
+        if(UserPreferences.getTheme() == R.style.Theme_AntennaPod_Light) {
             btnRandomEpisode.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_random_grey), null, null, null);
+        } else {
+            btnRandomEpisode.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_random_white), null, null, null);
         }
 
     }
