@@ -22,7 +22,7 @@ public class StatisticsFragmentTest {
     private StatisticsListAdapter mockStatisticsListAdapter = Mockito.mock(StatisticsListAdapter.class);
 
     @Test
-    public void testRefreshStatistics() {
+    public void testStatisticsFragment() {
         statisticsFragment.setListAdapter(mockStatisticsListAdapter);
         assertEquals(statisticsFragment.getListAdapter(), mockStatisticsListAdapter);
     }
