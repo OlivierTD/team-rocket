@@ -11,6 +11,7 @@
     <string name="delete_queue_confirmation_message">Are you sure you want to delete this queue?</string>
     <string name="confirm">Confirm</string>
     <string name="itunes_search_api">https://itunes.apple.com/search?media=podcast&amp;term=%s</string>
+    <string name="random_category">Random category: </string>
     <string-array name="random_dictionnary">
         <item>Alternative Health</item>
         <item>Automotive</item>
