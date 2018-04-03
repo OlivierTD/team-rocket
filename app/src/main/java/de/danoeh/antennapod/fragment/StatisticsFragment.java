@@ -87,7 +87,7 @@ public class StatisticsFragment extends Fragment implements AdapterView.OnItemCl
         totalTimeStringTextView = (TextView) getView().findViewById(R.id.total_time_string);
         totalTimeTextView = (TextView) getView().findViewById(R.id.total_time);
         feedStatisticsList = (ListView) getView().findViewById(R.id.statistics_list);
-        listAdapter = new StatisticsListAdapter(getActivity());
+        this.setListAdapter(new StatisticsListAdapter(getActivity()));
         listAdapter.setCountAll(countAll);
         feedStatisticsList.setAdapter(listAdapter);
         feedStatisticsList.setOnItemClickListener(this);
