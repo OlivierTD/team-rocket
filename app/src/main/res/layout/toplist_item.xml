@@ -37,8 +37,11 @@
         android:layout_below="@+id/imgvCover"
         android:layout_marginLeft="20dp"
         android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
         android:singleLine="true"
+        tools:background="@android:color/holo_green_dark"
         android:text="Podcast title"
+        style="@style/AntennaPod.TextView.ListItemPrimaryTitle2"
         android:textSize="18sp"
          />
     </LinearLayout>
