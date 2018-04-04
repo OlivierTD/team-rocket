@@ -87,7 +87,7 @@ public class StatisticsFragment extends Fragment implements AdapterView.OnItemCl
         totalTimeStringTextView = (TextView) getView().findViewById(R.id.total_time_string);
         totalTimeTextView = (TextView) getView().findViewById(R.id.total_time);
         feedStatisticsList = (ListView) getView().findViewById(R.id.statistics_list);
-        this.setListAdapter(new StatisticsListAdapter(getActivity()));
+        listAdapter = new StatisticsListAdapter(getActivity());
         listAdapter.setCountAll(countAll);
         feedStatisticsList.setAdapter(listAdapter);
         feedStatisticsList.setOnItemClickListener(this);
@@ -107,14 +107,6 @@ public class StatisticsFragment extends Fragment implements AdapterView.OnItemCl
     @Override
     public void onDestroyView(){
         super.onDestroyView();
-    }
-
-    public void setListAdapter(StatisticsListAdapter listAdapter) {
-        this.listAdapter = listAdapter;
-    }
-
-    public StatisticsListAdapter getListAdapter() {
-        return listAdapter;
     }
 
     @Override
