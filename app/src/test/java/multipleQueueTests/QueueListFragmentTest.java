@@ -1,4 +1,4 @@
-package mutipleQueueTests;
+package multipleQueueTests;
 
 import static org.mockito.Mockito.*;
 
