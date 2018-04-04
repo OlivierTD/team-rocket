@@ -208,7 +208,7 @@ public class ToplistFragment extends Fragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(podcasts -> {
                     topList = podcasts;
-                    titleMessage.setText("iTunes top podcasts");
+                    titleMessage.setText("iTunes Top Podcasts");
                     updateData(topList);
                 }, error -> {
                     Log.e(TAG, Log.getStackTraceString(error));

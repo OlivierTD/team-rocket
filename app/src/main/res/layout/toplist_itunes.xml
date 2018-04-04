@@ -1,75 +1,92 @@
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="1dp"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/textTopItunes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="iTunes top podcasts"
-        android:textSize="20sp"
-        android:paddingTop="30dp"
-        android:paddingLeft="15dp"/>
+        android:paddingLeft="15dp"
+        android:paddingTop="20dp"
+        android:text="iTunes Top Podcasts"
+        android:textSize="20sp" />
 
-    <GridView
-        android:id="@+id/gridViewHome"
+        <HorizontalScrollView
+            android:id="@+id/horizontalScroll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="1dp"
+            android:fillViewport="false"
+            android:scrollbars="none">
+
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="265dp"
-        android:clipToPadding="false"
-        android:columnWidth="400dp"
-        android:gravity="center"
-        android:horizontalSpacing="8dp"
-        android:numColumns="auto_fit"
-        android:layout_marginTop="60dp"
-        android:paddingBottom="@dimen/list_vertical_padding"
-        android:paddingTop="@dimen/list_vertical_padding"
-        android:stretchMode="columnWidth"
-        android:verticalSpacing="8dp"
-        tools:listitem="@layout/gpodnet_podcast_listitem"
-        android:nestedScrollingEnabled="true"/>
+        android:layout_height="300dp"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@id/android:empty"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        android:gravity="center"
-        android:visibility="gone"
-        android:text="@string/search_status_no_results" />
+        <GridView
+            android:id="@+id/gridViewHome"
+            android:layout_width="4200dp"
+            android:layout_height="225dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:clipToPadding="true"
+            android:columnWidth="100dp"
+            android:paddingBottom="@dimen/list_vertical_padding"
+            android:paddingTop="@dimen/list_vertical_padding"
+            android:stretchMode="columnWidth"
+            tools:listitem="@layout/toplist_item"
+            android:numColumns="24"
+            android:scrollbars="horizontal"
+            />
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:indeterminateOnly="true"
-        android:visibility="gone"/>
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:indeterminateOnly="true"
+            android:visibility="gone" />
 
-    <TextView
-        android:id="@+id/txtvError"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_margin="16dp"
-        android:textAlignment="center"
-        android:textSize="@dimen/text_size_small"
-        android:visibility="gone"
-        tools:visibility="visible"
-        tools:text="Error message"
-        tools:background="@android:color/holo_red_light" />
+        <TextView
+            android:id="@+id/txtvError"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_margin="16dp"
+            android:textAlignment="center"
+            android:textSize="@dimen/text_size_small"
+            android:visibility="gone"
+            tools:background="@android:color/holo_red_light"
+            tools:text="Error message"
+            tools:visibility="visible" />
+        <TextView
+            android:id="@id/android:empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="@string/search_status_no_results"
+            android:visibility="gone" />
 
-    <Button
-        android:id="@+id/butRetry"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txtvError"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="16dp"
-        android:text="@string/retry_label"
-        android:visibility="gone"
-        tools:visibility="visible"
-        tools:background="@android:color/holo_red_light" />
+        <Button
+            android:id="@+id/butRetry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtvError"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="16dp"
+            android:text="@string/retry_label"
+            android:visibility="gone"
+            tools:background="@android:color/holo_red_light"
+            tools:visibility="visible" />
+    </LinearLayout>
+        </HorizontalScrollView>
 
-</RelativeLayout>
+</LinearLayout>
