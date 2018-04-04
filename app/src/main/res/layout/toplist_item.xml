@@ -22,14 +22,14 @@
         android:layout_marginRight="8dp"
         android:adjustViewBounds="true"
         android:contentDescription="@string/cover_label"
-        android:cropToPadding="true"
+        android:cropToPadding="false"
         android:scaleType="fitCenter"
         tools:background="@android:color/holo_green_dark"
         tools:src="@drawable/ic_stat_antenna_default" />
 
 
     <TextView
-        android:id="@+id/textLabel"
+        android:id="@+id/txtvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -38,12 +38,23 @@
         android:layout_marginLeft="20dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
-        android:singleLine="true"
+        android:maxLines="@integer/action_choose_expand_full_duration"
         tools:background="@android:color/holo_green_dark"
         android:text="Podcast title"
         style="@style/AntennaPod.TextView.ListItemPrimaryTitle2"
         android:textSize="18sp"
          />
+        <TextView
+            android:id="@+id/txtvUrl"
+            style="android:style/TextAppearance.Small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="?android:attr/textColorSecondary"
+            android:ellipsize="middle"
+            android:maxLines="2"
+            tools:text="http://www.example.com/feed"
+            tools:background="@android:color/holo_green_dark"/>
     </LinearLayout>
 
 
