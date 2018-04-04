@@ -4,12 +4,9 @@
     android:layout_height="match_parent"
     tools:context="de.danoeh.antennapod.fragment.QueueListFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-
     <ListView
-        android:id="@+id/queueList"
+        android:id="@+id/list_view_episodes"
         android:layout_width="match_parent"
         android:layout_height="464dp" />
-
 
 </FrameLayout>

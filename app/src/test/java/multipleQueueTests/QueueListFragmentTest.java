@@ -1,4 +1,4 @@
-package mutipleQueueTests;
+package multipleQueueTests;
 
 import static org.mockito.Mockito.*;
 
@@ -10,7 +10,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.ArrayList;
 
 import de.danoeh.antennapod.adapter.QueuesAdapter;
-import de.danoeh.antennapod.core.feed.QueueObject;
+import de.danoeh.antennapod.core.feed.Queue;
 import de.danoeh.antennapod.fragment.QueueListFragment;
 import static junit.framework.Assert.assertEquals;
 
@@ -28,7 +28,7 @@ public class QueueListFragmentTest {
     private QueuesAdapter mockQueueAdapter;
 
     @Mock
-    private ArrayList<QueueObject> mockQueueList;
+    private ArrayList<Queue> mockQueueList;
 
     @Before
     public void beforeTests(){

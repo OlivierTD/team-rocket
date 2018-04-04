@@ -1,15 +1,27 @@
 package de.danoeh.antennapod.menuhandler;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.widget.ListView;
 import android.widget.Toast;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.feed.Queue;
 import de.danoeh.antennapod.core.gpoddernet.model.GpodnetEpisodeAction;
 import de.danoeh.antennapod.core.gpoddernet.model.GpodnetEpisodeAction.Action;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
@@ -29,7 +41,10 @@ public class FeedItemMenuHandler {
 
     private static final String TAG = "FeedItemMenuHandler";
 
-    private FeedItemMenuHandler() {
+    //Object where we will store the list of queues
+    private static ArrayList<Queue> queueList = new ArrayList<>();
+
+    private FeedItemMenuHandler(Context context) {
     }
 
     /**
@@ -193,6 +208,72 @@ public class FeedItemMenuHandler {
                 }
                 break;
             case R.id.add_to_queue_item:
+                SharedPreferences sharedPreferences = context.getSharedPreferences("shared preferences", Context.MODE_PRIVATE);
+                Gson gson = new Gson();
+                String json = sharedPreferences.getString("queue list", null);
+                Type type = new TypeToken<ArrayList<Queue>>() {}.getType();
+                queueList = gson.fromJson(json, type);
+
+                if (queueList == null) {
+                    queueList = new ArrayList<>();
+                }
+
+                //Creating an alert dialog to allow users to choose a queue
+                AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
+                alertBuilder.setIcon(R.drawable.ic_launcher);
+                alertBuilder.setTitle("Select a queue");
+
+                //Build the array of names for the single choice
+                ArrayList<String> names = new ArrayList<String>();
+                for (Queue queue: queueList) {
+                    names.add(queue.getName());
+                }
+
+                //Set the single choice items in our alert dialog
+                alertBuilder.setSingleChoiceItems(names.toArray(new String[queueList.size()]), 0, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        int selectedPosition = ((AlertDialog)dialog).getListView().getCheckedItemPosition();
+                    }
+                });
+
+                alertBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                   @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                       dialog.dismiss();
+                   }
+                });
+
+                alertBuilder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int i) {
+
+                        //Fetch the selected queue
+                        ListView lw = ((AlertDialog)dialog).getListView();
+                        int pos = lw.getCheckedItemPosition();
+                        long id = selectedItem.getId();
+                        // If the list is empty, set a new one
+                        if (queueList.get(pos).getEpisodesIDList() == null) {
+                            List<Long> episodesIDList = new ArrayList<Long>();
+                            episodesIDList.add(id);
+                            queueList.get(pos).setEpisodesIDList(episodesIDList);
+                        } else {
+                            queueList.get(pos).getEpisodesIDList().add(id);
+                        }
+
+                        SharedPreferences sharedPreferences = context.getSharedPreferences("shared preferences", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        Gson gson = new Gson();
+                        String json = gson.toJson(queueList);
+                        editor.putString("queue list", json);
+                        editor.apply();
+
+                        dialog.dismiss();
+                    }
+                });
+                alertBuilder.show();
+
+                //Have to keep this so that we can remove the episode later
                 DBWriter.addQueueItem(context, selectedItem);
                 break;
             case R.id.remove_from_queue_item:
