@@ -106,8 +106,8 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
             PlaybackHistoryFragment.TAG,
             AddFeedFragment.TAG,
             StatisticsFragment.TAG,
-            NavListAdapter.SUBSCRIPTION_LIST_TAG,
-            CustomThemeFragment.TAG
+            CustomThemeFragment.TAG,
+            NavListAdapter.SUBSCRIPTION_LIST_TAG
     };
 
     private Toolbar toolbar;
@@ -306,14 +306,14 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
             case PlaybackHistoryFragment.TAG:
                 fragment = new PlaybackHistoryFragment();
                 break;
+            case AddFeedFragment.TAG:
+                fragment = new AddFeedFragment();
+                break;
             case CustomThemeFragment.TAG:
                 fragment = new CustomThemeFragment();
                 break;
             case StatisticsFragment.TAG:
                 fragment = new StatisticsFragment();
-                break;
-            case AddFeedFragment.TAG:
-                fragment = new AddFeedFragment();
                 break;
             case SubscriptionFragment.TAG:
                 SubscriptionFragment subscriptionFragment = new SubscriptionFragment();
