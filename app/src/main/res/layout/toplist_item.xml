@@ -5,8 +5,8 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:paddingTop="8dp"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp"
     android:paddingBottom="8dp"
     tools:background="@android:color/darker_gray">
 
@@ -19,7 +19,6 @@
         android:id="@+id/imgvCover"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_marginRight="8dp"
         android:adjustViewBounds="true"
         android:contentDescription="@string/cover_label"
         android:cropToPadding="false"
@@ -35,14 +34,15 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/imgvCover"
-        android:layout_marginLeft="20dp"
-        android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:maxLines="@integer/action_choose_expand_full_duration"
         tools:background="@android:color/holo_green_dark"
         android:text="Podcast title"
+
         style="@style/AntennaPod.TextView.ListItemPrimaryTitle2"
-        android:textSize="18sp"
+        android:textSize="14sp"
+        android:layout_gravity="center"
          />
         <TextView
             android:id="@+id/txtvUrl"
@@ -54,7 +54,8 @@
             android:ellipsize="middle"
             android:maxLines="2"
             tools:text="http://www.example.com/feed"
-            tools:background="@android:color/holo_green_dark"/>
+            tools:background="@android:color/holo_green_dark"
+            android:visibility="gone"/>
     </LinearLayout>
 
 
