@@ -309,9 +309,6 @@
         <Preference
             android:key="prefHtmlExport"
             android:title="@string/html_export_label"/>
-        <Preference
-            android:key="statistics"
-            android:title="@string/statistics_label"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/project_pref">
         <Preference

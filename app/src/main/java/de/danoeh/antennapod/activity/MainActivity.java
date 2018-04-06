@@ -61,7 +61,6 @@ import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.fragment.CustomThemeFragment;
 import de.danoeh.antennapod.fragment.ExternalPlayerFragment;
 import de.danoeh.antennapod.fragment.HomePageFragment;
-import de.danoeh.antennapod.fragment.CustomThemeFragment;
 import de.danoeh.antennapod.fragment.ItemlistFragment;
 import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
 import de.danoeh.antennapod.fragment.QueueListFragment;
@@ -106,10 +105,9 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
             DownloadsFragment.TAG,
             PlaybackHistoryFragment.TAG,
             AddFeedFragment.TAG,
-            NavListAdapter.SUBSCRIPTION_LIST_TAG,
+            StatisticsFragment.TAG,
             CustomThemeFragment.TAG,
-            StatisticsFragment.TAG
-
+            NavListAdapter.SUBSCRIPTION_LIST_TAG
     };
 
     private Toolbar toolbar;
@@ -308,20 +306,19 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
             case PlaybackHistoryFragment.TAG:
                 fragment = new PlaybackHistoryFragment();
                 break;
-            case StatisticsFragment.TAG:
-                fragment = new StatisticsFragment();
-                break;
             case AddFeedFragment.TAG:
                 fragment = new AddFeedFragment();
+                break;
+            case CustomThemeFragment.TAG:
+                fragment = new CustomThemeFragment();
+                break;
+            case StatisticsFragment.TAG:
+                fragment = new StatisticsFragment();
                 break;
             case SubscriptionFragment.TAG:
                 SubscriptionFragment subscriptionFragment = new SubscriptionFragment();
                 fragment = subscriptionFragment;
                 break;
-            case CustomThemeFragment.TAG:
-                 CustomThemeFragment customThemeFragment = new CustomThemeFragment();
-                 fragment = customThemeFragment;
-                 break;
             default:
                 // default to the queue
                 tag = QueueListFragment.TAG;
@@ -540,10 +537,9 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
                 case DownloadsFragment.TAG:
                 case PlaybackHistoryFragment.TAG:
                 case AddFeedFragment.TAG:
+                case CustomThemeFragment.TAG:
                 case StatisticsFragment.TAG:
                 case SubscriptionFragment.TAG:
-                    return retVal;
-                case CustomThemeFragment.TAG:
                     return retVal;
                 default:
                     requestCastButton(MenuItem.SHOW_AS_ACTION_NEVER);
