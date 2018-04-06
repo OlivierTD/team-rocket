@@ -54,6 +54,7 @@
     <attr name="ic_home" format="reference"/>
     <attr name="ic_custom_theme" format="reference"/>
     <attr name="ic_stats" format="reference"/>
+    <attr name="colorPrimaryDark" format="color"/>
 
 
     <!-- Used in itemdescription -->

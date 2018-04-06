@@ -363,7 +363,6 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 
 
     public void testCategorySearch (){
-
         //open nav bar
         openNavDrawer();
 
@@ -395,8 +394,41 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 
         //Download episode
         solo.clickOnText(solo.getString(R.string.download_label));
-
-
-
     }
+
+    public void testRandomPodcast(){
+        //Navigate to home page
+        openNavDrawer();
+        solo.clickOnText(solo.getString(R.string.homepage_label));
+
+        //Check random podcast category - cancel
+        solo.clickOnView(solo.getView(R.id.btnRandomPodcast));
+        solo.clickOnText(solo.getString(R.string.cancel));
+
+        //Check random podcast category - OK
+        solo.clickOnView(solo.getView(R.id.btnRandomPodcast));
+        solo.clickOnText(solo.getString(R.string.confirm));
+
+        solo.waitForView(R.id.subscriptionLayout);
+    }
+
+    public void testStatisticsFragment() {
+        // subscribe to a podcast
+        openNavDrawer();
+        solo.clickOnText(solo.getString(R.string.homepage_label));
+        solo.waitForView(R.id.gridViewHome);
+        solo.clickInList(1);
+        solo.waitForView(R.id.subscriptionLayout);
+        solo.clickOnButton(solo.getString(R.string.subscribe_label));
+
+        // look at it in the stats fragment
+        // twice to press the back button, then the hamburger button
+        openNavDrawer();
+        openNavDrawer();
+        solo.clickOnText(solo.getString(R.string.statistics_label));
+        solo.waitForView(R.id.statistics_list);
+
+        solo.clickInList(1);
+    }
+
 }
