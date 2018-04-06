@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import junit.framework.Assert;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,6 +25,7 @@ import de.danoeh.antennapod.fragment.CategorySearchFragment;
 
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -57,14 +60,14 @@ public class CategorySearchTest {
     @Mock
     Bundle mockBundle;
 
-    @Mock
-    AlertDialog alertDialog;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         csFrag = Mockito.mock(CategorySearchFragment.class);
         csFrag.setId("education");
+
+        builder = new AlertDialog.Builder(activity);
     }
 
     @After
@@ -86,17 +89,18 @@ public class CategorySearchTest {
     @Test
     public void builderTest() throws Exception{
         afFrag = mock(AddFeedFragment.class);
-        builder = new AlertDialog.Builder(activity);
         builder.setTitle("title");
         builder.setSingleChoiceItems(afFrag.getCategories(), 0, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                csFrag.setId("education");
+                assertEquals("education",csFrag.getIdvar());
                 activity.loadChildFragment(csFrag);
             }
         });
 
-        builder.show();
+        AlertDialog alertDialog = builder.create();
+
+        assertEquals(alertDialog, builder.show());
 
     }
 
