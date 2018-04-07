@@ -3,16 +3,20 @@ package de.danoeh.antennapod.fragment;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -29,15 +33,12 @@ import java.util.ArrayList;
 
 import de.danoeh.antennapod.R;
 
-public class QueueListFragment extends Fragment implements View.OnClickListener {
+public class QueueListFragment extends Fragment {
 
     public static final String TAG = "QueueListFragment";
 
     //List of queue fragments
     private ArrayList<Queue> queueList = new ArrayList<>();
-
-    //button to add queues to list
-    private Button addButton;
 
     // List view for the list of queues
     ListView lvQueue;
@@ -68,9 +69,6 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
 
         View root = inflater.inflate(R.layout.fragment_queue_list, container, false);
 
-        addButton = (Button) root.findViewById(R.id.addQueue);
-        addButton.setOnClickListener(this);
-
         // Adapter to convert the ArrayList to views
         queuesAdapter = new QueuesAdapter(getActivity(), queueList, this);
         // Attach the adapter to the ListView
@@ -80,12 +78,32 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
         return root;
     }
 
-    //adds a queue to the list of queues
+    //Shows the menu on top
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.queue_toolbar, menu);
+    }
+
+    //Allows to click the button on the menu on top
     @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
     @Override
-    public void onClick(View v) {
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.addQueue:
+                Log.d("Queue", "Adding queue");
+                addFromMenu();
+                return true;
 
-        //Create text field for our dialog box
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
+    //Method called in the onOptionsItemSelected in order add queues from the top menu
+    @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
+    public void addFromMenu(){
         final EditText enterName = new EditText(getActivity());
         enterName.setInputType(InputType.TYPE_CLASS_TEXT);
         enterName.setHint(R.string.enter_queue_name);
@@ -120,8 +138,8 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
             }
         });
 
-    }
 
+    }
     // Called when fragment is visible to the user
     @Override
     public void onStart() {
@@ -213,5 +231,6 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
         }
         return flag;
     }
+
 
 }

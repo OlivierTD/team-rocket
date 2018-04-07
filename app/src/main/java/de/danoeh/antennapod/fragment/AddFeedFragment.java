@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.fragment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -39,20 +41,17 @@ public class AddFeedFragment extends Fragment {
             etxtFeedurl.setText(args.getString(ARG_FEED_URL));
         }
 
-        Button butSearchITunes = (Button) root.findViewById(R.id.butSearchItunes);
         Button butBrowserGpoddernet = (Button) root.findViewById(R.id.butBrowseGpoddernet);
-        Button butSearchFyyd = (Button) root.findViewById(R.id.butSearchFyyd);
+        Button butCategorySearch = (Button) root.findViewById(R.id.butCategorySearch); //search button
         Button butOpmlImport = (Button) root.findViewById(R.id.butOpmlImport);
         Button butConfirm = (Button) root.findViewById(R.id.butConfirm);
 
         final MainActivity activity = (MainActivity) getActivity();
         activity.getSupportActionBar().setTitle(R.string.add_feed_label);
 
-        butSearchITunes.setOnClickListener(v -> activity.loadChildFragment(new ItunesSearchFragment()));
 
         butBrowserGpoddernet.setOnClickListener(v -> activity.loadChildFragment(new GpodnetMainFragment()));
 
-        butSearchFyyd.setOnClickListener(v -> activity.loadChildFragment(new FyydSearchFragment()));
 
         butOpmlImport.setOnClickListener(v -> startActivity(new Intent(getActivity(),
                 OpmlImportFromPathActivity.class)));
@@ -64,6 +63,40 @@ public class AddFeedFragment extends Fragment {
             startActivity(intent);
         });
 
+        butCategorySearch.setOnClickListener(v -> alertSimpleListView(activity));
+
         return root;
     }
+
+
+    public void alertSimpleListView(MainActivity activity) {
+
+        //array holding the categories
+        final CharSequence[] categories = { "Arts", "Comedy", "Education", "Kids & family", "Health", "TV & Film", "Music", "News & Politics", "Religion & Spirituality" ,"Science & Medicine", "Sports", "Technology", "Business", "Games & Hobbies", "Society & Culture", "Government & Organizations" };
+
+        //creating the alert dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
+
+        //setting its title
+        builder.setTitle("Select the category of your choice");
+
+        //setting the categories in the dialog
+        builder.setSingleChoiceItems(categories, 0, new DialogInterface.OnClickListener() {
+
+            //handle of when clicking on the desired category
+            public void onClick(DialogInterface dialog, int item) {
+                String category = (categories[item].toString());
+                category = String.format(category).replace('&', ' ');
+                category = String.format(category).replace(' ', '+');
+                CategorySearchFragment cat = new CategorySearchFragment();
+                cat.setId(category);
+                activity.loadChildFragment(cat);
+                dialog.dismiss();
+            }
+        });
+
+        builder.show();
+    }
+
+
 }

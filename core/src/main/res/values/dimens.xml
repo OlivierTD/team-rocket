@@ -33,6 +33,8 @@
     <dimen name="minimum_text_margin">8dp</dimen>
     <dimen name="listitem_icon_leftpadding">16dp</dimen>
     <dimen name="listitem_icon_rightpadding">16dp</dimen>
+    <dimen name="statistics_leftpadding">24dp</dimen>
+    <dimen name="statistics_rightpadding">24dp</dimen>
 
     <dimen name="audioplayer_playercontrols_length">48dp</dimen>
 
