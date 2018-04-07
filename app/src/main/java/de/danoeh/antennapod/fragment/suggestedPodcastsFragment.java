@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
@@ -21,6 +22,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
@@ -60,13 +62,13 @@ public class suggestedPodcastsFragment extends Fragment {
     private List<ItunesAdapter.Podcast> searchResults;
     private Subscription subscription;
 
-    private ItunesAdapter adapter;
+    private ItunesAdapter suggestedAdapter;
     private GridView gridView;
     private ProgressBar progressBar;
+    private TextView noSubbedPodcast;
 
     //array holding categories of the user
-    private ArrayList<String > userCategories = new ArrayList<String>();
-
+    private ArrayList<String> userCategories = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -74,15 +76,16 @@ public class suggestedPodcastsFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.suggested_podcasts, container, false);
         gridView = (GridView) view.findViewById(R.id.gridViewHome);
-        adapter = new ItunesAdapter(getActivity(), new ArrayList<>());
-        gridView.setAdapter(adapter);
+        suggestedAdapter = new ItunesAdapter(getActivity(), new ArrayList<>());
+        gridView.setAdapter(suggestedAdapter);
+        noSubbedPodcast = (TextView) view.findViewById(R.id.noSubbedPodcast);
 
+        noSubbedPodcast.setVisibility(View.GONE);
         //Show information about the podcast when the list item is clicked
         gridView.setOnItemClickListener((parent, view1, position, id) -> {
             ItunesAdapter.Podcast podcast = searchResults.get(position);
@@ -139,10 +142,7 @@ public class suggestedPodcastsFragment extends Fragment {
             }
         });
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
-
-
-        suggestedPodcastSearch(userCategories);
-
+        suggestedPodcastSearch();
 
         return view;
 
@@ -150,23 +150,23 @@ public class suggestedPodcastsFragment extends Fragment {
 
 
     //method that perform the search for all categories based on the users podcasts
-    public void suggestedPodcastSearch(ArrayList<String> userCat){
-
+    public void suggestedPodcastSearch(){
         //fetching the list of subscribed podcast by the user
         List<Feed> feed  = DBReader.getFeedList();//works
 
-        //add category of each feed to the ArrayList<String> userCategories
-        for(int i = 0; i < feed.size(); i++){
-            categorySearch(feed.get(i).getTitle());
-        }
+        if (!feed.isEmpty()) {
+            int min = 0;
+            int max = feed.size() - 1;
 
-        //search for podcasts for each categories
-        for(int i = 0; i<userCat.size(); i++){
-            search(userCat.get(i));
+            Random rand = new Random();
+            int num = (rand.nextInt((max - min) + 1) + 0);
+
+            //Suggest podcasts related to randomly selected subscribed podcast
+            categorySearch(feed.get(num).getTitle());
+        }else{
+            noSubbedPodcast.setVisibility(View.VISIBLE);
         }
     }
-
-
 
     /**
      * Replace adapter data with provided search results from SearchTask.
@@ -179,9 +179,9 @@ public class suggestedPodcastsFragment extends Fragment {
         if (result != null && result.size() > 0) {
             gridView.setVisibility(View.VISIBLE);
             for (ItunesAdapter.Podcast p : result) {
-                adapter.add(p);
+                suggestedAdapter.add(p);
             }
-            adapter.notifyDataSetInvalidated();
+            suggestedAdapter.notifyDataSetInvalidated();
         } else {
             gridView.setVisibility(View.GONE);
 
@@ -199,7 +199,14 @@ public class suggestedPodcastsFragment extends Fragment {
 
     public void search(String query) {
         Log.d("testing", "going in search");
-        adapter.clear();
+
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                suggestedAdapter.clear();
+            }
+        });
+
         searchResults = new ArrayList<>();
 
         if (subscription != null) {
@@ -281,10 +288,10 @@ public class suggestedPodcastsFragment extends Fragment {
         FYYDSearchResult = new ArrayList<>();
         boolean duplicate = false;
 
-        for (int i = 0; i < adapter.getCount(); i++)
-            tempAdapter.add(adapter.getItem(i));
+        for (int i = 0; i < suggestedAdapter.getCount(); i++)
+            tempAdapter.add(suggestedAdapter.getItem(i));
 
-        adapter.clear();
+        suggestedAdapter.clear();
 
         try {
             //Add search results podcast to data list
@@ -299,7 +306,7 @@ public class suggestedPodcastsFragment extends Fragment {
                     }
                     if (!duplicate)
                         searchResults.add(podcastFYYD);
-                        duplicate = false;
+                    duplicate = false;
                 }
             } else {
                 searchResults = emptyList();
@@ -308,9 +315,9 @@ public class suggestedPodcastsFragment extends Fragment {
             //Add search result podcast to view list
             for (ItunesAdapter.Podcast podcastFYYD : searchResults) {
                 FYYDSearchResult.add(podcastFYYD);
-                adapter.add(podcastFYYD);
+                suggestedAdapter.add(podcastFYYD);
             }
-            adapter.notifyDataSetInvalidated();
+            suggestedAdapter.notifyDataSetInvalidated();
             gridView.setVisibility(!searchResults.isEmpty() ? View.VISIBLE : View.GONE);
         } catch (Exception e) {
             System.out.println("Error: " + e);
@@ -318,7 +325,7 @@ public class suggestedPodcastsFragment extends Fragment {
     }
 
     //search category
-    public void categorySearch(String title123) {
+    public void categorySearch(String categoryTitle) {
         Log.d("feed","never going here");
         if (subscription != null) {
             subscription.unsubscribe();
@@ -326,7 +333,7 @@ public class suggestedPodcastsFragment extends Fragment {
 
         subscription = rx.Observable.create((Observable.OnSubscribe<List<ItunesAdapter.Podcast>>) subscriber -> {
 
-            String API_URL = "https://itunes.apple.com/search?media=podcast&term="+title123;
+            String API_URL = "https://itunes.apple.com/search?media=podcast&term=" + categoryTitle;
 
             //Spaces in the query need to be replaced with '+' character.
             String formattedUrl = String.format(API_URL).replace(' ', '+');
@@ -346,13 +353,16 @@ public class suggestedPodcastsFragment extends Fragment {
                     //get primaryGenreName from the given category
                     for (int i = 0; i < j.length(); i++) {
                         JSONObject podcastJson = j.getJSONObject(i);
-                        String titre = podcastJson.optString("collectionName", "");
+                        String JSONTitle = podcastJson.optString("collectionName", "");
                         Log.d("feed","ok??");
-                        if(titre.equalsIgnoreCase(title123)){
+                        if(JSONTitle.equalsIgnoreCase(categoryTitle)){
                             Log.d("feed","is it going here ");
-                            String cate = podcastJson.optString("primaryGenreName", "");
-                            userCategories.add(cate);
-                            Log.d("feed","is cate a variable " +cate);
+                            String category = podcastJson.optString("primaryGenreName", "");
+
+                            //Perform search on random subbed podcast category
+                            search(category);
+
+                            Log.d("feed","is cate a variable " + category);
                             break;
                         }
                     }
@@ -372,8 +382,4 @@ public class suggestedPodcastsFragment extends Fragment {
                     Log.e(TAG, Log.getStackTraceString(error));
                 });
     }
-
 }
-
-
-
