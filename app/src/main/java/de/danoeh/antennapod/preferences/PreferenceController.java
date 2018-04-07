@@ -59,7 +59,6 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.MediaplayerActivity;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.activity.PreferenceActivityGingerbread;
-import de.danoeh.antennapod.activity.StatisticsActivity;
 import de.danoeh.antennapod.asynctask.ExportWorker;
 import de.danoeh.antennapod.core.BuildConfig;
 import de.danoeh.antennapod.core.export.ExportWriter;
@@ -94,7 +93,6 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
     private static final String PREF_AUTO_FLATTR_PREFS = "prefAutoFlattrPrefs";
     private static final String PREF_OPML_EXPORT = "prefOpmlExport";
     private static final String PREF_HTML_EXPORT = "prefHtmlExport";
-    private static final String STATISTICS = "statistics";
     private static final String PREF_ABOUT = "prefAbout";
     private static final String PREF_CHOOSE_DATA_DIR = "prefChooseDataDir";
     private static final String AUTO_DL_PREF_SCREEN = "prefAutoDownloadSettings";
@@ -182,12 +180,6 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         ui.findPreference(PreferenceController.PREF_ABOUT).setOnPreferenceClickListener(
                 preference -> {
                     activity.startActivity(new Intent(activity, AboutActivity.class));
-                    return true;
-                }
-        );
-        ui.findPreference(PreferenceController.STATISTICS).setOnPreferenceClickListener(
-                preference -> {
-                    activity.startActivity(new Intent(activity, StatisticsActivity.class));
                     return true;
                 }
         );
