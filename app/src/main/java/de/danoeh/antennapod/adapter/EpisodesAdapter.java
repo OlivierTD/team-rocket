@@ -79,7 +79,6 @@ public class EpisodesAdapter extends BaseAdapter {
         TextView pubDate = (TextView) convertView.findViewById(R.id.txtvPubDate);
         TextView progressLeft = (TextView) convertView.findViewById(R.id.txtvProgressLeft);
         TextView progressRight = (TextView) convertView.findViewById(R.id.txtvProgressRight);
-        //ImageView dragHandle = (ImageView) convertView.findViewById(R.id.drag_handle);
         ImageView cover = (ImageView) convertView.findViewById(R.id.imgvCover);
         ImageButton butSecondary = (ImageButton) convertView.findViewById(R.id.butSecondaryAction);
         ProgressBar progressBar = (ProgressBar) convertView.findViewById(R.id.progressBar);
