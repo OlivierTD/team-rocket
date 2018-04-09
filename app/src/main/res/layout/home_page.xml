@@ -33,29 +33,16 @@
             android:text="AntennaPod"
             android:textSize="25dp"/>
 
-        <fragment
-            android:id="@+id/randomEpisodeFragment"
-            android:name="de.danoeh.antennapod.fragment.RandomPodcastFragment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="75dp" />
 
         <fragment
             android:id="@+id/topListFragment"
             android:name="de.danoeh.antennapod.fragment.ToplistFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/randomEpisodeFragment"/>
+            android:layout_below="@+id/textView"/>
 
-        <fragment
-            android:id="@+id/centralizedFragment"
-            android:name="de.danoeh.antennapod.fragment.CentralizedSearchFragment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/textView"
-            android:layout_alignStart="@+id/textView"
-            android:layout_below="@+id/topListFragment"
-            android:layout_marginTop="22dp" />
+
+
 
 
     </RelativeLayout>
