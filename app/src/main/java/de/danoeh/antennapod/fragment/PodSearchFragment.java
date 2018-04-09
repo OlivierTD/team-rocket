@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
 
 
 /**
@@ -31,6 +32,10 @@ public class PodSearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View root = inflater.inflate(R.layout.centralizedsearch_results, container, false);
+        if (getActivity() instanceof MainActivity) {
+            ((MainActivity) getActivity()).getSupportActionBar().setTitle("Search for a Podcast");
+        }
+
 
         return root;
     }

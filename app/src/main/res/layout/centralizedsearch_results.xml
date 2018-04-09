@@ -5,14 +5,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/AntennaPod.TextView.Heading"
+        android:text="Not sure what to listen to?"
+        android:gravity="center"
+        android:layout_marginTop="10dp"/>
+
     <fragment
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:name="de.danoeh.antennapod.fragment.RandomPodcastFragment"
         android:id="@+id/randomEpisodeFrag"
+
         />
 
     <fragment
+        android:text="Search Results"
         android:id="@+id/centralizedFragment"
         android:name="de.danoeh.antennapod.fragment.CentralizedSearchFragment"
         android:layout_width="match_parent"
