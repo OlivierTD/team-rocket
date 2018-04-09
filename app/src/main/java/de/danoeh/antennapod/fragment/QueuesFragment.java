@@ -192,12 +192,7 @@ public class QueuesFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.remove_from_inner_queue:
                 long id = feedItems.get(info.position).getId();
-                SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("shared preferences", Context.MODE_PRIVATE);
-                Gson gson = new Gson();
-                String json = sharedPreferences.getString("queue list", null);
-                Type type = new TypeToken<ArrayList<Queue>>() {
-                }.getType();
-                queueList = gson.fromJson(json, type);
+                loadList();
 
                 if (queueList == null) {
                     queueList = new ArrayList<>();
@@ -208,27 +203,49 @@ public class QueuesFragment extends Fragment {
                         queue.getEpisodesIDList().remove(id);
                     }
                 }
-                SharedPreferences sharedPreferences2 = this.getActivity().getSharedPreferences("shared preferences", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences2.edit();
-                Gson gson2 = new Gson();
-                String json2 = gson.toJson(queueList);
-                editor.putString("queue list", json2);
-                editor.apply();
+                storeList();
                 this.loadItems();
-                QueuesFragment queuesFragment = new QueuesFragment();
-                queuesFragment.setQueue(queue);
-                int transid = this.getId();
-                FragmentTransaction fragmentTransaction = this.getFragmentManager().beginTransaction();
-                fragmentTransaction.replace(transid, queuesFragment);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
-
+                refreshFrag();
                 return true;
             default:
                 return super.onContextItemSelected(item);
         }
+    }
 
+    // Attempts to load data from local storage
+    private void loadList() {
+        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("shared preferences", Context.MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString("queue list", null);
+        Type type = new TypeToken<ArrayList<Queue>>() {
+        }.getType();
+        queueList = gson.fromJson(json, type);
 
+        if (queueList == null) {
+            queueList = new ArrayList<>();
+        }
+    }
+
+    // Attempts to persist data to local storage
+    private void storeList() {
+        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("shared preferences", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(queueList);
+        editor.putString("queue list", json);
+        editor.apply();
+
+    }
+
+    //refreshes fragment by create a new fragment and performing transaction
+    private void refreshFrag() {
+        QueuesFragment queuesFragment = new QueuesFragment();
+        queuesFragment.setQueue(queue);
+        int transid = this.getId();
+        FragmentTransaction fragmentTransaction = this.getFragmentManager().beginTransaction();
+        fragmentTransaction.replace(transid, queuesFragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 
 
