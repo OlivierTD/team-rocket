@@ -273,9 +273,6 @@ public class FeedItemMenuHandler {
                     }
                 });
                 alertBuilder.show();
-
-                //Have to keep this so that we can remove the episode later
-                DBWriter.addQueueItem(context, selectedItem);
                 break;
             case R.id.remove_from_queue_item:
 
@@ -303,9 +300,6 @@ public class FeedItemMenuHandler {
                 String json3 = gson3.toJson(queueList);
                 editor.putString("queue list", json3);
                 editor.apply();
-                
-                //keeping this since its important for the tagging
-                DBWriter.removeQueueItem(context, selectedItem, true);
                 break;
             case R.id.add_to_favorites_item:
                 DBWriter.addFavoriteItem(selectedItem);
