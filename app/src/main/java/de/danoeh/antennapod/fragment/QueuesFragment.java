@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -214,6 +215,14 @@ public class QueuesFragment extends Fragment {
                 editor.putString("queue list", json2);
                 editor.apply();
                 this.loadItems();
+                QueuesFragment queuesFragment = new QueuesFragment();
+                queuesFragment.setQueue(queue);
+                int transid = this.getId();
+                FragmentTransaction fragmentTransaction = this.getFragmentManager().beginTransaction();
+                fragmentTransaction.replace(transid, queuesFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+
                 return true;
             default:
                 return super.onContextItemSelected(item);
