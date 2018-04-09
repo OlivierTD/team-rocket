@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.fragment;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.os.Build;
 import android.os.Bundle;
@@ -9,7 +11,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.view.ContextMenu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.widget.AdapterView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,6 +60,10 @@ public class QueuesFragment extends Fragment {
     // List of feed items
     private List<FeedItem> feedItems;
 
+    //Object where we will store the list of queues, important for context menu
+    private static ArrayList<Queue> queueList = new ArrayList<>();
+
+
     // Called to do initial creation of fragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,6 +78,8 @@ public class QueuesFragment extends Fragment {
         ((MainActivity) getActivity()).getSupportActionBar().setTitle(queue.getName());
         View root = inflater.inflate(R.layout.fragment_queue, container, false);
         lvEpisodes = (ListView) root.findViewById(R.id.list_view_episodes);
+        registerForContextMenu(lvEpisodes);
+
         return root;
     }
 
@@ -103,7 +120,9 @@ public class QueuesFragment extends Fragment {
         this.queue = queue;
     }
 
-    public Queue getQueue() { return this.queue; }
+    public Queue getQueue() {
+        return this.queue;
+    }
 
     private void onFragmentLoaded() {
         if (episodesAdapter == null) {
@@ -111,7 +130,7 @@ public class QueuesFragment extends Fragment {
             episodesAdapter = new EpisodesAdapter(activity, this.feedItems);
             lvEpisodes.setAdapter(episodesAdapter);
         }
-        if(feedItems == null || feedItems.size() == 0) {
+        if (feedItems == null || feedItems.size() == 0) {
             lvEpisodes.setVisibility(View.GONE);
         } else {
             lvEpisodes.setVisibility(View.VISIBLE);
@@ -131,13 +150,13 @@ public class QueuesFragment extends Fragment {
 
     private void loadItems() {
         Log.d(TAG, "loadItems()");
-        if(subscription != null) {
+        if (subscription != null) {
             subscription.unsubscribe();
         }
 
         subscription = Observable.fromCallable(() -> {
             List<FeedItem> items = new ArrayList<>();
-            for (long id: queue.getEpisodesIDList()) {
+            for (long id : queue.getEpisodesIDList()) {
                 Log.d("generateEpisodeList:", "This is in generateEpisodeList");
                 items.add(DBReader.getFeedItem(id));
             }
@@ -149,11 +168,59 @@ public class QueuesFragment extends Fragment {
                     if (result != null) {
                         this.feedItems = result;
                         this.onFragmentLoaded();
-                        if(episodesAdapter != null) {
+                        if (episodesAdapter != null) {
                             episodesAdapter.notifyDataSetChanged();
                         }
                     }
                 });
     }
+
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        AdapterView.AdapterContextMenuInfo adapterInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        MenuInflater inflater = getActivity().getMenuInflater();
+        inflater.inflate(R.menu.inner_queue_menu, menu);
+    }
+
+
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item
+                .getMenuInfo();
+
+        switch (item.getItemId()) {
+            case R.id.remove_from_inner_queue:
+                long id = feedItems.get(info.position).getId();
+                SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("shared preferences", Context.MODE_PRIVATE);
+                Gson gson = new Gson();
+                String json = sharedPreferences.getString("queue list", null);
+                Type type = new TypeToken<ArrayList<Queue>>() {
+                }.getType();
+                queueList = gson.fromJson(json, type);
+
+                if (queueList == null) {
+                    queueList = new ArrayList<>();
+                }
+                for (Queue queues : queueList) {
+                    if (queues.getName().equalsIgnoreCase(this.queue.getName())) {
+                        queues.getEpisodesIDList().remove(id);
+                        queue.getEpisodesIDList().remove(id);
+                    }
+                }
+                SharedPreferences sharedPreferences2 = this.getActivity().getSharedPreferences("shared preferences", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences2.edit();
+                Gson gson2 = new Gson();
+                String json2 = gson.toJson(queueList);
+                editor.putString("queue list", json2);
+                editor.apply();
+                this.loadItems();
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
+
+
+    }
+
 
 }
