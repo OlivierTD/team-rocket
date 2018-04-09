@@ -80,7 +80,7 @@ public class QueueListFragment extends Fragment {
 
     //Shows the menu on top
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.queue_toolbar, menu);
     }
@@ -103,7 +103,7 @@ public class QueueListFragment extends Fragment {
 
     //Method called in the onOptionsItemSelected in order add queues from the top menu
     @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
-    public void addFromMenu(){
+    public void addFromMenu() {
         final EditText enterName = new EditText(getActivity());
         enterName.setInputType(InputType.TYPE_CLASS_TEXT);
         enterName.setHint(R.string.enter_queue_name);
@@ -127,11 +127,9 @@ public class QueueListFragment extends Fragment {
             public void onClick(View v) {
                 if (enterName.getText().toString().equals("")) {
                     Toast.makeText(getActivity(), R.string.enter_valid_name, Toast.LENGTH_SHORT).show();
-                }
-                else if (nameExists(enterName.getText().toString())) {
+                } else if (nameExists(enterName.getText().toString())) {
                     Toast.makeText(getActivity(), R.string.name_already_exists, Toast.LENGTH_SHORT).show();
-                }
-                else {
+                } else {
                     createNewQueue(enterName.getText().toString());
                     enterNameDialog.dismiss();
                 }
@@ -140,6 +138,7 @@ public class QueueListFragment extends Fragment {
 
 
     }
+
     // Called when fragment is visible to the user
     @Override
     public void onStart() {
@@ -154,6 +153,8 @@ public class QueueListFragment extends Fragment {
         super.onResume();
         //attempts to load from local storage
         this.loadList();
+        queuesAdapter.updateQueueList(this.queueList);
+
     }
 
     // Called when the fragment is no longer resumed
@@ -198,7 +199,8 @@ public class QueueListFragment extends Fragment {
         SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("shared preferences", Context.MODE_PRIVATE);
         Gson gson = new Gson();
         String json = sharedPreferences.getString("queue list", null);
-        Type type = new TypeToken<ArrayList<Queue>>() {}.getType();
+        Type type = new TypeToken<ArrayList<Queue>>() {
+        }.getType();
         queueList = gson.fromJson(json, type);
 
         if (queueList == null) {
@@ -217,7 +219,7 @@ public class QueueListFragment extends Fragment {
 
     }
 
-    public void setQueuesAdapter(QueuesAdapter queuesAdapter){
+    public void setQueuesAdapter(QueuesAdapter queuesAdapter) {
         this.queuesAdapter = queuesAdapter;
     }
 
