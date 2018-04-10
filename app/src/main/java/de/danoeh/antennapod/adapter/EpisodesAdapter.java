@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.adapter;
 
 
+import android.content.ClipData;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -53,11 +54,12 @@ public class EpisodesAdapter extends RecyclerView.Adapter<EpisodesAdapter.ViewHo
     private final int playingBackGroundColor;
     private final int normalBackGroundColor;
 
-    private List<Downloader> downloaderList;
+    private ItemAccess itemAccess;
 
-    public EpisodesAdapter(MainActivity mainActivity, List<FeedItem> episodesList) {
+    public EpisodesAdapter(MainActivity mainActivity, List<FeedItem> episodesList, ItemAccess itemAccess) {
         this.mainActivity = new WeakReference<>(mainActivity);
         this.episodesList = episodesList;
+        this.itemAccess = itemAccess;
         this.actionButtonUtils = new ActionButtonUtils(mainActivity);
         this.actionButtonCallback = new DefaultActionButtonCallback(mainActivity);
 
@@ -238,4 +240,11 @@ public class EpisodesAdapter extends RecyclerView.Adapter<EpisodesAdapter.ViewHo
         this.episodesList.addAll(episodesList);
         this.notifyDataSetChanged();
     }
+
+    public interface ItemAccess {
+        long getItemDownloadedBytes(FeedItem item);
+        long getItemDownloadSize(FeedItem item);
+        int getItemDownloadProgressPercent(FeedItem item);
+    }
+
 }

@@ -20,18 +20,20 @@ import java.util.List;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.EpisodesAdapter;
+import de.danoeh.antennapod.adapter.QueueRecyclerAdapter;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
-import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.Queue;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
+import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.greenrobot.event.EventBus;
 import rx.Observable;
@@ -151,7 +153,7 @@ public class QueuesFragment extends Fragment {
     private void onFragmentLoaded() {
         if (episodesAdapter == null) {
             MainActivity activity = (MainActivity) getActivity();
-            episodesAdapter = new EpisodesAdapter(activity, this.feedItems);
+            episodesAdapter = new EpisodesAdapter(activity, this.feedItems, this.itemAccess);
             episodesAdapter.setHasStableIds(true);
             rvEpisodes.setAdapter(episodesAdapter);
         }
@@ -256,5 +258,49 @@ public class QueuesFragment extends Fragment {
 
     private final MenuItemUtils.UpdateRefreshMenuItemChecker updateRefreshMenuItemChecker =
             () -> DownloadService.isRunning && DownloadRequester.getInstance().isDownloadingFeeds();
+
+    private EpisodesAdapter.ItemAccess itemAccess = new EpisodesAdapter.ItemAccess() {
+
+        @Override
+        public long getItemDownloadedBytes(FeedItem item) {
+            if (downloaderList != null) {
+                for (Downloader downloader : downloaderList) {
+                    if (downloader.getDownloadRequest().getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA
+                            && downloader.getDownloadRequest().getFeedfileId() == item.getMedia().getId()) {
+                        Log.d(TAG, "downloaded bytes: " + downloader.getDownloadRequest().getSoFar());
+                        return downloader.getDownloadRequest().getSoFar();
+                    }
+                }
+            }
+            return 0;
+        }
+
+        @Override
+        public long getItemDownloadSize(FeedItem item) {
+            if (downloaderList != null) {
+                for (Downloader downloader : downloaderList) {
+                    if (downloader.getDownloadRequest().getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA
+                            && downloader.getDownloadRequest().getFeedfileId() == item.getMedia().getId()) {
+                        Log.d(TAG, "downloaded size: " + downloader.getDownloadRequest().getSize());
+                        return downloader.getDownloadRequest().getSize();
+                    }
+                }
+            }
+            return 0;
+        }
+        @Override
+        public int getItemDownloadProgressPercent(FeedItem item) {
+            if (downloaderList != null) {
+                for (Downloader downloader : downloaderList) {
+                    if (downloader.getDownloadRequest().getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA
+                            && downloader.getDownloadRequest().getFeedfileId() == item.getMedia().getId()) {
+                        return downloader.getDownloadRequest().getProgressPercent();
+                    }
+                }
+            }
+            return 0;
+        }
+
+    };
 
 }
