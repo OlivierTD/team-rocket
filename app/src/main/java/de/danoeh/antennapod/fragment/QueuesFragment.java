@@ -20,10 +20,10 @@ import java.util.List;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.EpisodesAdapter;
-import de.danoeh.antennapod.adapter.QueueRecyclerAdapter;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
+import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
@@ -33,7 +33,6 @@ import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
-import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.greenrobot.event.EventBus;
 import rx.Observable;
@@ -246,7 +245,12 @@ public class QueuesFragment extends Fragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     if (result != null) {
-                        this.feedItems = result;
+                        if (this.feedItems == null) {
+                            this.feedItems = result;
+                        } else {
+                            this.feedItems.clear();
+                            this.feedItems.addAll(result);
+                        }
                         this.onFragmentLoaded();
                         if(episodesAdapter != null) {
                             episodesAdapter.notifyDataSetChanged();
@@ -302,5 +306,40 @@ public class QueuesFragment extends Fragment {
         }
 
     };
+
+    public void onEventMainThread(QueueEvent event) {
+        Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
+        if(queue == null || episodesAdapter == null) {
+            return;
+        }
+        switch(event.action) {
+            case ADDED:
+                feedItems.add(event.position, event.item);
+                episodesAdapter.notifyItemInserted(event.position);
+                break;
+            case SET_QUEUE:
+                feedItems.clear();
+                feedItems.addAll(event.items);
+                episodesAdapter.notifyDataSetChanged();
+                break;
+            case REMOVED:
+            case IRREVERSIBLE_REMOVED:
+                int position = FeedItemUtil.indexOfItemWithId(feedItems, event.item.getId());
+                feedItems.remove(position);
+                episodesAdapter.notifyItemRemoved(position);
+                break;
+            case CLEARED:
+                feedItems.clear();
+                episodesAdapter.notifyDataSetChanged();
+                break;
+            case SORTED:
+                feedItems = event.items;
+                episodesAdapter.notifyDataSetChanged();
+                break;
+            case MOVED:
+                return;
+        }
+        onFragmentLoaded();
+    }
 
 }
