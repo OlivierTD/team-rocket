@@ -22,8 +22,6 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.EpisodesAdapter;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
-import de.danoeh.antennapod.core.event.FeedItemEvent;
-import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
@@ -50,6 +48,7 @@ public class QueuesFragment extends Fragment {
     private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED |
             EventDistributor.UNREAD_ITEMS_UPDATE | // sent when playback position is reset
             EventDistributor.PLAYER_STATUS_UPDATE;
+
     private Subscription subscription;
 
     // List view for the list of episodes
@@ -59,13 +58,12 @@ public class QueuesFragment extends Fragment {
     // Adapter for the list of episodes
     private EpisodesAdapter episodesAdapter;
 
-    private List<Downloader> downloaderList;
-
     // Each fragment has a queue object to display
     public Queue queue;
 
     // List of feed items
     private List<FeedItem> feedItems;
+    private List<Downloader> downloaderList;
 
     private boolean isUpdatingFeeds = false;
 
@@ -129,10 +127,6 @@ public class QueuesFragment extends Fragment {
         }
     }
 
-    private void resetViewState() {
-        episodesAdapter = null;
-    }
-
     /*
     * Called when the view previously created by onCreateView has been detached from the fragment
     * Allows the fragment to clean up resources associated with its View
@@ -149,6 +143,10 @@ public class QueuesFragment extends Fragment {
 
     public Queue getQueue() { return this.queue; }
 
+    private void resetViewState() {
+        episodesAdapter = null;
+    }
+
     private void onFragmentLoaded() {
         if (episodesAdapter == null) {
             MainActivity activity = (MainActivity) getActivity();
@@ -162,61 +160,6 @@ public class QueuesFragment extends Fragment {
             rvEpisodes.setVisibility(View.VISIBLE);
         }
 
-    }
-
-    private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
-        @Override
-        public void update(EventDistributor eventDistributor, Integer arg) {
-            if ((arg & EVENTS) != 0) {
-                Log.d(TAG, "arg: " + arg);
-                loadItems();
-                if (isUpdatingFeeds != updateRefreshMenuItemChecker.isRefreshing()) {
-                    getActivity().supportInvalidateOptionsMenu();
-                }
-            }
-        }
-    };
-
-    /**
-     * Called in Android UI's main thread, will update corresponding FeedItem whenever
-     * there is an EventBus post call
-     * @param event
-     */
-    public void onEventMainThread(FeedItemEvent event) {
-        Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
-        if(queue == null || episodesAdapter == null) {
-            return;
-        }
-        for(int i=0, size = event.items.size(); i < size; i++) {
-            FeedItem item = event.items.get(i);
-            int pos = FeedItemUtil.indexOfItemWithId(feedItems, item.getId());
-            if(pos >= 0) {
-                feedItems.remove(pos);
-                feedItems.add(pos, item);
-                episodesAdapter.notifyItemChanged(pos);
-            }
-        }
-    }
-
-    /**
-     * Called in Android UI's main thread
-     * @param event
-     */
-    public void onEventMainThread(DownloadEvent event) {
-        Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
-        DownloaderUpdate update = event.update;
-        downloaderList = update.downloaders;
-        if (isUpdatingFeeds != update.feedIds.length > 0) {
-            getActivity().supportInvalidateOptionsMenu();
-        }
-        if (episodesAdapter != null && update.mediaIds.length > 0) {
-            for (long mediaId : update.mediaIds) {
-                int pos = FeedItemUtil.indexOfItemWithMediaId(feedItems, mediaId);
-                if (pos >= 0) {
-                    episodesAdapter.notifyItemChanged(pos);
-                }
-            }
-        }
     }
 
     /**
@@ -236,7 +179,6 @@ public class QueuesFragment extends Fragment {
         subscription = Observable.fromCallable(() -> {
             List<FeedItem> items = new ArrayList<>();
             for (long id: queue.getEpisodesIDList()) {
-                Log.d("generateEpisodeList:", "This is in generateEpisodeList");
                 items.add(DBReader.getFeedItem(id));
             }
             return items;
@@ -259,19 +201,57 @@ public class QueuesFragment extends Fragment {
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
+    /**
+     * Whenever a user presses play or pause, it will update the episode's view
+     */
+    private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
+        @Override
+        public void update(EventDistributor eventDistributor, Integer arg) {
+            if ((arg & EVENTS) != 0) {
+                Log.d(TAG, "arg: " + arg);
+                loadItems();
+                if (isUpdatingFeeds != updateRefreshMenuItemChecker.isRefreshing()) {
+                    getActivity().supportInvalidateOptionsMenu();
+                }
+            }
+        }
+    };
+
+    /**
+     * EventBus: whenever there is a DownloadEvent posted in the code.
+     * @param event
+     */
+    public void onEventMainThread(DownloadEvent event) {
+        DownloaderUpdate update = event.update;
+        downloaderList = update.downloaders;
+        if (isUpdatingFeeds != update.feedIds.length > 0) {
+            getActivity().supportInvalidateOptionsMenu();
+        }
+        if (episodesAdapter != null && update.mediaIds.length > 0) {
+            for (long mediaId : update.mediaIds) {
+                int pos = FeedItemUtil.indexOfItemWithMediaId(feedItems, mediaId);
+                if (pos >= 0) {
+                    episodesAdapter.notifyItemChanged(pos);
+                }
+            }
+        }
+    }
 
     private final MenuItemUtils.UpdateRefreshMenuItemChecker updateRefreshMenuItemChecker =
             () -> DownloadService.isRunning && DownloadRequester.getInstance().isDownloadingFeeds();
 
+    /**
+     * Interface is used to update an episode whenever it is downloaded.
+     * The following methods will retrieve needed information that are used
+     * in the EpisodesAdapter
+     */
     private EpisodesAdapter.ItemAccess itemAccess = new EpisodesAdapter.ItemAccess() {
-
         @Override
         public long getItemDownloadedBytes(FeedItem item) {
             if (downloaderList != null) {
                 for (Downloader downloader : downloaderList) {
                     if (downloader.getDownloadRequest().getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA
                             && downloader.getDownloadRequest().getFeedfileId() == item.getMedia().getId()) {
-                        Log.d(TAG, "downloaded bytes: " + downloader.getDownloadRequest().getSoFar());
                         return downloader.getDownloadRequest().getSoFar();
                     }
                 }
@@ -285,7 +265,6 @@ public class QueuesFragment extends Fragment {
                 for (Downloader downloader : downloaderList) {
                     if (downloader.getDownloadRequest().getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA
                             && downloader.getDownloadRequest().getFeedfileId() == item.getMedia().getId()) {
-                        Log.d(TAG, "downloaded size: " + downloader.getDownloadRequest().getSize());
                         return downloader.getDownloadRequest().getSize();
                     }
                 }
@@ -306,40 +285,5 @@ public class QueuesFragment extends Fragment {
         }
 
     };
-
-    public void onEventMainThread(QueueEvent event) {
-        Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
-        if(queue == null || episodesAdapter == null) {
-            return;
-        }
-        switch(event.action) {
-            case ADDED:
-                feedItems.add(event.position, event.item);
-                episodesAdapter.notifyItemInserted(event.position);
-                break;
-            case SET_QUEUE:
-                feedItems.clear();
-                feedItems.addAll(event.items);
-                episodesAdapter.notifyDataSetChanged();
-                break;
-            case REMOVED:
-            case IRREVERSIBLE_REMOVED:
-                int position = FeedItemUtil.indexOfItemWithId(feedItems, event.item.getId());
-                feedItems.remove(position);
-                episodesAdapter.notifyItemRemoved(position);
-                break;
-            case CLEARED:
-                feedItems.clear();
-                episodesAdapter.notifyDataSetChanged();
-                break;
-            case SORTED:
-                feedItems = event.items;
-                episodesAdapter.notifyDataSetChanged();
-                break;
-            case MOVED:
-                return;
-        }
-        onFragmentLoaded();
-    }
 
 }

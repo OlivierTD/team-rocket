@@ -1,7 +1,5 @@
 package de.danoeh.antennapod.adapter;
 
-
-import android.content.ClipData;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -18,8 +16,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.joanzapata.iconify.Iconify;
 
-import org.jetbrains.annotations.Nullable;
-
 import java.lang.ref.WeakReference;
 import java.util.List;
 
@@ -29,7 +25,6 @@ import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.DateUtils;
@@ -93,6 +88,9 @@ public class EpisodesAdapter extends RecyclerView.Adapter<EpisodesAdapter.ViewHo
         return episodesList.size();
     }
 
+    /**
+     * Inner class that will deal with view generation for the items in the list
+     */
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private FrameLayout container;
@@ -121,6 +119,10 @@ public class EpisodesAdapter extends RecyclerView.Adapter<EpisodesAdapter.ViewHo
             v.setTag(this);
         }
 
+        /**
+         * Function that binds data to every view in the list
+         * @param item FeedItem object that will be used for data to bind to the view
+         */
         public void bind(FeedItem item) {
             this.feedItem = item;
 
@@ -232,13 +234,6 @@ public class EpisodesAdapter extends RecyclerView.Adapter<EpisodesAdapter.ViewHo
             }
         }
         return count;
-    }
-
-    // Used to update the ArrayList with a new ArrayList and make it display properly
-    public void updateEpisodeList(List<FeedItem> episodesList) {
-        this.episodesList.clear();
-        this.episodesList.addAll(episodesList);
-        this.notifyDataSetChanged();
     }
 
     public interface ItemAccess {
