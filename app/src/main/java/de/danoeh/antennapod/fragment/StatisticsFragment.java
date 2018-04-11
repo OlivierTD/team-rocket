@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.fragment;
 
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -191,6 +193,13 @@ public class StatisticsFragment extends Fragment implements AdapterView.OnItemCl
                         stats.timePlayedCountAll : stats.timePlayed),
                 Converter.shortLocalizedDuration(getActivity(), stats.time)));
         dialog.setPositiveButton(android.R.string.ok, null);
-        dialog.show();
+        dialog.setNeutralButton("Reset", null);
+        final AlertDialog alertDialog = dialog.create();
+        alertDialog.show();
+
+        Button resetButton = alertDialog.getButton(DialogInterface.BUTTON_NEUTRAL);
+        resetButton.setOnClickListener(v -> {
+            Log.e("Let's see if this works", "It does!!!!!!!!!!");
+        });
     }
 }
