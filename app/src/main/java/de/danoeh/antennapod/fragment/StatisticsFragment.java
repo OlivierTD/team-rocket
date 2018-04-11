@@ -193,13 +193,19 @@ public class StatisticsFragment extends Fragment implements AdapterView.OnItemCl
                         stats.timePlayedCountAll : stats.timePlayed),
                 Converter.shortLocalizedDuration(getActivity(), stats.time)));
         dialog.setPositiveButton(android.R.string.ok, null);
-        dialog.setNeutralButton("Reset", null);
+        dialog.setNeutralButton(R.string.reset_statistics, null);
+
         final AlertDialog alertDialog = dialog.create();
         alertDialog.show();
 
         Button resetButton = alertDialog.getButton(DialogInterface.BUTTON_NEUTRAL);
         resetButton.setOnClickListener(v -> {
-            Log.e("Let's see if this works", "It does!!!!!!!!!!");
+            stats.episodesStartedIncludingMarked = 0;
+            stats.episodesStarted = 0;
+            stats.timePlayed = 0;
+            stats.timePlayedCountAll = 0;
+
+            alertDialog.dismiss();
         });
     }
 }
