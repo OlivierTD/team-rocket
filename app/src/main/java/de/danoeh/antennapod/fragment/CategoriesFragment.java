@@ -21,38 +21,39 @@ public class CategoriesFragment extends Fragment {
     private ArrayAdapter listAdapter;
     private GridView gridView;
     private ArrayList<String>categories = new ArrayList<>(Arrays.asList("Arts", "Comedy", "Education", "Kids & family", "Health", "TV & Film", "Music", "News & Politics", "Religion & Spirituality" ,"Science & Medicine", "Sports", "Technology", "Business", "Games & Hobbies", "Society & Culture", "Government & Organizations" ));
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
 
-
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.list, container, false);
-        Log.d("lol", "in the creation of the view ");
+
+        //getting the current activity
         final MainActivity activity = (MainActivity) getActivity();
-        Log.d("lol", "Main activity stuff");
 
-        Log.d("lol", "going to gridview stuff");
         gridView = (GridView) view.findViewById(R.id.listgridview);
-        Log.d("lol", "end gridview stuff");
 
+        //creation and initialization of the arrayadapter used
         listAdapter = new ArrayAdapter(getActivity(),R.layout.category_list,R.id.text1, categories);
-        Log.d("lol", "does it go here ");
 
+        //setting the adapter
         gridView.setAdapter(listAdapter);
 
+        //defining the behavior of the app when a certain item in the list is selected
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View v, int i, long l) {
+                //creating the fragment
                 CategorySearchFragment cs = new CategorySearchFragment();
+                //setting the new fragment's attribute
                 cs.setId(categories.get(i));
                 activity.loadChildFragment(cs);
             }
         });
-
         return view;
     }
-
 }

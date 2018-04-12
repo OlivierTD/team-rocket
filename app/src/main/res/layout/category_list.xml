@@ -20,7 +20,6 @@
         tools:background="@android:color/holo_green_dark"
         tools:src="@drawable/ic_stat_antenna_default" />
 
-
         <TextView
             android:id="@+id/text1"
             style="@style/AntennaPod.TextView.ListItemPrimaryTitle2"
