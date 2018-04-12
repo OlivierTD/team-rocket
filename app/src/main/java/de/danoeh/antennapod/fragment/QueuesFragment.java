@@ -44,6 +44,7 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
+import de.danoeh.antennapod.service.QueueStoreService;
 import de.greenrobot.event.EventBus;
 import rx.Observable;
 import rx.Subscription;
@@ -230,26 +231,10 @@ public class QueuesFragment extends Fragment {
         }
     }
 
-    // Attempts to load data from local storage
-    private ArrayList<Queue> retrieveList() {
-        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("shared preferences", Context.MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = sharedPreferences.getString("queue list", null);
-        Type type = new TypeToken<ArrayList<Queue>>() {
-        }.getType();
-        ArrayList<Queue> list;
-        list = gson.fromJson(json, type);
-
-        if (list == null) {
-            list = new ArrayList<>();
-        }
-
-        return list;
-
-    }
-
     private void removeId(long Id){
-        queueList = retrieveList();
+        QueueStoreService store = new QueueStoreService();
+
+        queueList = store.loadList(this.getActivity(), queueList);
 
         if (queueList == null) {
             queueList = new ArrayList<>();
@@ -260,12 +245,7 @@ public class QueuesFragment extends Fragment {
                 queue.getEpisodesIDList().remove(Id);
             }
         }
-        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("shared preferences", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(queueList);
-        editor.putString("queue list", json);
-        editor.apply();
+        store.storeList(this.getActivity(), queueList);
     }
 
 

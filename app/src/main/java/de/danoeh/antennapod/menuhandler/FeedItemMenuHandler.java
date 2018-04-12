@@ -277,31 +277,6 @@ public class FeedItemMenuHandler {
                 break;
             case R.id.remove_from_queue_item:
 
-                SharedPreferences sharedPreferences2 = context.getSharedPreferences("shared preferences", Context.MODE_PRIVATE);
-                Gson gson2 = new Gson();
-                String json2 = sharedPreferences2.getString("queue list", null);
-                Type type2 = new TypeToken<ArrayList<Queue>>() {
-                }.getType();
-                queueList = gson2.fromJson(json2, type2);
-
-                if (queueList == null) {
-                    queueList = new ArrayList<>();
-                }
-                long id = selectedItem.getId();
-                for (Queue queue : queueList) {
-                    boolean removed = queue.getEpisodesIDList().remove(id);
-                    if (removed == true) {
-                        break;
-                    }
-                }
-
-                SharedPreferences sharedPreferences3 = context.getSharedPreferences("shared preferences", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences3.edit();
-                Gson gson3 = new Gson();
-                String json3 = gson3.toJson(queueList);
-                editor.putString("queue list", json3);
-                editor.apply();
-
                 //keeping this since its important for removing the tagging in older versions
                 DBWriter.removeQueueItem(context, selectedItem, true);
                 break;

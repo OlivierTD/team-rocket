@@ -32,6 +32,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.service.QueueStoreService;
 
 public class QueueListFragment extends Fragment {
 
@@ -39,6 +40,8 @@ public class QueueListFragment extends Fragment {
 
     //List of queue fragments
     private ArrayList<Queue> queueList = new ArrayList<>();
+
+    private QueueStoreService store = new QueueStoreService();
 
     // List view for the list of queues
     ListView lvQueue;
@@ -55,7 +58,8 @@ public class QueueListFragment extends Fragment {
         setHasOptionsMenu(true); // Fragment would like to participate in populating the options menu
 
         //attempts to load from local storage
-        this.loadList();
+        queueList = store.loadList(this.getActivity(),queueList);
+
 
     }
 
@@ -144,7 +148,7 @@ public class QueueListFragment extends Fragment {
     public void onStart() {
         super.onStart();
         //attempts to load from local storage
-        this.loadList();
+        queueList = store.loadList(this.getActivity(),queueList);
     }
 
     // Called when fragment is visible to the user and actively running
@@ -152,7 +156,7 @@ public class QueueListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         //attempts to load from local storage
-        this.loadList();
+        queueList = store.loadList(this.getActivity(),queueList);
         queuesAdapter.updateQueueList(this.queueList);
 
     }
@@ -161,7 +165,7 @@ public class QueueListFragment extends Fragment {
     @Override
     public void onPause() {
         //attempts to store in local storage
-        this.storeList();
+        store.storeList(this.getActivity(), queueList);
         super.onPause();
     }
 
@@ -172,7 +176,7 @@ public class QueueListFragment extends Fragment {
     @Override
     public void onDestroyView() {
         //attempts to store in local storage
-        this.storeList();
+        store.storeList(this.getActivity(), queueList);
         super.onDestroyView();
     }
 
@@ -194,30 +198,6 @@ public class QueueListFragment extends Fragment {
         this.queueList.remove(position);
     }
 
-    // Attempts to load data from local storage
-    private void loadList() {
-        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("shared preferences", Context.MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = sharedPreferences.getString("queue list", null);
-        Type type = new TypeToken<ArrayList<Queue>>() {
-        }.getType();
-        queueList = gson.fromJson(json, type);
-
-        if (queueList == null) {
-            queueList = new ArrayList<>();
-        }
-    }
-
-    // Attempts to persist data to local storage
-    private void storeList() {
-        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("shared preferences", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(queueList);
-        editor.putString("queue list", json);
-        editor.apply();
-
-    }
 
     public void setQueuesAdapter(QueuesAdapter queuesAdapter) {
         this.queuesAdapter = queuesAdapter;
