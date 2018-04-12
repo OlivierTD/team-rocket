@@ -25,6 +25,7 @@ public class HomePageFragment extends Fragment{
 
     private TextView txtHome;
     public static final String TAG = "HomePageFragment";
+    private static View root;
 
     public HomePageFragment(){
 
@@ -39,10 +40,19 @@ public class HomePageFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View root = inflater.inflate(R.layout.home_page, container, false);
-
+        if (getActivity() instanceof MainActivity) {
+            ((MainActivity) getActivity()).getSupportActionBar().setTitle("Home");
+        }
+        try {
+            root = inflater.inflate(R.layout.home_page, container, false);
+            return root;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
         return root;
     }
+
 
     //inflates the top menu
     @Override
@@ -63,6 +73,7 @@ public class HomePageFragment extends Fragment{
                 PodSearchFragment fragment = new PodSearchFragment();
                 manager.beginTransaction()
                         .replace(R.id.main_view,fragment,fragment.getTag())
+                        .addToBackStack(null)
                         .commit();
 
                 return true;
