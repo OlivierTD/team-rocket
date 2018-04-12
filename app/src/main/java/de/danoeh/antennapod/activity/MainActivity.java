@@ -56,6 +56,7 @@ import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.dialog.RatingDialog;
 import de.danoeh.antennapod.dialog.RenameFeedDialog;
 import de.danoeh.antennapod.fragment.AddFeedFragment;
+import de.danoeh.antennapod.fragment.CategoriesFragment;
 import de.danoeh.antennapod.fragment.DownloadsFragment;
 import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.fragment.CustomThemeFragment;
@@ -98,6 +99,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
     public static final String SAVE_TITLE = "title";
 
     public static final String[] NAV_DRAWER_TAGS = {
+            CategoriesFragment.TAG,
             HomePageFragment.TAG,
             QueueListFragment.TAG,
             EpisodesFragment.TAG,
@@ -291,6 +293,9 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         Log.d(TAG, "loadFragment(tag: " + tag + ", args: " + args + ")");
         Fragment fragment = null;
         switch (tag) {
+            case CategoriesFragment.TAG:
+                fragment = new CategoriesFragment();
+                break;
             case HomePageFragment.TAG:
                 fragment = new HomePageFragment();
                 break;
@@ -529,6 +534,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         boolean retVal = super.onCreateOptionsMenu(menu);
         if (Flavors.FLAVOR == Flavors.PLAY) {
             switch (getLastNavFragment()) {
+                case CategoriesFragment.TAG:
                 case HomePageFragment.TAG:
                 case QueueListFragment.TAG:
                 case EpisodesFragment.TAG:

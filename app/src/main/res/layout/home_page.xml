@@ -47,6 +47,33 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/randomEpisodeFragment"/>
 
+
+        <!--<fragment-->
+            <!--android:id="@+id/categoriesFragment"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:name="de.danoeh.antennapod.fragment.CategoriesFragment"-->
+            <!--android:layout_below="@+id/centralizedFragment"/>-->
+
+        <ListView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:layout_gravity="center"
+            android:choiceMode="singleChoice"
+            tools:listitem="@layout/category_list"
+            android:fastScrollEnabled="true"
+            android:verticalSpacing="8dp"
+            android:horizontalSpacing="8dp"
+            android:clipToPadding="false"
+            android:columnWidth="400dp"
+            android:numColumns="auto_fit"
+            android:layout_marginTop="60dp"
+            android:paddingBottom="@dimen/list_vertical_padding"
+            android:paddingTop="@dimen/list_vertical_padding"
+            android:stretchMode="columnWidth"
+            android:layout_below="@+id/centralizedFragment">
+        </ListView>
         <fragment
             android:id="@+id/centralizedFragment"
             android:name="de.danoeh.antennapod.fragment.CentralizedSearchFragment"

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <!--<ListView-->
+        <!--android:id="@+id/liste"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center_horizontal"-->
+        <!--android:choiceMode="singleChoice"-->
+        <!--android:fastScrollEnabled="true">-->
+    <!--</ListView>-->
+
+    <ListView
+        android:id="@+id/listy"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:layout_gravity="center"
+        android:choiceMode="singleChoice"
+        tools:listitem="@layout/category_list"
+        android:fastScrollEnabled="true"
+        android:verticalSpacing="8dp"
+        android:horizontalSpacing="8dp"
+        android:clipToPadding="false"
+        android:columnWidth="400dp"
+        android:numColumns="auto_fit"
+        android:layout_marginTop="60dp"
+        android:paddingBottom="@dimen/list_vertical_padding"
+        android:paddingTop="@dimen/list_vertical_padding"
+        android:stretchMode="columnWidth">
+    </ListView>
+
+
+    <ImageView
+        android:id="@+id/image1"
+        android:layout_width="@dimen/thumbnail_length_itemlist"
+        android:layout_height="@dimen/thumbnail_length_itemlist"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="8dp"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/cover_label"
+        android:cropToPadding="true"
+        android:scaleType="fitXY"
+        tools:background="@android:color/holo_green_dark"
+        tools:src="@drawable/ic_stat_antenna_default" />
+
+    <TextView
+        android:id="@+id/text1"
+        style="@style/AntennaPod.TextView.ListItemPrimaryTitle2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="2"
+        tools:background="@android:color/holo_green_dark"
+        tools:text="Category name" />
+</LinearLayout>
