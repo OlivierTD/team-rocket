@@ -145,7 +145,6 @@ public class suggestedPodcastsFragment extends Fragment {
         suggestedPodcastSearch();
 
         return view;
-
     }
 
 
@@ -200,18 +199,11 @@ public class suggestedPodcastsFragment extends Fragment {
     public void search(String query) {
         Log.d("testing", "going in search");
 
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                suggestedAdapter.clear();
-            }
-        });
-
-        searchResults = new ArrayList<>();
-
         if (subscription != null) {
             subscription.unsubscribe();
         }
+
+        searchResults = new ArrayList<>();
 
         subscription = rx.Observable.create((Observable.OnSubscribe<List<ItunesAdapter.Podcast>>) subscriber -> {
             String encodedQuery = null;
@@ -330,6 +322,8 @@ public class suggestedPodcastsFragment extends Fragment {
         if (subscription != null) {
             subscription.unsubscribe();
         }
+
+        suggestedAdapter.clear();
 
         subscription = rx.Observable.create((Observable.OnSubscribe<List<ItunesAdapter.Podcast>>) subscriber -> {
 
