@@ -219,8 +219,9 @@ public class QueuesFragment extends Fragment {
 
         switch (item.getItemId()) {
             case R.id.remove_from_inner_queue:
-                long id = feedItems.get(info.position).getId();
-                feedItems.remove(info.position);
+                FeedItem selectedItem = episodesAdapter.getSelectedItem();
+                long id = selectedItem.getId();
+                feedItems.remove(episodesAdapter.getSelectedItem());
                 removeId(id);
                 episodesAdapter.notifyDataSetChanged();
                 return true;
