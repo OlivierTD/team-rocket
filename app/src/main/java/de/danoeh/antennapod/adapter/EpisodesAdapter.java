@@ -57,7 +57,6 @@ public class EpisodesAdapter extends RecyclerView.Adapter<EpisodesAdapter.ViewHo
         this.itemAccess = itemAccess;
         this.actionButtonUtils = new ActionButtonUtils(mainActivity);
         this.actionButtonCallback = new DefaultActionButtonCallback(mainActivity);
-
         if(UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark) {
             playingBackGroundColor = ContextCompat.getColor(mainActivity, R.color.highlight_dark);
         } else {
@@ -102,7 +101,6 @@ public class EpisodesAdapter extends RecyclerView.Adapter<EpisodesAdapter.ViewHo
         private ImageView cover;
         private ImageButton butSecondary;
         private ProgressBar progressBar;
-
         private FeedItem feedItem;
 
         public ViewHolder(View v) {
@@ -125,95 +123,131 @@ public class EpisodesAdapter extends RecyclerView.Adapter<EpisodesAdapter.ViewHo
          */
         public void bind(FeedItem item) {
             this.feedItem = item;
-
-            placeholder.setText(feedItem.getFeed().getTitle());
-
-            title.setText(feedItem.getTitle());
-
             FeedMedia media = feedItem.getMedia();
 
-            String pubDateStr = DateUtils.formatAbbrev(mainActivity.get(), feedItem.getPubDate());
-            int index = 0;
-            if (countMatches(pubDateStr, ' ') == 1 || countMatches(pubDateStr, ' ') == 2) {
-                index = pubDateStr.lastIndexOf(' ');
-            } else if (countMatches(pubDateStr, '.') == 2) {
-                index = pubDateStr.lastIndexOf('.');
-            } else if (countMatches(pubDateStr, '-') == 2) {
-                index = pubDateStr.lastIndexOf('-');
-            } else if (countMatches(pubDateStr, '/') == 2) {
-                index = pubDateStr.lastIndexOf('/');
-            }
-            if (index > 0) {
-                pubDateStr = pubDateStr.substring(0, index + 1).trim() + "\n" + pubDateStr.substring(index + 1);
-            }
-            pubDate.setText(pubDateStr);
+            this.generalBind();
 
             if (media != null) {
                 final boolean isDownloadingMedia = DownloadRequester.getInstance().isDownloadingFile(media);
                 FeedItem.State state = item.getState();
                 if (isDownloadingMedia) {
-                    progressLeft.setText(Converter.byteToString(itemAccess.getItemDownloadedBytes(item)));
-                    if(itemAccess.getItemDownloadSize(item) > 0) {
-                        progressRight.setText(Converter.byteToString(itemAccess.getItemDownloadSize(item)));
-                    } else {
-                        progressRight.setText(Converter.byteToString(media.getSize()));
-                    }
-                    progressBar.setProgress(itemAccess.getItemDownloadProgressPercent(item));
-                    progressBar.setVisibility(View.VISIBLE);
+                   downloadingBind(media);
                 }
                 else if (state == FeedItem.State.PLAYING || state == FeedItem.State.IN_PROGRESS) {
-                    if (media.getDuration() > 0) {
-                        int progress = (int) (100.0 * media.getPosition() / media.getDuration());
-                        progressBar.setProgress(progress);
-                        progressBar.setVisibility(View.VISIBLE);
-                        progressLeft.setText(Converter.getDurationStringLong(media.getPosition()));
-                        progressRight.setText(Converter.getDurationStringLong(media.getDuration()));
-                    }
+                    playingBind(media);
                 }
                 else {
-                        if (media.getSize() > 0) {
-                            progressLeft.setText(Converter.byteToString(media.getSize()));
-                        } else if (NetworkUtils.isDownloadAllowed() && !media.checkedOnSizeButUnknown()) {
-                            progressLeft.setText("{fa-spinner}");
-                            Iconify.addIcons(progressLeft);
-                            NetworkUtils.getFeedMediaSizeObservable(media)
-                                    .subscribe(
-                                            size -> {
-                                                if (size > 0) {
-                                                    progressLeft.setText(Converter.byteToString(size));
-                                                } else {
-                                                    progressLeft.setText("");
-                                                }
-                                            }, error -> {
-                                                progressLeft.setText("");
-                                                Log.e(TAG, Log.getStackTraceString(error));
-                                            });
-                        } else {
-                            progressLeft.setText("");
-                        }
-                        progressRight.setText(Converter.getDurationStringLong(media.getDuration()));
-                        progressBar.setVisibility(View.GONE);
+                    noActionBind(media);
                 }
-                    if (media.isCurrentlyPlaying()) {
-                        container.setBackgroundColor(playingBackGroundColor);
-                    } else {
-                        container.setBackgroundColor(normalBackGroundColor);
-                    }
+                if (media.isCurrentlyPlaying()) {
+                    container.setBackgroundColor(playingBackGroundColor);
+                } else {
+                    container.setBackgroundColor(normalBackGroundColor);
                 }
-
-                actionButtonUtils.configureActionButton(butSecondary, feedItem, true);
-                butSecondary.setFocusable(false);
-                butSecondary.setTag(feedItem);
-                butSecondary.setOnClickListener(secondaryActionListener);
-
-                Glide.with(mainActivity.get())
-                        .load(feedItem.getImageLocation())
-                        .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                        .fitCenter()
-                        .dontAnimate()
-                        .into(new CoverTarget(feedItem.getFeed().getImageLocation(), placeholder, cover, mainActivity.get()));
             }
         }
+
+        /**
+         * Changes the date to the proper format for the view
+         * @param date string of the date to be formatted
+         * @return formatted date
+         */
+        private String dateFormat(String date) {
+            int index = 0;
+            if (countMatches(date, ' ') == 1 || countMatches(date, ' ') == 2) {
+                index = date.lastIndexOf(' ');
+            } else if (countMatches(date, '.') == 2) {
+                index = date.lastIndexOf('.');
+            } else if (countMatches(date, '-') == 2) {
+                index = date.lastIndexOf('-');
+            } else if (countMatches(date, '/') == 2) {
+                index = date.lastIndexOf('/');
+            }
+            if (index > 0) {
+                date = date.substring(0, index + 1).trim() + "\n" + date.substring(index + 1);
+            }
+            return date;
+        }
+
+        /**
+         * Binds to the view that always occurs
+         */
+        private void generalBind() {
+            String pubDateStr = DateUtils.formatAbbrev(mainActivity.get(), feedItem.getPubDate());
+            placeholder.setText(feedItem.getFeed().getTitle());
+            title.setText(feedItem.getTitle());
+            pubDate.setText(dateFormat(pubDateStr));
+            actionButtonUtils.configureActionButton(butSecondary, feedItem, true);
+            butSecondary.setFocusable(false);
+            butSecondary.setTag(feedItem);
+            butSecondary.setOnClickListener(secondaryActionListener);
+
+            Glide.with(mainActivity.get())
+                    .load(feedItem.getImageLocation())
+                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                    .fitCenter()
+                    .dontAnimate()
+                    .into(new CoverTarget(feedItem.getFeed().getImageLocation(), placeholder, cover, mainActivity.get()));
+        }
+
+        /**
+         * Binds data when its downloading
+         * @param media provides data to bind
+         */
+        private void downloadingBind(FeedMedia media) {
+            progressLeft.setText(Converter.byteToString(itemAccess.getItemDownloadedBytes(this.feedItem)));
+            if(itemAccess.getItemDownloadSize(this.feedItem) > 0) {
+                progressRight.setText(Converter.byteToString(itemAccess.getItemDownloadSize(this.feedItem)));
+            } else {
+                progressRight.setText(Converter.byteToString(media.getSize()));
+            }
+            progressBar.setProgress(itemAccess.getItemDownloadProgressPercent(this.feedItem));
+            progressBar.setVisibility(View.VISIBLE);
+        }
+
+        /**
+         * Binds data when an episode is playing
+         * @param media provides data to bind
+         */
+        private void playingBind(FeedMedia media) {
+            if (media.getDuration() > 0) {
+                int progress = (int) (100.0 * media.getPosition() / media.getDuration());
+                progressBar.setProgress(progress);
+                progressBar.setVisibility(View.VISIBLE);
+                progressLeft.setText(Converter.getDurationStringLong(media.getPosition()));
+                progressRight.setText(Converter.getDurationStringLong(media.getDuration()));
+            }
+        }
+
+        /**
+         * Binds data when no action occurs. In example, when we load the views for the first time
+         * @param media provides data to bind
+         */
+        private void noActionBind(FeedMedia media) {
+            if (media.getSize() > 0) {
+                progressLeft.setText(Converter.byteToString(media.getSize()));
+            } else if (NetworkUtils.isDownloadAllowed() && !media.checkedOnSizeButUnknown()) {
+                progressLeft.setText("{fa-spinner}");
+                Iconify.addIcons(progressLeft);
+                NetworkUtils.getFeedMediaSizeObservable(media)
+                        .subscribe(
+                                size -> {
+                                    if (size > 0) {
+                                        progressLeft.setText(Converter.byteToString(size));
+                                    } else {
+                                        progressLeft.setText("");
+                                    }
+                                }, error -> {
+                                    progressLeft.setText("");
+                                    Log.e(TAG, Log.getStackTraceString(error));
+                                });
+            } else {
+                progressLeft.setText("");
+            }
+            progressRight.setText(Converter.getDurationStringLong(media.getDuration()));
+            progressBar.setVisibility(View.GONE);
+        }
+    }
 
     private View.OnClickListener secondaryActionListener = new View.OnClickListener() {
         @Override
@@ -223,6 +257,12 @@ public class EpisodesAdapter extends RecyclerView.Adapter<EpisodesAdapter.ViewHo
         }
     };
 
+    /**
+     * Used by date format
+     * @param str the string to be counted on
+     * @param ch the character to verify the amounts
+     * @return the total count of the characters ch found in the string str
+     */
     private static int countMatches(final CharSequence str, final char ch) {
         if (TextUtils.isEmpty(str)) {
             return 0;

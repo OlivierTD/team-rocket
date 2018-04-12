@@ -109,7 +109,7 @@ public class QueuesFragment extends Fragment {
     public void onResume() {
         super.onResume();
         rvEpisodes.setAdapter(episodesAdapter);
-        this.loadItems();
+        this.fetchItems();
         // Register an EventListener observer to the EventDistributor
         EventDistributor.getInstance().register(contentUpdate);
         // Register to the bus, will handle threads
@@ -163,18 +163,12 @@ public class QueuesFragment extends Fragment {
     }
 
     /**
-     * Loads items for the adapter from the Database asynchronously.
+     * Fetch items for the adapter from the Database asynchronously.
      */
-    private void loadItems() {
-        Log.d(TAG, "loadItems()");
+    private void fetchItems() {
         if(subscription != null) {
             subscription.unsubscribe();
         }
-
-        if (feedItems == null) {
-            rvEpisodes.setVisibility(View.GONE);
-        }
-
         // Uses RxAndroid to fetch data asynchronously
         subscription = Observable.fromCallable(() -> {
             List<FeedItem> items = new ArrayList<>();
@@ -187,19 +181,26 @@ public class QueuesFragment extends Fragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     if (result != null) {
-                        if (this.feedItems == null) {
-                            this.feedItems = result;
-                        } else {
-                            this.feedItems.clear();
-                            this.feedItems.addAll(result);
-                        }
-                        this.onFragmentLoaded();
-                        if(episodesAdapter != null) {
-                            episodesAdapter.notifyDataSetChanged();
-                        }
+                        loadData(result);
                     }
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
+
+    /**
+     * Loads items that were fetch asynchronously by fetchItems
+     * @param items items to load in the adapter
+     */
+    private void loadData(List<FeedItem> items) {
+        if (this.feedItems == null) {
+            this.feedItems = items;
+        } else {
+            this.feedItems.clear();
+            this.feedItems.addAll(items);
+        }
+        this.onFragmentLoaded();
+        episodesAdapter.notifyDataSetChanged();
+    }
+
 
     /**
      * Whenever a user presses play or pause, it will update the episode's view
@@ -209,7 +210,7 @@ public class QueuesFragment extends Fragment {
         public void update(EventDistributor eventDistributor, Integer arg) {
             if ((arg & EVENTS) != 0) {
                 Log.d(TAG, "arg: " + arg);
-                loadItems();
+                fetchItems();
                 if (isUpdatingFeeds != updateRefreshMenuItemChecker.isRefreshing()) {
                     getActivity().supportInvalidateOptionsMenu();
                 }
