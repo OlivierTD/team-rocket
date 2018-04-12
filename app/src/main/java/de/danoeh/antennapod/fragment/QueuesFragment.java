@@ -9,11 +9,16 @@ import android.support.annotation.RequiresApi;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.support.v7.widget.SimpleItemAnimator;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
@@ -105,6 +110,8 @@ public class QueuesFragment extends Fragment {
         rvEpisodes.setLayoutManager(rvLayoutManager);
         rvEpisodes.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity()).build());
         rvEpisodes.setHasFixedSize(true);
+        registerForContextMenu(rvEpisodes);
+
         return root;
     }
 
@@ -112,7 +119,6 @@ public class QueuesFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        this.loadItems();
     }
 
     // Called when fragment is visible to the user and actively running
