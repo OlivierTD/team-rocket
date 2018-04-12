@@ -2,16 +2,13 @@ package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
 import android.os.Build;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import java.util.List;
+import java.util.ArrayList;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
@@ -25,14 +22,14 @@ import de.danoeh.antennapod.fragment.CategorySearchFragment;
 public class ListAdapter extends ArrayAdapter<String> {
 
 
-    private final static String TAG = "EpisodesAdapter";
+    private final static String TAG = "ListAdapter";
 
     private Context context;
-    private List<String> catNames;
+    private ArrayList<String> catNames;
     private static LayoutInflater inflater = null;
 
 
-    public ListAdapter(Context context, List<String> categories) {
+    public ListAdapter(Context context, ArrayList<String> categories) {
         super(context, 0, categories);
         this.context = context;
         this.catNames = categories;
@@ -60,7 +57,6 @@ public class ListAdapter extends ArrayAdapter<String> {
         category.setVisibility(View.VISIBLE);
 
         category.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
             @Override
             public void onClick(View view) {
                 CategorySearchFragment cs = new CategorySearchFragment();

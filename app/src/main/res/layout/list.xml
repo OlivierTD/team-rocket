@@ -11,8 +11,8 @@
     android:paddingBottom="8dp"
     tools:background="@android:color/darker_gray">
 
-    <ListView
-        android:id="@+id/liste"
+    <GridView
+        android:id="@+id/listgridview"
         android:layout_width="match_parent"
         android:layout_height="500dp"
         android:layout_gravity="center"
@@ -24,43 +24,12 @@
         android:clipToPadding="false"
         android:columnWidth="400dp"
         android:numColumns="auto_fit"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="10dp"
         android:paddingBottom="@dimen/list_vertical_padding"
         android:paddingTop="@dimen/list_vertical_padding"
-        android:stretchMode="columnWidth">
-    </ListView>
-
-    <ImageView
-        android:id="@+id/image1"
-        android:layout_width="@dimen/thumbnail_length_itemlist"
-        android:layout_height="@dimen/thumbnail_length_itemlist"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginRight="8dp"
-        android:adjustViewBounds="true"
-        android:contentDescription="@string/cover_label"
-        android:cropToPadding="true"
-        android:scaleType="fitXY"
-        tools:background="@android:color/holo_green_dark"
-        tools:src="@drawable/ic_stat_antenna_default" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/image1"
-        android:layout_centerVertical="true"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/text1"
-            style="@style/AntennaPod.TextView.ListItemPrimaryTitle2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxLines="2"
-            tools:background="@android:color/holo_green_dark"
-            tools:text="Category name" />
-
-    </LinearLayout>
+        android:nestedScrollingEnabled="true"
+        >
+    </GridView>
 
 
 </RelativeLayout>

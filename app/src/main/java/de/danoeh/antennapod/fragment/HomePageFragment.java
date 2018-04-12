@@ -16,6 +16,7 @@ public class HomePageFragment extends Fragment{
 
     private TextView txtHome;
     public static final String TAG = "HomePageFragment";
+    private View root;
 
     public HomePageFragment(){
 
@@ -30,8 +31,13 @@ public class HomePageFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View root = inflater.inflate(R.layout.home_page, container, false);
+        try {
+            root = inflater.inflate(R.layout.home_page, container, false);
 
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         return root;
     }
 
