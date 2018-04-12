@@ -82,9 +82,9 @@
         android:text="Color 3" />
 
     <Button
-        android:id="@+id/custom_theme_create"
+        android:id="@+id/custom_theme_set"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Create!" />
+        android:text="Set!" />
 
 </LinearLayout>

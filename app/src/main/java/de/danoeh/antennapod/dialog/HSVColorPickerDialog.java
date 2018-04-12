@@ -1,28 +1,26 @@
 package de.danoeh.antennapod.dialog;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Point;
+import android.graphics.Rect;
+import android.util.AttributeSet;
+
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 
-        import android.app.AlertDialog;
-        import android.content.Context;
-        import android.content.DialogInterface;
-        import android.graphics.Bitmap;
-        import android.graphics.Bitmap.Config;
-        import android.graphics.Canvas;
-        import android.graphics.Color;
-        import android.graphics.Paint;
-        import android.graphics.Point;
-        import android.graphics.Rect;
-        import android.util.AttributeSet;
-
-
-
-        import android.view.MotionEvent;
-        import android.view.View;
-        import android.view.ViewGroup.LayoutParams;
-        import android.widget.FrameLayout;
-        import android.widget.RelativeLayout;
-
-
+// class borrowed from : https://github.com/jesperborgstrup/buzzingandroid/blob/master/src/com/buzzingandroid/ui/HSVColorPickerDialog.java
+// usage : https://github.com/jesperborgstrup/buzzingandroid
 public class HSVColorPickerDialog extends AlertDialog {
 
     private static final int PADDING_DP = 20;

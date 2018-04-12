@@ -17,7 +17,7 @@ import de.danoeh.antennapod.dialog.HSVColorPickerDialog;
 public class CustomThemeFragment extends Fragment implements View.OnClickListener {
 
     public static final String TAG = "CustomThemeFragment";
-
+    private Button firstColor, secondColor, thirdColor;
 
     //Mandatory Constructor
     public CustomThemeFragment() {
@@ -38,9 +38,9 @@ public class CustomThemeFragment extends Fragment implements View.OnClickListene
         //cpd.setNoColorButton( R.string.no_color );
 
         View v = inflater.inflate(R.layout.custom_theme_fragment, container, false);
-        Button firstColor = (Button) v.findViewById(R.id.custom_theme_color_1);
-        Button secondColor = (Button) v.findViewById(R.id.custom_theme_color_2);
-        Button thirdColor = (Button) v.findViewById(R.id.custom_theme_color_3);
+        firstColor = (Button) v.findViewById(R.id.custom_theme_color_1);
+        secondColor = (Button) v.findViewById(R.id.custom_theme_color_2);
+        thirdColor = (Button) v.findViewById(R.id.custom_theme_color_3);
 
         firstColor.setOnClickListener(this);
         secondColor.setOnClickListener(this);
@@ -58,7 +58,11 @@ public class CustomThemeFragment extends Fragment implements View.OnClickListene
                 HSVColorPickerDialog cpd1 = new HSVColorPickerDialog(getActivity(), 0xFF4488CC, new HSVColorPickerDialog.OnColorSelectedListener() {
                     @Override
                     public void colorSelected(Integer color) {
-                        // Do something with the selected color
+                        //if a color was selected
+                        if(color != null){
+                            // Do something with the selected color
+                            firstColor.setBackgroundColor(color);
+                        }
                     }
                 });
                 cpd1.setTitle("Pick your first color!");
@@ -70,7 +74,11 @@ public class CustomThemeFragment extends Fragment implements View.OnClickListene
                 HSVColorPickerDialog cpd2 = new HSVColorPickerDialog(getActivity(), 0xFF4488CC, new HSVColorPickerDialog.OnColorSelectedListener() {
                     @Override
                     public void colorSelected(Integer color) {
-                        // Do something with the selected color
+                        //if a color was selected
+                        if(color != null){
+                            // Do something with the selected color
+                            secondColor.setBackgroundColor(color);
+                        }
                     }
                 });
                 cpd2.setTitle("Pick your second color!");
@@ -82,7 +90,11 @@ public class CustomThemeFragment extends Fragment implements View.OnClickListene
                 HSVColorPickerDialog cpd3 = new HSVColorPickerDialog(getActivity(), 0xFF4488CC, new HSVColorPickerDialog.OnColorSelectedListener() {
                     @Override
                     public void colorSelected(Integer color) {
-                        // Do something with the selected color
+                        //if a color was selected
+                        if(color != null){
+                            // Do something with the selected color
+                            thirdColor.setBackgroundColor(color);
+                        }
                     }
                 });
                 cpd3.setTitle("Pick your third color!");
