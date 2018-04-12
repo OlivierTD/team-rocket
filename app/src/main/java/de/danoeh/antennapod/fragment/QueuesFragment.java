@@ -202,32 +202,36 @@ public class QueuesFragment extends Fragment {
     }
 
     // Attempts to load data from local storage
-    private void retrieveList() {
+    private ArrayList<Queue> retrieveList() {
         SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("shared preferences", Context.MODE_PRIVATE);
         Gson gson = new Gson();
         String json = sharedPreferences.getString("queue list", null);
         Type type = new TypeToken<ArrayList<Queue>>() {
         }.getType();
-        queueList = gson.fromJson(json, type);
+        ArrayList<Queue> list;
+        list = gson.fromJson(json, type);
 
-        if (queueList == null) {
-            queueList = new ArrayList<>();
+        if (list == null) {
+            list = new ArrayList<>();
         }
+
+        return list;
+
     }
 
     // Attempts to persist data to local storage
-    private void saveList() {
+    private void saveList(ArrayList<Queue> list) {
         SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("shared preferences", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Gson gson = new Gson();
-        String json = gson.toJson(queueList);
+        String json = gson.toJson(list);
         editor.putString("queue list", json);
         editor.apply();
 
     }
 
     private void removeId(long Id){
-        retrieveList();
+        queueList = retrieveList();
 
         if (queueList == null) {
             queueList = new ArrayList<>();
@@ -238,7 +242,7 @@ public class QueuesFragment extends Fragment {
                 queue.getEpisodesIDList().remove(Id);
             }
         }
-        saveList();
+        saveList(queueList);
     }
 
 
