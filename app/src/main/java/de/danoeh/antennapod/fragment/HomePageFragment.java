@@ -2,8 +2,6 @@ package de.danoeh.antennapod.fragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.menuhandler.MenuItemUtils;
+
 
 
 /**
@@ -57,13 +55,12 @@ public class HomePageFragment extends Fragment{
     //inflates the top menu
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
-        final MainActivity activity = (MainActivity)getActivity();
-
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.home_toolbar, menu);
     }
 
     //Handles the options selected
+    //Redirects to the search page with the random episode button
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         switch(item.getItemId()){
