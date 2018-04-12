@@ -192,20 +192,9 @@ public class QueuesFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.remove_from_inner_queue:
                 long id = feedItems.get(info.position).getId();
-                loadList();
-
-                if (queueList == null) {
-                    queueList = new ArrayList<>();
-                }
-                for (Queue queues : queueList) {
-                    if (queues.getName().equalsIgnoreCase(this.queue.getName())) {
-                        queues.getEpisodesIDList().remove(id);
-                        queue.getEpisodesIDList().remove(id);
-                    }
-                }
-                storeList();
-                this.loadItems();
-                refreshFrag();
+                feedItems.remove(info.position);
+                removeId(id);
+                episodesAdapter.notifyDataSetChanged();
                 return true;
             default:
                 return super.onContextItemSelected(item);
@@ -213,7 +202,7 @@ public class QueuesFragment extends Fragment {
     }
 
     // Attempts to load data from local storage
-    private void loadList() {
+    private void retrieveList() {
         SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("shared preferences", Context.MODE_PRIVATE);
         Gson gson = new Gson();
         String json = sharedPreferences.getString("queue list", null);
@@ -227,7 +216,7 @@ public class QueuesFragment extends Fragment {
     }
 
     // Attempts to persist data to local storage
-    private void storeList() {
+    private void saveList() {
         SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("shared preferences", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Gson gson = new Gson();
@@ -237,16 +226,22 @@ public class QueuesFragment extends Fragment {
 
     }
 
-    //refreshes fragment by create a new fragment and performing transaction
-    private void refreshFrag() {
-        QueuesFragment queuesFragment = new QueuesFragment();
-        queuesFragment.setQueue(queue);
-        int transid = this.getId();
-        FragmentTransaction fragmentTransaction = this.getFragmentManager().beginTransaction();
-        fragmentTransaction.replace(transid, queuesFragment);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+    private void removeId(long Id){
+        retrieveList();
+
+        if (queueList == null) {
+            queueList = new ArrayList<>();
+        }
+        for (Queue queues : queueList) {
+            if (queues.getName().equalsIgnoreCase(this.queue.getName())) {
+                queues.getEpisodesIDList().remove(Id);
+                queue.getEpisodesIDList().remove(Id);
+            }
+        }
+        saveList();
     }
+
+
 
 
 }
