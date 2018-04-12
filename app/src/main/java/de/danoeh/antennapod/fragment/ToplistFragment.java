@@ -177,7 +177,7 @@ public class ToplistFragment extends Fragment {
                 Response response = client.newCall(httpReq.build()).execute();
                 if (!response.isSuccessful()) {
                     // toplist for language does not exist, fall back to united states
-                    url = "https://itunes.apple.com/us/rss/toppodcasts/limit=25/explicit=true/json";
+                    url = "https://itunes.apple.com/us/rss/toppodcasts/limit=20/explicit=true/json";
                     httpReq = new Request.Builder()
                             .url(url)
                             .header("User-Agent", ClientConfig.USER_AGENT);
