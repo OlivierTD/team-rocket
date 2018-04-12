@@ -66,7 +66,6 @@ public class CentralizedSearchFragment extends Fragment {
     private TextView txtvEmpty;
     private ProgressBar progressBar;
     private TextView titleMessage;
-    private String query;
 
     /**
      * Adapter responsible with the search results
@@ -399,10 +398,5 @@ public class CentralizedSearchFragment extends Fragment {
 
     public void setFYYDClient(FyydClient client){
         this.client = client;
-    }
-
-    //retrieves query
-    public void setQuery(String query){
-        this.query = query;
     }
 }
