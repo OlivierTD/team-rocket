@@ -219,16 +219,7 @@ public class QueuesFragment extends Fragment {
 
     }
 
-    // Attempts to persist data to local storage
-    private void saveList(ArrayList<Queue> list) {
-        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("shared preferences", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(list);
-        editor.putString("queue list", json);
-        editor.apply();
 
-    }
 
     private void removeId(long Id){
         queueList = retrieveList();
@@ -242,7 +233,12 @@ public class QueuesFragment extends Fragment {
                 queue.getEpisodesIDList().remove(Id);
             }
         }
-        saveList(queueList);
+        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("shared preferences", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(queueList);
+        editor.putString("queue list", json);
+        editor.apply();
     }
 
 
