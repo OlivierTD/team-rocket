@@ -218,7 +218,7 @@ task filterAbout {
 } doLast {
 
 
-        /*
+        
           copy {
 
 
@@ -230,7 +230,7 @@ task filterAbout {
 
 
           }
-            */
+
 
 }
 
