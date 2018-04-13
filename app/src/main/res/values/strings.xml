@@ -9,6 +9,7 @@
     <string name="cancel">Cancel</string>
     <string name="name_already_exists">A queue already has that name!</string>
     <string name="rename_queue">Rename the queue!</string>
+    <string name="confirm_rename">Rename</string>
     <string name="queues">Queues</string>
     <string name="home_search">Search</string>
     <string name="confirmation_title">Confirmation</string>

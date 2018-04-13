@@ -4,11 +4,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
-import android.os.Bundle;
 import android.support.annotation.RequiresApi;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.FragmentManager;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +21,6 @@ import java.util.ArrayList;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.Queue;
-import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.fragment.QueueListFragment;
 import de.danoeh.antennapod.fragment.QueuesFragment;
 
@@ -149,7 +145,7 @@ public class QueuesAdapter extends ArrayAdapter<Queue> {
         AlertDialog enterNameDialog = new AlertDialog.Builder(queueListFragment.getActivity())
                 .setView(enterName)
                 .setTitle(R.string.rename_queue)
-                .setPositiveButton(R.string.create, null)
+                .setPositiveButton(R.string.confirm_rename, null)
                 .setNegativeButton(R.string.cancel, null)
                 .create();
 
