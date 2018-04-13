@@ -1,7 +1,9 @@
 package de.danoeh.antennapod.fragment;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
@@ -226,6 +228,11 @@ public class CentralizedSearchFragment extends Fragment {
         searchFYYD(query);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+    @Override
+    public void onPrepareOptionsMenu(Menu menu){
+        menu.findItem(R.id.action_search).expandActionView();
+    }
     //Search iTunes
     public List<ItunesAdapter.Podcast> searchItunes(String query){
         String API_URL = getString(R.string.itunes_search_api);
