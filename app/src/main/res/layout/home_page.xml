@@ -47,9 +47,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/randomEpisodeFragment"/>
 
-        <fragment
-            android:id="@+id/centralizedFragment"
-            android:name="de.danoeh.antennapod.fragment.CentralizedSearchFragment"
+      <fragment
+            android:id="@+id/suggestedPodcasts"
+            android:name="de.danoeh.antennapod.fragment.suggestedPodcastsFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/textView"
@@ -57,6 +57,15 @@
             android:layout_below="@+id/topListFragment"
             android:layout_marginTop="22dp" />
 
-
+        <fragment
+            android:id="@+id/centralizedFragment"
+            android:name="de.danoeh.antennapod.fragment.CentralizedSearchFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textView"
+            android:layout_alignStart="@+id/textView"
+            android:layout_below="@+id/suggestedPodcasts"
+            android:layout_marginTop="22dp" />
     </RelativeLayout>
+
 </ScrollView>
