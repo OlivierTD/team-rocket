@@ -115,10 +115,36 @@ public class CustomThemeFragment extends Fragment implements View.OnClickListene
 
                 break;
             case R.id.custom_theme_set:
-                //background
-                ((MainActivity) getActivity()).setActivityBackgroundColor(color1);
-                View navList = ((MainActivity) getActivity()).findViewById(R.id.nav_list);
-                navList.setBackgroundColor(color2);
+
+                if(color1 != null ) {
+                    //background
+                    ((MainActivity) getActivity()).setActivityBackgroundColor(color1);
+
+
+                }
+                if(color2 != null ) {
+                    //nav bar
+                    View navList = ((MainActivity) getActivity()).findViewById(R.id.nav_list);
+                    navList.setBackgroundColor(color2);
+
+                }
+                if(color3 != null ) {
+
+                    //nav layout
+                    View navTitle = ((MainActivity) getActivity()).findViewById(R.id.nav_layout);
+                    navTitle.setBackgroundColor(color3);
+                    //nav settings
+                    View navSettings = ((MainActivity) getActivity()).findViewById(R.id.nav_settings);
+                    navSettings.setBackgroundColor(color3);
+                    //action bar
+                    //Code would work in API 11
+                    //ColorDrawable colorDrawable = new ColorDrawable(color3));
+                    //((MainActivity) getActivity()).getActionBar().setBackgroundDrawable(colorDrawable);
+
+
+
+                }
+
 
             }
         }
