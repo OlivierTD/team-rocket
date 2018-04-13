@@ -24,6 +24,8 @@ public class BaseHomeFragment extends Fragment{
 
     private static final String LAST_TAB = "tab_position";
 
+    private SharedPreferences prefs;
+
     //positions of the tabs
     public static final int POS_FEATURED = 0;
     public static final int POS_CATEGORIES = 1;
@@ -62,7 +64,7 @@ public class BaseHomeFragment extends Fragment{
     public void onPause() {
         super.onPause();
         // save the tab selection
-        SharedPreferences prefs = getActivity().getSharedPreferences(TAG, Context.MODE_PRIVATE);
+        prefs = getActivity().getSharedPreferences(TAG, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putInt(LAST_TAB, tabLayout.getSelectedTabPosition());
         editor.apply();
@@ -72,7 +74,7 @@ public class BaseHomeFragment extends Fragment{
     public void onStart() {
         super.onStart();
         // restore our last position
-        SharedPreferences prefs = getActivity().getSharedPreferences(TAG, Context.MODE_PRIVATE);
+        prefs = getActivity().getSharedPreferences(TAG, Context.MODE_PRIVATE);
         int lastPosition = prefs.getInt(LAST_TAB, 0);
         viewPager.setCurrentItem(lastPosition);
     }
