@@ -524,6 +524,10 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         Glide.get(this).clearMemory();
     }
 
+    public void setActivityBackgroundColor(Integer color){
+        View view = this.getWindow().getDecorView();
+        view.setBackgroundColor(color);
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         boolean retVal = super.onCreateOptionsMenu(menu);
