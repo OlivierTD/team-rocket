@@ -11,6 +11,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
@@ -70,6 +71,11 @@ public class PreferenceActivity extends AppCompatActivity {
 
         prefFragment = new MainFragment();
         getFragmentManager().beginTransaction().replace(R.id.content, prefFragment).commit();
+    }
+
+    public void setActivityBackgroundColor(Integer color){
+        View view = this.getWindow().getDecorView();
+        view.setBackgroundColor(color);
     }
 
     @Override
