@@ -16,6 +16,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.joanzapata.iconify.Iconify;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.lang.ref.WeakReference;
 import java.util.List;
 
@@ -51,6 +53,8 @@ public class EpisodesAdapter extends RecyclerView.Adapter<EpisodesAdapter.ViewHo
 
     private ItemAccess itemAccess;
 
+    private FeedItem selectedItem;
+
     public EpisodesAdapter(MainActivity mainActivity, List<FeedItem> episodesList, ItemAccess itemAccess) {
         this.mainActivity = new WeakReference<>(mainActivity);
         this.episodesList = episodesList;
@@ -75,6 +79,15 @@ public class EpisodesAdapter extends RecyclerView.Adapter<EpisodesAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, int pos) {
         FeedItem feedItem = episodesList.get(pos);
         holder.bind(feedItem);
+        holder.itemView.setOnLongClickListener(v -> {
+            selectedItem = feedItem;
+            return false;
+        });
+    }
+
+    @Nullable
+    public FeedItem getSelectedItem() {
+        return selectedItem;
     }
 
     @Override

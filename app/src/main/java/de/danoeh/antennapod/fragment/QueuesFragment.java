@@ -1,19 +1,31 @@
 package de.danoeh.antennapod.fragment;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.support.v7.widget.SimpleItemAnimator;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,11 +44,15 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
+import de.danoeh.antennapod.service.QueueStoreService;
 import de.greenrobot.event.EventBus;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+
+import static de.danoeh.antennapod.service.QueueStoreService.loadList;
+import static de.danoeh.antennapod.service.QueueStoreService.storeList;
 
 /**
  * Created by olitr on 2018-03-28.
@@ -63,6 +79,9 @@ public class QueuesFragment extends Fragment {
 
     // List of feed items
     private List<FeedItem> feedItems;
+    //Object where we will store the list of queues, important for context menu
+    private static ArrayList<Queue> queueList = new ArrayList<>();
+
     private List<Downloader> downloaderList;
 
     private boolean isUpdatingFeeds = false;
@@ -95,6 +114,8 @@ public class QueuesFragment extends Fragment {
         rvEpisodes.setLayoutManager(rvLayoutManager);
         rvEpisodes.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity()).build());
         rvEpisodes.setHasFixedSize(true);
+        registerForContextMenu(rvEpisodes);
+
         return root;
     }
 
@@ -162,6 +183,7 @@ public class QueuesFragment extends Fragment {
 
     }
 
+
     /**
      * Fetch items for the adapter from the Database asynchronously.
      */
@@ -185,6 +207,50 @@ public class QueuesFragment extends Fragment {
                     }
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
+
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        AdapterView.AdapterContextMenuInfo adapterInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        MenuInflater inflater = getActivity().getMenuInflater();
+        inflater.inflate(R.menu.inner_queue_menu, menu);
+    }
+
+
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item
+                .getMenuInfo();
+
+        switch (item.getItemId()) {
+            case R.id.remove_from_inner_queue:
+                FeedItem selectedItem = episodesAdapter.getSelectedItem();
+                long id = selectedItem.getId();
+                feedItems.remove(episodesAdapter.getSelectedItem());
+                removeId(id);
+                episodesAdapter.notifyDataSetChanged();
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+
+    private void removeId(long Id){
+
+
+        queueList = loadList(this.getActivity(), queueList);
+
+        if (queueList == null) {
+            queueList = new ArrayList<>();
+        }
+        for (Queue queues : queueList) {
+            if (queues.getName().equalsIgnoreCase(this.queue.getName())) {
+                queues.getEpisodesIDList().remove(Id);
+                queue.getEpisodesIDList().remove(Id);
+            }
+        }
+        storeList(this.getActivity(), queueList);
+    }
+
 
     /**
      * Loads items that were fetch asynchronously by fetchItems
