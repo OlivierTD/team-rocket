@@ -59,7 +59,7 @@ import static java.util.Collections.emptyList;
 
 public class CentralizedSearchFragment extends Fragment {
 
-    private static final String TAG = "CentralSearchFragmnet";
+    private static final String TAG = "CentralSearchFragment";
 
     private FyydClient client = new FyydClient(AntennapodHttpClient.getHttpClient());
 
@@ -68,6 +68,7 @@ public class CentralizedSearchFragment extends Fragment {
     private TextView txtvEmpty;
     private ProgressBar progressBar;
     private TextView titleMessage;
+    private String query;
 
     /**
      * Adapter responsible with the search results
@@ -163,7 +164,18 @@ public class CentralizedSearchFragment extends Fragment {
         butRetry = (Button) view.findViewById(R.id.butRetry);
         txtvEmpty = (TextView) view.findViewById(android.R.id.empty);
 
+        search(query);
+
         return view;
+    }
+
+    public  CentralizedSearchFragment newInstance(){
+        Bundle bundle = new Bundle();
+
+        CentralizedSearchFragment fragment = new CentralizedSearchFragment();
+        fragment.setArguments(bundle);
+
+        return fragment;
     }
 
     //Search bar event handler
@@ -228,11 +240,6 @@ public class CentralizedSearchFragment extends Fragment {
         searchFYYD(query);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-    @Override
-    public void onPrepareOptionsMenu(Menu menu){
-        menu.findItem(R.id.action_search).expandActionView();
-    }
     //Search iTunes
     public List<ItunesAdapter.Podcast> searchItunes(String query){
         String API_URL = getString(R.string.itunes_search_api);
@@ -406,4 +413,10 @@ public class CentralizedSearchFragment extends Fragment {
     public void setFYYDClient(FyydClient client){
         this.client = client;
     }
+
+    public void setQuery(String query){
+        this.query = query;
+    }
+
+
 }

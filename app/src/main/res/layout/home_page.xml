@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/homeScrollView"
@@ -33,13 +35,12 @@
             android:text="AntennaPod"
             android:textSize="25dp"/>
 
-
         <fragment
             android:id="@+id/topListFragment"
             android:name="de.danoeh.antennapod.fragment.ToplistFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/textView"/>
+            android:layout_below="@+id/randomEpisodeFragment"/>
         
       <fragment
             android:id="@+id/suggestedPodcasts"
@@ -50,6 +51,15 @@
             android:layout_alignStart="@+id/textView"
             android:layout_below="@+id/topListFragment"
             android:layout_marginTop="22dp" />
+        
+        <fragment
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/textView"
+            android:name="de.danoeh.antennapod.fragment.RandomPodcastFragment"
+            android:id="@+id/randomEpisodeFragment"
+            />
 
     </RelativeLayout>
 
