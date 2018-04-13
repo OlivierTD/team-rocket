@@ -3,13 +3,13 @@ package de.danoeh.antennapod.fragment;
 import android.content.res.Resources;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.GridView;
+import android.widget.ListView;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import de.danoeh.antennapod.R;
@@ -20,7 +20,7 @@ public class CategoriesFragment extends Fragment {
 
     public static final String TAG = "CategoriesFragment";
     private ArrayAdapter listAdapter;
-    private GridView gridView;
+    private ListView gridView;
     private ArrayList<String>categories;
 
     @Override
@@ -36,7 +36,7 @@ public class CategoriesFragment extends Fragment {
         //getting the current activity
         final MainActivity activity = (MainActivity) getActivity();
 
-        gridView = (GridView) view.findViewById(R.id.listgridview);
+        gridView = (ListView) view.findViewById(R.id.listgridview);
 
 
         //creation and initialization of the arrayadapter used

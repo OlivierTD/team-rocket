@@ -7,12 +7,12 @@ import android.view.ViewGroup;
 import de.danoeh.antennapod.R;
 
 //This fragment is the fragment under "FEATURE" tab on the home page
-public class HomePageFragment extends Fragment{
+public class FeaturedFragment extends Fragment{
 
-    public static final String TAG = "HomePageFragment";
+    public static final String TAG = "FeaturedFragment";
     private View root;
 
-    public HomePageFragment(){
+    public FeaturedFragment(){
 
     }
 
@@ -26,7 +26,7 @@ public class HomePageFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         try {
-            root = inflater.inflate(R.layout.home_page, container, false);
+            root = inflater.inflate(R.layout.featued_fragment, container, false);
 
 
         }catch (Exception e){

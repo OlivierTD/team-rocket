@@ -16,9 +16,9 @@ import android.view.ViewGroup;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 
-//This fragment is the base fragment of the Home Page. The HomePageFragment and CategoriesFragment will be
+//This fragment is the base fragment of the Home Page. The FeaturedFragment and CategoriesFragment will be
 //loaded in the tabs contained in the BaseHomeFragment
-public class BaseHomeFragment extends Fragment{
+public class HomeFragment extends Fragment{
 
     public static final String TAG = "BaseHomeFragment";
 
@@ -39,7 +39,7 @@ public class BaseHomeFragment extends Fragment{
     public void setAct(MainActivity mainActivity){
         this.act = mainActivity;
     }
-    public BaseHomeFragment(){
+    public HomeFragment(){
     }
 
     @Override
@@ -54,7 +54,7 @@ public class BaseHomeFragment extends Fragment{
         this.setAct((MainActivity) getActivity());
         act.getSupportActionBar().setTitle(R.string.homepage_label);
 
-        View rootView = inflater.inflate(R.layout.base_home_fragment, container, false);
+        View rootView = inflater.inflate(R.layout.home_fragment, container, false);
         viewPager = (ViewPager)rootView.findViewById(R.id.home_viewpager);
         viewPager.setAdapter(new HomePagerAdapter(getChildFragmentManager(), getResources()));
 
@@ -85,12 +85,12 @@ public class BaseHomeFragment extends Fragment{
     }
 
 
-    //HomePagerAdapter is a static inner class of BaseHomeFragment
+    //HomePagerAdapter is a static inner class of HomeFragment
     public static class HomePagerAdapter extends FragmentPagerAdapter {
 
         private final Resources resources; //it is required in order to have the constructor
         private Fragment[] fragments = {
-                new HomePageFragment(),
+                new FeaturedFragment(),
                 new CategoriesFragment(),
         };
 
