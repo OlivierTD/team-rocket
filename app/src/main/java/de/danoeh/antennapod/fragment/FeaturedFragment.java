@@ -26,7 +26,7 @@ public class FeaturedFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         try {
-            root = inflater.inflate(R.layout.featued_fragment, container, false);
+            root = inflater.inflate(R.layout.featured_fragment, container, false);
 
 
         }catch (Exception e){
