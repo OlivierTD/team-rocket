@@ -47,7 +47,7 @@
         android:id="@+id/custom_theme_color_1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Color 1" />
+        android:text="Color 1 (Main Bakground)" />
 
     <TextView
         android:id="@+id/colot_2_title"
@@ -63,7 +63,7 @@
         android:id="@+id/custom_theme_color_2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Color 2" />
+        android:text="Color 2 (Menu Color)" />
 
     <TextView
         android:id="@+id/colot_3_title"
@@ -79,7 +79,7 @@
         android:id="@+id/custom_theme_color_3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Color 3" />
+        android:text="Color 3 (Highlights)" />
 
     <Button
         android:id="@+id/custom_theme_set"
