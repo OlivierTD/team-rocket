@@ -1,4 +1,4 @@
-package mutipleQueueTests;
+package multipleQueueTests;
 
 import static org.mockito.Mockito.*;
 
@@ -10,7 +10,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.ArrayList;
 
 import de.danoeh.antennapod.adapter.QueuesAdapter;
-import de.danoeh.antennapod.core.feed.QueueObject;
+import de.danoeh.antennapod.core.feed.Queue;
 import de.danoeh.antennapod.fragment.QueueListFragment;
 import static junit.framework.Assert.assertEquals;
 
@@ -28,7 +28,7 @@ public class QueueListFragmentTest {
     private QueuesAdapter mockQueueAdapter;
 
     @Mock
-    private ArrayList<QueueObject> mockQueueList;
+    private ArrayList<Queue> mockQueueList;
 
     @Before
     public void beforeTests(){
@@ -45,16 +45,16 @@ public class QueueListFragmentTest {
 
     @Test
     public void testCreateNewQueue() {
-        qlFragment.createNewQueue();
-        qlFragment.createNewQueue();
+        qlFragment.createNewQueue("Queue 1");
+        qlFragment.createNewQueue("Queue 2");
         verify(mockQueueAdapter, times(2)).updateQueueList(qlFragment.getQueuesList());
         assertEquals(2, qlFragment.getQueuesList().size());
     }
 
     @Test
     public void testDeleteNewQueue(){
-        qlFragment.createNewQueue();
-        qlFragment.createNewQueue();
+        qlFragment.createNewQueue("Queue 1");
+        qlFragment.createNewQueue("Queue 2");
         qlFragment.removeWithPos(1);
         verify(mockQueueAdapter, times(2)).updateQueueList(qlFragment.getQueuesList());
         assertEquals(1, qlFragment.getQueuesList().size());

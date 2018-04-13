@@ -33,6 +33,7 @@ import java.util.Locale;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
 import de.danoeh.antennapod.adapter.itunes.ItunesAdapter;
+import de.danoeh.antennapod.adapter.itunes.ItunesHorizontalAdapter;
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
@@ -55,11 +56,7 @@ import static java.util.Collections.emptyList;
 
 public class ToplistFragment extends Fragment {
 
-    private static final String TAG = "ItunesSearchFragment";
-
-    private static final String API_URL = "https://itunes.apple.com/search?media=podcast&term=%s";
-
-    private FyydClient client = new FyydClient(AntennapodHttpClient.getHttpClient());
+    private static final String TAG = "ItunesToplist";
 
     private TextView txtvError;
     private Button butRetry;
@@ -69,10 +66,10 @@ public class ToplistFragment extends Fragment {
     /**
      * Adapter responsible with the search results
      */
-    private ItunesAdapter adapter;  //search result view
-    private List<ItunesAdapter.Podcast> searchResults;  //Toplist search result
+    private ItunesHorizontalAdapter adapter;  //search result view
+    private List<ItunesHorizontalAdapter.Podcast> searchResults;  //Toplist search result
 
-    private List<ItunesAdapter.Podcast> topList; //holds toplist podcasts
+    private List<ItunesHorizontalAdapter.Podcast> topList; //holds toplist podcasts
     private Subscription subscription;
 
     private GridView gridView;
@@ -80,7 +77,15 @@ public class ToplistFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstance){
+        super.onViewCreated(view, savedInstance);
+        view.findViewById(R.id.gridViewHome);
+
     }
 
     @Override
@@ -89,12 +94,12 @@ public class ToplistFragment extends Fragment {
         View view = inflater.inflate(R.layout.toplist_itunes, container, false);
         gridView = (GridView) view.findViewById(R.id.gridViewHome);
         titleMessage = (TextView) view.findViewById(R.id.textTopItunes);
-        adapter = new ItunesAdapter(getActivity(), new ArrayList<>());
+        adapter = new ItunesHorizontalAdapter(getActivity(), new ArrayList<>());
         gridView.setAdapter(adapter);
 
         //Show information about the podcast when the list item is clicked
         gridView.setOnItemClickListener((parent, view1, position, id) -> {
-            ItunesAdapter.Podcast podcast = searchResults.get(position);
+            ItunesHorizontalAdapter.Podcast podcast = searchResults.get(position);
             if (podcast.feedUrl == null) {
                 return;
             }
@@ -160,19 +165,19 @@ public class ToplistFragment extends Fragment {
             subscription.unsubscribe();
         }
         gridView.setVisibility(View.GONE);
-        subscription = Observable.create((Observable.OnSubscribe<List<ItunesAdapter.Podcast>>) subscriber -> {
+        subscription = Observable.create((Observable.OnSubscribe<List<ItunesHorizontalAdapter.Podcast>>) subscriber -> {
             String lang = Locale.getDefault().getLanguage();
             String url = "https://itunes.apple.com/" + lang + "/rss/toppodcasts/limit=25/explicit=true/json";
             OkHttpClient client = AntennapodHttpClient.getHttpClient();
             Request.Builder httpReq = new Request.Builder()
                     .url(url)
                     .header("User-Agent", ClientConfig.USER_AGENT);
-            List<ItunesAdapter.Podcast> results = new ArrayList<>();
+            List<ItunesHorizontalAdapter.Podcast> results = new ArrayList<>();
             try {
                 Response response = client.newCall(httpReq.build()).execute();
                 if (!response.isSuccessful()) {
                     // toplist for language does not exist, fall back to united states
-                    url = "https://itunes.apple.com/us/rss/toppodcasts/limit=25/explicit=true/json";
+                    url = "https://itunes.apple.com/us/rss/toppodcasts/limit=20/explicit=true/json";
                     httpReq = new Request.Builder()
                             .url(url)
                             .header("User-Agent", ClientConfig.USER_AGENT);
@@ -186,7 +191,7 @@ public class ToplistFragment extends Fragment {
 
                     for (int i = 0; i < entries.length(); i++) {
                         JSONObject json = entries.getJSONObject(i);
-                        ItunesAdapter.Podcast podcast = ItunesAdapter.Podcast.fromToplist(json);
+                        ItunesHorizontalAdapter.Podcast podcast = ItunesHorizontalAdapter.Podcast.fromToplist(json);
                         results.add(podcast);
                     }
                 } else {
@@ -203,18 +208,18 @@ public class ToplistFragment extends Fragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(podcasts -> {
                     topList = podcasts;
-                    titleMessage.setText("iTunes top podcasts");
+                    titleMessage.setText("iTunes Top Podcasts");
                     updateData(topList);
                 }, error -> {
                     Log.e(TAG, Log.getStackTraceString(error));
                 });
     }
 
-    void updateData(List<ItunesAdapter.Podcast> result) {
+    void updateData(List<ItunesHorizontalAdapter.Podcast> result) {
         this.searchResults = result;
         if (result != null && result.size() > 0) {
             gridView.setVisibility(View.VISIBLE);
-            for (ItunesAdapter.Podcast p : result) {
+            for (ItunesHorizontalAdapter.Podcast p : result) {
                 adapter.add(p);
             }
             adapter.notifyDataSetInvalidated();

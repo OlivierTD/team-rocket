@@ -48,20 +48,7 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
         super.tearDown();
     }
 
-    /*public void testSwitchTheme() {
-        final int theme = UserPreferences.getTheme();
-        int otherTheme;
-        if(theme == de.danoeh.antennapod.core.R.style.Theme_AntennaPod_Light) {
-            otherTheme = R.string.pref_theme_title_dark;
-        } else {
-            otherTheme = R.string.pref_theme_title_light;
-        }
-        solo.clickOnText(solo.getString(R.string.pref_set_theme_title));
-        solo.waitForDialogToOpen();
-        solo.clickOnText(solo.getString(otherTheme));
-        assertTrue(solo.waitForCondition(() -> UserPreferences.getTheme() != theme, Timeout.getLargeTimeout()));
-    }
-    */
+    
     public void testSwitchThemeLight() {
         final int theme = UserPreferences.getTheme();
         int lightTheme;
@@ -113,20 +100,7 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
 
     }
 
-    /*public void testSwitchThemeBack() {
-        final int theme = UserPreferences.getTheme();
-        int otherTheme;
-        if(theme == de.danoeh.antennapod.core.R.style.Theme_AntennaPod_Light) {
-            otherTheme = R.string.pref_theme_title_dark;
-        } else {
-            otherTheme = R.string.pref_theme_title_light;
-        }
-        solo.clickOnText(solo.getString(R.string.pref_set_theme_title));
-        solo.waitForDialogToOpen(1000);
-        solo.clickOnText(solo.getString(otherTheme));
-        assertTrue(solo.waitForCondition(() -> UserPreferences.getTheme() != theme, Timeout.getLargeTimeout()));
-    }
-*/
+   
     public void testExpandNotification() {
         final int priority = UserPreferences.getNotifyPriority();
         solo.clickOnText(solo.getString(R.string.pref_expandNotify_title));

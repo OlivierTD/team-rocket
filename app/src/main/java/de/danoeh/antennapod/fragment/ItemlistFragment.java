@@ -112,7 +112,7 @@ public class ItemlistFragment extends ListFragment {
     private MoreContentListFooterUtil listFooter;
 
     private boolean isUpdatingFeed;
-    
+
     private TextView txtvTitle;
     private IconTextView txtvFailure;
     private ImageView imgvBackground;
@@ -504,10 +504,10 @@ public class ItemlistFragment extends ListFragment {
             txtvInformation.setVisibility(View.GONE);
         }
         btnRandomEpisode.setText(R.string.random_episode_button);
-        if(UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark) {
-            btnRandomEpisode.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_random_white), null, null, null);
-        } else {
+        if(UserPreferences.getTheme() == R.style.Theme_AntennaPod_Light) {
             btnRandomEpisode.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_random_grey), null, null, null);
+        } else {
+            btnRandomEpisode.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_random_white), null, null, null);
         }
 
     }
@@ -551,26 +551,28 @@ public class ItemlistFragment extends ListFragment {
         });
         headerCreated = true;
 
-        loadRandomEpisodeButton();
+        loadRandomEpisodeButton(btnRandomEpisode);
     }
 
-    private void loadRandomEpisodeButton() {
+    public void loadRandomEpisodeButton(Button button) {
+        setRandomEpisodeOnClickListener(button);
+    }
+
+    private void setRandomEpisodeOnClickListener(Button button) {
         MainActivity activity = (MainActivity) getActivity();
 
-        btnRandomEpisode.setOnClickListener(v -> {
+        button.setOnClickListener(v -> {
             List<FeedItem> itemList = feed.getItems();
-            Collections.shuffle(itemList);
+            Random rand = new Random();
+            int randomEpisode = rand.nextInt(itemList.size());
 
-            List<FeedItem> oneEpisode = new ArrayList<>();
-            oneEpisode.add(itemList.get(0));
-
-            long[] ids = FeedItemUtil.getIds(oneEpisode);
-            activity.loadChildFragment(ItemFragment.newInstance(ids, 0));
+            long[] ids = FeedItemUtil.getIds(itemList);
+            activity.loadChildFragment(ItemFragment.newInstance(ids, randomEpisode));
             activity.getSupportActionBar().setTitle(feed.getTitle());
 
             DefaultActionButtonCallback actionButtonCallback = new DefaultActionButtonCallback(getActivity());
 
-            FeedItem item = oneEpisode.get(0);
+            FeedItem item = itemList.get(randomEpisode);
 
             actionButtonCallback.onActionButtonPressed(item, item.isTagged(FeedItem.TAG_QUEUE) ?
                     LongList.of(item.getId()) : new LongList(0));

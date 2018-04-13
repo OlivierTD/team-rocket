@@ -1,36 +1,49 @@
 package de.danoeh.antennapod.fragment;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import de.danoeh.antennapod.adapter.QueuesAdapter;
-import de.danoeh.antennapod.core.feed.QueueObject;
-import de.danoeh.antennapod.core.util.InternalStorage;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
-import java.io.IOException;
+import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.adapter.QueuesAdapter;
+import de.danoeh.antennapod.core.feed.Queue;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.service.QueueStoreService;
 
-public class QueueListFragment extends Fragment implements View.OnClickListener {
+import static de.danoeh.antennapod.service.QueueStoreService.loadList;
+import static de.danoeh.antennapod.service.QueueStoreService.storeList;
+
+public class QueueListFragment extends Fragment {
 
     public static final String TAG = "QueueListFragment";
-    // To be modified later, I just want to see different numbers for each queues
-    static int queueNumber = 1;
 
     //List of queue fragments
-    private ArrayList<QueueObject> queueList = new ArrayList<>();
+    private ArrayList<Queue> queueList = new ArrayList<>();
 
-    //button to add queues to list
-    private Button addButton;
 
     // List view for the list of queues
     ListView lvQueue;
@@ -47,7 +60,8 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
         setHasOptionsMenu(true); // Fragment would like to participate in populating the options menu
 
         //attempts to load from local storage
-        this.loadList();
+        queueList = loadList(this.getActivity(),queueList);
+
 
     }
 
@@ -57,10 +71,9 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
 
         super.onCreateView(inflater, container, savedInstanceState);
 
-        View root = inflater.inflate(R.layout.fragment_queue_list, container, false);
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.queues);
 
-        addButton = (Button) root.findViewById(R.id.addQueue);
-        addButton.setOnClickListener(this);
+        View root = inflater.inflate(R.layout.fragment_queue_list, container, false);
 
         // Adapter to convert the ArrayList to views
         queuesAdapter = new QueuesAdapter(getActivity(), queueList, this);
@@ -71,16 +84,65 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
         return root;
     }
 
-    //adds a queue to the list of queues
+    //Shows the menu on top
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.queue_toolbar, menu);
+    }
+
+    //Allows to click the button on the menu on top
     @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
     @Override
-    public void onClick(View v) {
-        //triggers the create
-        createNewQueue();
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.addQueue:
+                Log.d("Queue", "Adding queue");
+                addFromMenu();
+                return true;
 
-        //this is for testing purposes primarily, prints a message on screen displaying the current size of the queuesList
-        String testMessage = Integer.toString(this.getQueuesList().size());
-        Toast.makeText(getActivity(), testMessage, Toast.LENGTH_SHORT).show();
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
+    //Method called in the onOptionsItemSelected in order add queues from the top menu
+    @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
+    public void addFromMenu() {
+        final EditText enterName = new EditText(getActivity());
+        enterName.setInputType(InputType.TYPE_CLASS_TEXT);
+        enterName.setHint(R.string.enter_queue_name);
+
+        //Create the dialog to be shown to the user
+        AlertDialog enterNameDialog = new AlertDialog.Builder(getActivity())
+                .setView(enterName)
+                .setTitle(R.string.enter_queue_name)
+                .setPositiveButton(R.string.create, null)
+                .setNegativeButton(R.string.cancel, null)
+                .create();
+
+        //Pops out the keyboard
+        enterNameDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
+        //Display the dialog
+        enterNameDialog.show();
+
+        enterNameDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (enterName.getText().toString().equals("")) {
+                    Toast.makeText(getActivity(), R.string.enter_valid_name, Toast.LENGTH_SHORT).show();
+                } else if (nameExists(enterName.getText().toString())) {
+                    Toast.makeText(getActivity(), R.string.name_already_exists, Toast.LENGTH_SHORT).show();
+                } else {
+                    createNewQueue(enterName.getText().toString());
+                    enterNameDialog.dismiss();
+                }
+            }
+        });
+
+
     }
 
     // Called when fragment is visible to the user
@@ -88,7 +150,7 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
     public void onStart() {
         super.onStart();
         //attempts to load from local storage
-        this.loadList();
+        queueList = loadList(this.getActivity(),queueList);
     }
 
     // Called when fragment is visible to the user and actively running
@@ -96,14 +158,16 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
     public void onResume() {
         super.onResume();
         //attempts to load from local storage
-        this.loadList();
+        queueList = loadList(this.getActivity(),queueList);
+        queuesAdapter.updateQueueList(this.queueList);
+
     }
 
     // Called when the fragment is no longer resumed
     @Override
     public void onPause() {
         //attempts to store in local storage
-        this.storeList();
+        storeList(this.getActivity(), queueList);
         super.onPause();
     }
 
@@ -114,18 +178,17 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
     @Override
     public void onDestroyView() {
         //attempts to store in local storage
-        this.storeList();
+        storeList(this.getActivity(), queueList);
         super.onDestroyView();
     }
 
-    public ArrayList<QueueObject> getQueuesList() {
+    public ArrayList<Queue> getQueuesList() {
         return this.queueList;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
-    public void createNewQueue() {
-        QueueObject toAdd = new QueueObject("Queue" + queueNumber);
-        queueNumber++;
+    public void createNewQueue(String name) {
+        Queue toAdd = new Queue(name);
         this.queueList.add(toAdd);
         // Update adapter
         queuesAdapter.updateQueueList(this.queueList);
@@ -137,27 +200,21 @@ public class QueueListFragment extends Fragment implements View.OnClickListener 
         this.queueList.remove(position);
     }
 
-    // Attempts to load data from local storage
-    private void loadList() {
-        try {
-            queueList = (ArrayList<QueueObject>) InternalStorage.readObject(this.getContext(), "queue");
-        } catch (IOException e) {
-        } catch (ClassNotFoundException e) {
-        }
-    }
 
-    // Attempts to persist data to local storage
-    private void storeList() {
-        try {
-            InternalStorage.writeObject(this.getContext(), "queue", queueList);
-        } catch (IOException e) {
-            String error = "failed to store";
-            Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    public void setQueuesAdapter(QueuesAdapter queuesAdapter){
+    public void setQueuesAdapter(QueuesAdapter queuesAdapter) {
         this.queuesAdapter = queuesAdapter;
     }
+
+    //Will verify if there is a QueueObject in the list that already has the name
+    public boolean nameExists(String testName) {
+        boolean flag = false;
+        for (Queue queueObject : queueList) {
+            if (queueObject.getName().equals(testName)) {
+                flag = true;
+            }
+        }
+        return flag;
+    }
+
 
 }

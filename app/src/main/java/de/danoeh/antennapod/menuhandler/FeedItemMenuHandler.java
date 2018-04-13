@@ -1,15 +1,27 @@
 package de.danoeh.antennapod.menuhandler;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.widget.ListView;
 import android.widget.Toast;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.feed.Queue;
 import de.danoeh.antennapod.core.gpoddernet.model.GpodnetEpisodeAction;
 import de.danoeh.antennapod.core.gpoddernet.model.GpodnetEpisodeAction.Action;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
@@ -29,7 +41,10 @@ public class FeedItemMenuHandler {
 
     private static final String TAG = "FeedItemMenuHandler";
 
-    private FeedItemMenuHandler() {
+    //Object where we will store the list of queues
+    private static ArrayList<Queue> queueList = new ArrayList<>();
+
+    private FeedItemMenuHandler(Context context) {
     }
 
     /**
@@ -74,10 +89,10 @@ public class FeedItemMenuHandler {
         }
 
         boolean isInQueue = selectedItem.isTagged(FeedItem.TAG_QUEUE);
-        if(queueAccess == null || queueAccess.size() == 0 || queueAccess.get(0) == selectedItem.getId()) {
+        if (queueAccess == null || queueAccess.size() == 0 || queueAccess.get(0) == selectedItem.getId()) {
             mi.setItemVisibility(R.id.move_to_top_item, false);
         }
-        if(queueAccess == null || queueAccess.size() == 0 || queueAccess.get(queueAccess.size()-1) == selectedItem.getId()) {
+        if (queueAccess == null || queueAccess.size() == 0 || queueAccess.get(queueAccess.size() - 1) == selectedItem.getId()) {
             mi.setItemVisibility(R.id.move_to_bottom_item, false);
         }
         if (!isInQueue) {
@@ -96,7 +111,7 @@ public class FeedItemMenuHandler {
             mi.setItemVisibility(R.id.share_download_url_item, false);
             mi.setItemVisibility(R.id.share_download_url_with_position_item, false);
         }
-        if(!hasMedia || selectedItem.getMedia().getPosition() <= 0) {
+        if (!hasMedia || selectedItem.getMedia().getPosition() <= 0) {
             mi.setItemVisibility(R.id.share_link_with_position_item, false);
             mi.setItemVisibility(R.id.share_download_url_with_position_item, false);
         }
@@ -109,14 +124,14 @@ public class FeedItemMenuHandler {
             mi.setItemVisibility(R.id.mark_unread_item, false);
         }
 
-        if(selectedItem.getMedia() == null || selectedItem.getMedia().getPosition() == 0) {
+        if (selectedItem.getMedia() == null || selectedItem.getMedia().getPosition() == 0) {
             mi.setItemVisibility(R.id.reset_position, false);
         }
 
-        if(!UserPreferences.isEnableAutodownload()) {
+        if (!UserPreferences.isEnableAutodownload()) {
             mi.setItemVisibility(R.id.activate_auto_download, false);
             mi.setItemVisibility(R.id.deactivate_auto_download, false);
-        } else if(selectedItem.getAutoDownload()) {
+        } else if (selectedItem.getAutoDownload()) {
             mi.setItemVisibility(R.id.activate_auto_download, false);
         } else {
             mi.setItemVisibility(R.id.deactivate_auto_download, false);
@@ -166,7 +181,7 @@ public class FeedItemMenuHandler {
             case R.id.mark_read_item:
                 selectedItem.setPlayed(true);
                 DBWriter.markItemPlayed(selectedItem, FeedItem.PLAYED, false);
-                if(GpodnetPreferences.loggedIn()) {
+                if (GpodnetPreferences.loggedIn()) {
                     FeedMedia media = selectedItem.getMedia();
                     // not all items have media, Gpodder only cares about those that do
                     if (media != null) {
@@ -184,7 +199,7 @@ public class FeedItemMenuHandler {
             case R.id.mark_unread_item:
                 selectedItem.setPlayed(false);
                 DBWriter.markItemPlayed(selectedItem, FeedItem.UNPLAYED, false);
-                if(GpodnetPreferences.loggedIn() && selectedItem.getMedia() != null) {
+                if (GpodnetPreferences.loggedIn() && selectedItem.getMedia() != null) {
                     GpodnetEpisodeAction actionNew = new GpodnetEpisodeAction.Builder(selectedItem, Action.NEW)
                             .currentDeviceId()
                             .currentTimestamp()
@@ -193,9 +208,76 @@ public class FeedItemMenuHandler {
                 }
                 break;
             case R.id.add_to_queue_item:
-                DBWriter.addQueueItem(context, selectedItem);
+                SharedPreferences sharedPreferences = context.getSharedPreferences("shared preferences", Context.MODE_PRIVATE);
+                Gson gson = new Gson();
+                String json = sharedPreferences.getString("queue list", null);
+                Type type = new TypeToken<ArrayList<Queue>>() {
+                }.getType();
+                queueList = gson.fromJson(json, type);
+
+                if (queueList == null) {
+                    queueList = new ArrayList<>();
+                }
+
+                //Creating an alert dialog to allow users to choose a queue
+                AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
+                alertBuilder.setIcon(R.drawable.ic_launcher);
+                alertBuilder.setTitle("Select a queue");
+
+                //Build the array of names for the single choice
+                ArrayList<String> names = new ArrayList<String>();
+                for (Queue queue : queueList) {
+                    names.add(queue.getName());
+                }
+
+                //Set the single choice items in our alert dialog
+                alertBuilder.setSingleChoiceItems(names.toArray(new String[queueList.size()]), 0, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        int selectedPosition = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
+                    }
+                });
+
+                alertBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+                alertBuilder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int i) {
+
+                        //Fetch the selected queue
+                        ListView lw = ((AlertDialog) dialog).getListView();
+                        int pos = lw.getCheckedItemPosition();
+                        long id = selectedItem.getId();
+                        // If the list is empty, set a new one
+                        if (queueList.get(pos).getEpisodesIDList() == null) {
+                            List<Long> episodesIDList = new ArrayList<Long>();
+                            episodesIDList.add(id);
+                            queueList.get(pos).setEpisodesIDList(episodesIDList);
+                        } else {
+                            queueList.get(pos).getEpisodesIDList().add(id);
+                        }
+
+                        SharedPreferences sharedPreferences = context.getSharedPreferences("shared preferences", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        Gson gson = new Gson();
+                        String json = gson.toJson(queueList);
+                        editor.putString("queue list", json);
+                        editor.apply();
+
+                        dialog.dismiss();
+                    }
+                });
+                alertBuilder.show();
+
                 break;
             case R.id.remove_from_queue_item:
+
+                //keeping this since its important for removing the tagging in older versions
                 DBWriter.removeQueueItem(context, selectedItem, true);
                 break;
             case R.id.add_to_favorites_item:
@@ -219,7 +301,7 @@ public class FeedItemMenuHandler {
             case R.id.visit_website_item:
                 Uri uri = Uri.parse(selectedItem.getLink());
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                if(IntentUtils.isCallable(context, intent)) {
+                if (IntentUtils.isCallable(context, intent)) {
                     context.startActivity(intent);
                 } else {
                     Toast.makeText(context, context.getString(R.string.download_error_malformed_url),

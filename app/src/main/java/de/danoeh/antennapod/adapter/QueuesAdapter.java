@@ -1,6 +1,12 @@
 package de.danoeh.antennapod.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.os.Build;
+import android.os.Bundle;
+import android.support.annotation.RequiresApi;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
@@ -13,21 +19,22 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.feed.QueueObject;
+import de.danoeh.antennapod.core.feed.Queue;
 import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.fragment.QueueListFragment;
+import de.danoeh.antennapod.fragment.QueuesFragment;
 
 /**
  * Created by Olivier Trépanier-Desfossés on 2018-03-14.
  * See https://github.com/codepath/android_guides/wiki/Using-an-ArrayAdapter-with-ListView for guide
  */
 
-public class QueuesAdapter extends ArrayAdapter<QueueObject> {
+public class QueuesAdapter extends ArrayAdapter<Queue> {
 
-    private ArrayList<QueueObject> queueList;
+    private ArrayList<Queue> queueList;
     private QueueListFragment queueListFragment;
 
-    public QueuesAdapter(Context context, ArrayList<QueueObject> queueList, QueueListFragment queueListFragment) {
+    public QueuesAdapter(Context context, ArrayList<Queue> queueList, QueueListFragment queueListFragment) {
         super(context, 0, queueList);
         this.queueList = queueList;
         this.queueListFragment = queueListFragment;
@@ -36,7 +43,7 @@ public class QueuesAdapter extends ArrayAdapter<QueueObject> {
     // Method that describes the translation between the data item and the View to display
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get data item for this position
-        QueueObject queue = getItem(position);
+        Queue queue = getItem(position);
         // Check if existing view to reuse, otherwise inflate view
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.queue_layout, parent, false);
@@ -45,24 +52,40 @@ public class QueuesAdapter extends ArrayAdapter<QueueObject> {
         TextView queueName = (TextView) convertView.findViewById(R.id.queue_name);
         Button deleteBtn = (Button) convertView.findViewById(R.id.queue_delete_button);
         // Populate the data into the template view using the data object
-        queueName.setText(queue.name);
+        queueName.setText(queue.getName());
         //set clickable, transfer to queueFragment on click
         queueName.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
             @Override
             public void onClick(View view) {
-                QueueFragment queueFragment = new QueueFragment();
-                //gets ID of the queueListFragment in order to properly replace it
-                int iD = queueListFragment.getId();
+                //Create queue fragment
+                QueuesFragment queuesFragment = new QueuesFragment();
+                queuesFragment.setQueue(queue);
+                //gets ID of the queueListFragment in order to properly repl
+                // ace it
+                int id = queueListFragment.getId();
                 FragmentTransaction fragmentTransaction = queueListFragment.getFragmentManager().beginTransaction();
-                fragmentTransaction.replace(iD, queueFragment);
+                fragmentTransaction.replace(id, queuesFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
+
             }
         });
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                removeQueue(position);
+                AlertDialog confirmDialog = new AlertDialog.Builder(view.getContext())
+                        .setTitle(R.string.confirmation_title)
+                        .setMessage(R.string.delete_queue_confirmation_message)
+                        .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                removeQueue(position);
+                            }
+                        })
+                        .setNegativeButton(R.string.cancel, null)
+                        .create();
+                confirmDialog.show();
             }
         });
         // Return the completed view to render on screen
@@ -70,7 +93,7 @@ public class QueuesAdapter extends ArrayAdapter<QueueObject> {
     }
 
     // Used to update the ArrayList with a new ArrayList and make it display properly
-    public void updateQueueList(ArrayList<QueueObject> queueList) {
+    public void updateQueueList(ArrayList<Queue> queueList) {
         this.queueList.clear();
         this.queueList.addAll(queueList);
         this.notifyDataSetChanged();
@@ -85,7 +108,7 @@ public class QueuesAdapter extends ArrayAdapter<QueueObject> {
         this.notifyDataSetChanged();
     }
 
-    public ArrayList<QueueObject> getQueueList() {
+    public ArrayList<Queue> getQueueList() {
         return this.queueList;
     }
 
