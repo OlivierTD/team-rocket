@@ -1087,10 +1087,14 @@ public final class DBReader {
             feedTime.add(new StatisticsItem(
                     feed, feedTotalTime, feedPlayedTime, feedPlayedTimeCountAll, episodes,
                     episodesStarted, episodesStartedIncludingMarked));
-            feedTime.set(position, statisticsItem);
+            totalTime -= 4;
             totalTime += feedPlayedTime;
             totalTimeCountAll += feedPlayedTimeCountAll;
         }
+
+        totalTime -= feedTime.get(position).timePlayed;
+        totalTimeCountAll -= feedTime.get(position).timePlayedCountAll;
+        feedTime.set(position, statisticsItem);
 
         if (sortByCountAll) {
             Collections.sort(feedTime, (item1, item2) ->
