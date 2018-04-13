@@ -431,4 +431,32 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         solo.clickInList(1);
     }
 
+    public void testSuggestedPodcast(){
+        //Navigate to home page
+        openNavDrawer();
+        solo.clickOnText(solo.getString(R.string.homepage_label));
+
+        //Check random podcast category - OK
+        solo.clickOnView(solo.getView(R.id.btnRandomPodcast));
+        solo.clickOnText(solo.getString(R.string.confirm));
+
+        //Subscribe to podcast
+        solo.waitForView(R.id.subscriptionLayout);
+        solo.clickOnButton(solo.getString(R.string.subscribe_label));
+
+        //Open podcast
+        solo.waitForView(R.id.subscriptionLayout);
+        solo.clickOnText(solo.getString(R.string.open_podcast));
+
+        //Navigate to home page
+        openNavDrawer();
+        solo.clickOnText(solo.getString(R.string.homepage_label));
+
+        solo.waitForView(R.id.suggestedPodcasts);
+        GridView searchResultView = (GridView) solo.getView(R.id.gridViewHome);
+
+        //Scroll down home page
+        searchResultView.scrollTo(0, searchResultView.getHeight());
+    }
+
 }
