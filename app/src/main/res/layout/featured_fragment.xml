@@ -7,11 +7,32 @@
 
     <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:background="@android:color/darker_gray">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_launcher"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="13dp"/>
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="80dp"
+            android:paddingLeft="70dp"
+            android:paddingTop="17dp"
+            android:layout_margin="1dp"
+            android:gravity="center"
+            android:text="AntennaPod"
+            android:textSize="25dp"/>
 
         <fragment
             android:id="@+id/randomEpisodeFragment"
@@ -28,9 +49,9 @@
             android:layout_marginTop="25dp"
             android:layout_below="@+id/randomEpisodeFragment"/>
 
-        <fragment
-            android:id="@+id/centralizedFragment"
-            android:name="de.danoeh.antennapod.fragment.CentralizedSearchFragment"
+      <fragment
+            android:id="@+id/suggestedPodcasts"
+            android:name="de.danoeh.antennapod.fragment.suggestedPodcastsFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/textView"
@@ -38,5 +59,15 @@
             android:layout_below="@+id/topListFragment"
             android:layout_marginTop="22dp" />
 
+        <fragment
+            android:id="@+id/centralizedFragment"
+            android:name="de.danoeh.antennapod.fragment.CentralizedSearchFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textView"
+            android:layout_alignStart="@+id/textView"
+            android:layout_below="@+id/suggestedPodcasts"
+            android:layout_marginTop="22dp" />
     </RelativeLayout>
+
 </ScrollView>

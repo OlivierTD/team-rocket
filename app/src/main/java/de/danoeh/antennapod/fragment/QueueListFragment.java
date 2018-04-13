@@ -32,6 +32,10 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.service.QueueStoreService;
+
+import static de.danoeh.antennapod.service.QueueStoreService.loadList;
+import static de.danoeh.antennapod.service.QueueStoreService.storeList;
 
 public class QueueListFragment extends Fragment {
 
@@ -39,6 +43,7 @@ public class QueueListFragment extends Fragment {
 
     //List of queue fragments
     private ArrayList<Queue> queueList = new ArrayList<>();
+
 
     // List view for the list of queues
     ListView lvQueue;
@@ -55,7 +60,8 @@ public class QueueListFragment extends Fragment {
         setHasOptionsMenu(true); // Fragment would like to participate in populating the options menu
 
         //attempts to load from local storage
-        this.loadList();
+        queueList = loadList(this.getActivity(),queueList);
+
 
     }
 
@@ -80,7 +86,7 @@ public class QueueListFragment extends Fragment {
 
     //Shows the menu on top
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.queue_toolbar, menu);
     }
@@ -103,7 +109,7 @@ public class QueueListFragment extends Fragment {
 
     //Method called in the onOptionsItemSelected in order add queues from the top menu
     @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
-    public void addFromMenu(){
+    public void addFromMenu() {
         final EditText enterName = new EditText(getActivity());
         enterName.setInputType(InputType.TYPE_CLASS_TEXT);
         enterName.setHint(R.string.enter_queue_name);
@@ -127,11 +133,9 @@ public class QueueListFragment extends Fragment {
             public void onClick(View v) {
                 if (enterName.getText().toString().equals("")) {
                     Toast.makeText(getActivity(), R.string.enter_valid_name, Toast.LENGTH_SHORT).show();
-                }
-                else if (nameExists(enterName.getText().toString())) {
+                } else if (nameExists(enterName.getText().toString())) {
                     Toast.makeText(getActivity(), R.string.name_already_exists, Toast.LENGTH_SHORT).show();
-                }
-                else {
+                } else {
                     createNewQueue(enterName.getText().toString());
                     enterNameDialog.dismiss();
                 }
@@ -140,12 +144,13 @@ public class QueueListFragment extends Fragment {
 
 
     }
+
     // Called when fragment is visible to the user
     @Override
     public void onStart() {
         super.onStart();
         //attempts to load from local storage
-        this.loadList();
+        queueList = loadList(this.getActivity(),queueList);
     }
 
     // Called when fragment is visible to the user and actively running
@@ -153,14 +158,16 @@ public class QueueListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         //attempts to load from local storage
-        this.loadList();
+        queueList = loadList(this.getActivity(),queueList);
+        queuesAdapter.updateQueueList(this.queueList);
+
     }
 
     // Called when the fragment is no longer resumed
     @Override
     public void onPause() {
         //attempts to store in local storage
-        this.storeList();
+        storeList(this.getActivity(), queueList);
         super.onPause();
     }
 
@@ -171,7 +178,7 @@ public class QueueListFragment extends Fragment {
     @Override
     public void onDestroyView() {
         //attempts to store in local storage
-        this.storeList();
+        storeList(this.getActivity(), queueList);
         super.onDestroyView();
     }
 
@@ -193,31 +200,8 @@ public class QueueListFragment extends Fragment {
         this.queueList.remove(position);
     }
 
-    // Attempts to load data from local storage
-    private void loadList() {
-        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("shared preferences", Context.MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = sharedPreferences.getString("queue list", null);
-        Type type = new TypeToken<ArrayList<Queue>>() {}.getType();
-        queueList = gson.fromJson(json, type);
 
-        if (queueList == null) {
-            queueList = new ArrayList<>();
-        }
-    }
-
-    // Attempts to persist data to local storage
-    private void storeList() {
-        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("shared preferences", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(queueList);
-        editor.putString("queue list", json);
-        editor.apply();
-
-    }
-
-    public void setQueuesAdapter(QueuesAdapter queuesAdapter){
+    public void setQueuesAdapter(QueuesAdapter queuesAdapter) {
         this.queuesAdapter = queuesAdapter;
     }
 
