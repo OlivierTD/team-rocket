@@ -14,26 +14,6 @@
         android:layout_height="match_parent"
         tools:background="@android:color/darker_gray">
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_launcher"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="13dp"/>
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="80dp"
-            android:paddingLeft="70dp"
-            android:paddingTop="17dp"
-            android:layout_margin="1dp"
-            android:gravity="center"
-            android:text="AntennaPod"
-            android:textSize="25dp"/>
-
         <fragment
             android:id="@+id/randomEpisodeFragment"
             android:name="de.danoeh.antennapod.fragment.RandomPodcastFragment"
