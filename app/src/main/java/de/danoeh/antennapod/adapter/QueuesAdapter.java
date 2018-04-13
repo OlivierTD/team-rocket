@@ -9,12 +9,16 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentManager;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -23,6 +27,9 @@ import de.danoeh.antennapod.core.feed.Queue;
 import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.fragment.QueueListFragment;
 import de.danoeh.antennapod.fragment.QueuesFragment;
+
+import static de.danoeh.antennapod.service.QueueStoreService.loadList;
+import static de.danoeh.antennapod.service.QueueStoreService.storeList;
 
 /**
  * Created by Olivier Trépanier-Desfossés on 2018-03-14.
@@ -33,6 +40,7 @@ public class QueuesAdapter extends ArrayAdapter<Queue> {
 
     private ArrayList<Queue> queueList;
     private QueueListFragment queueListFragment;
+    private Queue changeName;
 
     public QueuesAdapter(Context context, ArrayList<Queue> queueList, QueueListFragment queueListFragment) {
         super(context, 0, queueList);
@@ -69,6 +77,15 @@ public class QueuesAdapter extends ArrayAdapter<Queue> {
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
 
+            }
+        });
+        queueName.setOnLongClickListener(new View.OnLongClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
+            @Override
+            public boolean onLongClick(View view) {
+                changeName = queue;
+                renameQueue(position);
+                return true;
             }
         });
         deleteBtn.setOnClickListener(new View.OnClickListener() {
@@ -108,8 +125,58 @@ public class QueuesAdapter extends ArrayAdapter<Queue> {
         this.notifyDataSetChanged();
     }
 
+    public void rename(int position){
+        //update the element in the ArrayList
+        this.queueListFragment.renameWithPos(position, changeName);
+
+        //update the adapter to properly display the correct list
+        this.updateQueueList(this.queueListFragment.getQueuesList());
+        this.notifyDataSetChanged();
+    }
+
     public ArrayList<Queue> getQueueList() {
         return this.queueList;
     }
+
+    //Method called from long click listener in order add queues from the top menu
+    @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
+    public void renameQueue(int position) {
+        final EditText enterName = new EditText(queueListFragment.getActivity());
+        enterName.setInputType(InputType.TYPE_CLASS_TEXT);
+        enterName.setHint(R.string.enter_queue_name);
+
+        //Create the dialog to be shown to the user
+        AlertDialog enterNameDialog = new AlertDialog.Builder(queueListFragment.getActivity())
+                .setView(enterName)
+                .setTitle("Rename queue!")
+                .setPositiveButton(R.string.create, null)
+                .setNegativeButton(R.string.cancel, null)
+                .create();
+
+        //Pops out the keyboard
+        enterNameDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
+        //Display the dialog
+        enterNameDialog.show();
+
+        enterNameDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (enterName.getText().toString().equals("")) {
+                    Toast.makeText(queueListFragment.getActivity(), R.string.enter_valid_name, Toast.LENGTH_SHORT).show();
+                } else if (queueListFragment.nameExists(enterName.getText().toString())) {
+                    Toast.makeText(queueListFragment.getActivity(), R.string.name_already_exists, Toast.LENGTH_SHORT).show();
+                } else {
+                    changeName.setName(enterName.getText().toString());
+                    enterNameDialog.dismiss();
+                    rename(position);
+                }
+            }
+        });
+
+
+
+    }
+
 
 }
