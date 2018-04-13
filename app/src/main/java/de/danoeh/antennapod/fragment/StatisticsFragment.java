@@ -22,11 +22,13 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.StatisticsListAdapter;
 
+import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.Converter;
 import rx.Observable;
@@ -57,6 +59,7 @@ public class StatisticsFragment extends Fragment implements AdapterView.OnItemCl
     private ListView feedStatisticsList;
     private StatisticsListAdapter listAdapter;
     private boolean countAll = false;
+    DBReader.StatisticsData getStats = DBReader.getStatistics(countAll);
     private SharedPreferences prefs;
 
     public StatisticsFragment(){
@@ -159,7 +162,7 @@ public class StatisticsFragment extends Fragment implements AdapterView.OnItemCl
         if (subscription != null) {
             subscription.unsubscribe();
         }
-        subscription = Observable.fromCallable(() -> DBReader.getStatistics(countAll))
+        subscription = Observable.fromCallable(() -> getStats)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
@@ -195,17 +198,17 @@ public class StatisticsFragment extends Fragment implements AdapterView.OnItemCl
         dialog.setPositiveButton(android.R.string.ok, null);
         dialog.setNeutralButton(R.string.reset_statistics, null);
 
+
         final AlertDialog alertDialog = dialog.create();
         alertDialog.show();
 
         Button resetButton = alertDialog.getButton(DialogInterface.BUTTON_NEUTRAL);
         resetButton.setOnClickListener(v -> {
-            stats.episodesStartedIncludingMarked = 0;
-            stats.episodesStarted = 0;
-            stats.timePlayed = 0;
-            stats.timePlayedCountAll = 0;
-
+            List<Feed> feedList = DBReader.getFeedList();
+            listAdapter.replaceItem(position, new DBReader.StatisticsItem(stats.feed, stats.time, 0, 0, stats.episodes, 0, 0));
+            getStats = DBReader.resetStatistics(countAll, position, new DBReader.StatisticsItem(stats.feed, stats.time, 0, 0, stats.episodes, 0, 0));
             alertDialog.dismiss();
+            loadStatistics();
         });
     }
 }

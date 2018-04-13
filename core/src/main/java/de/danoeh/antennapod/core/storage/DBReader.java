@@ -1006,6 +1006,104 @@ public final class DBReader {
         return new StatisticsData(totalTime, totalTimeCountAll, feedTime);
     }
 
+//    public static void resetStatistics() {
+//        PodDBAdapter adapter = PodDBAdapter.getInstance();
+//        adapter.open();
+//
+//        List<StatisticsItem> feedTime = new ArrayList<>();
+//
+//        List<Feed> feeds = getFeedList();
+//        for (Feed feed : feeds) {
+//            long feedPlayedTimeCountAll = 0;
+//            long feedPlayedTime = 0;
+//            long feedTotalTime = 0;
+//            long episodes = 0;
+//            long episodesStarted = 0;
+//            long episodesStartedIncludingMarked = 0;
+//            List<FeedItem> items = getFeed(feed.getId()).getItems();
+//            for (FeedItem item : items) {
+//                FeedMedia media = item.getMedia();
+//
+//
+//                // played duration used to be reset when the item is added to the playback history
+//                media.setPlaybackCompletionDate(null);
+//
+//                item.setPlayed(false);
+//            }
+//            feedTime.add(new StatisticsItem(
+//                    feed, feedTotalTime, feedPlayedTime, feedPlayedTimeCountAll, episodes,
+//                    episodesStarted, episodesStartedIncludingMarked));
+//        }
+//
+//        adapter.close();
+//    }
+
+    public static StatisticsData resetStatistics(boolean sortByCountAll, int position, StatisticsItem statisticsItem) {
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+
+        long totalTimeCountAll = 0;
+        long totalTime = 0;
+        List<StatisticsItem> feedTime = new ArrayList<>();
+
+        List<Feed> feeds = getFeedList();
+        for (Feed feed : feeds) {
+            long feedPlayedTimeCountAll = 0;
+            long feedPlayedTime = 0;
+            long feedTotalTime = 0;
+            long episodes = 0;
+            long episodesStarted = 0;
+            long episodesStartedIncludingMarked = 0;
+            List<FeedItem> items = getFeed(feed.getId()).getItems();
+            for (FeedItem item : items) {
+                FeedMedia media = item.getMedia();
+                if (media == null) {
+                    continue;
+                }
+
+                // played duration used to be reset when the item is added to the playback history
+                if (media.getPlaybackCompletionDate() != null) {
+                    feedPlayedTime += media.getDuration() / 1000;
+                }
+                feedPlayedTime += media.getPlayedDuration() / 1000;
+
+                if (item.isPlayed()) {
+                    feedPlayedTimeCountAll += media.getDuration() / 1000;
+                } else {
+                    feedPlayedTimeCountAll += media.getPosition() / 1000;
+                }
+
+                if (media.getPlaybackCompletionDate() != null || media.getPlayedDuration() > 0) {
+                    episodesStarted++;
+                }
+
+                if (item.isPlayed() || media.getPosition() != 0) {
+                    episodesStartedIncludingMarked++;
+                }
+
+                feedTotalTime += media.getDuration() / 1000;
+                episodes++;
+            }
+            feedTime.add(new StatisticsItem(
+                    feed, feedTotalTime, feedPlayedTime, feedPlayedTimeCountAll, episodes,
+                    episodesStarted, episodesStartedIncludingMarked));
+            feedTime.set(position, statisticsItem);
+            totalTime += feedPlayedTime;
+            totalTimeCountAll += feedPlayedTimeCountAll;
+        }
+
+        if (sortByCountAll) {
+            Collections.sort(feedTime, (item1, item2) ->
+                    compareLong(item1.timePlayedCountAll, item2.timePlayedCountAll));
+        } else {
+            Collections.sort(feedTime, (item1, item2) ->
+                    compareLong(item1.timePlayed, item2.timePlayed));
+        }
+
+        adapter.close();
+        return new StatisticsData(totalTime, totalTimeCountAll, feedTime);
+    }
+
     /**
      * Compares two {@code long} values. Long.compare() is not available before API 19
      *

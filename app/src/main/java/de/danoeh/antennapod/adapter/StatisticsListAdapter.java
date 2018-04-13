@@ -45,6 +45,10 @@ public class StatisticsListAdapter extends BaseAdapter {
         return feedTime.get(position);
     }
 
+    public void replaceItem(int position, DBReader.StatisticsItem statisticsItem) {
+        feedTime.set(position, statisticsItem);
+    }
+
     @Override
     public long getItemId(int position) {
         return feedTime.get(position).feed.getId();
