@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.fragment;
 
+import android.content.res.Resources;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,7 +21,7 @@ public class CategoriesFragment extends Fragment {
     public static final String TAG = "CategoriesFragment";
     private ArrayAdapter listAdapter;
     private GridView gridView;
-    private ArrayList<String>categories = new ArrayList<>(Arrays.asList("Arts", "Comedy", "Education", "Kids & family", "Health", "TV & Film", "Music", "News & Politics", "Religion & Spirituality" ,"Science & Medicine", "Sports", "Technology", "Business", "Games & Hobbies", "Society & Culture", "Government & Organizations" ));
+    private ArrayList<String>categories;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,8 +38,9 @@ public class CategoriesFragment extends Fragment {
 
         gridView = (GridView) view.findViewById(R.id.listgridview);
 
+
         //creation and initialization of the arrayadapter used
-        listAdapter = new ArrayAdapter(getActivity(),R.layout.category_list,R.id.text1, categories);
+        listAdapter = new ArrayAdapter(getActivity(),R.layout.category_list,R.id.categories_name, getCategories());
 
         //setting the adapter
         gridView.setAdapter(listAdapter);
@@ -56,4 +58,14 @@ public class CategoriesFragment extends Fragment {
         });
         return view;
     }
+
+    //getting the categories from the ressource file
+    public ArrayList<String> getCategories (){
+        Resources res = getResources();
+        String [] cat = res.getStringArray(R.array.categories_names);
+        categories =  new ArrayList<>(Arrays.asList(cat));
+        return categories;
+    }
+
+
 }
