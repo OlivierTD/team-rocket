@@ -148,7 +148,7 @@ public class QueuesAdapter extends ArrayAdapter<Queue> {
         //Create the dialog to be shown to the user
         AlertDialog enterNameDialog = new AlertDialog.Builder(queueListFragment.getActivity())
                 .setView(enterName)
-                .setTitle("Rename queue!")
+                .setTitle(R.string.rename_queue)
                 .setPositiveButton(R.string.create, null)
                 .setNegativeButton(R.string.cancel, null)
                 .create();
