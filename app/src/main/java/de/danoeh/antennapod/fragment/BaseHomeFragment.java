@@ -46,8 +46,8 @@ public class BaseHomeFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         setHasOptionsMenu(true);
-
-        ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.homepage_label);
+        final MainActivity act = ((MainActivity) getActivity());
+        act.getSupportActionBar().setTitle(R.string.homepage_label);
 
         View rootView = inflater.inflate(R.layout.base_home_fragment, container, false);
         viewPager = (ViewPager)rootView.findViewById(R.id.home_viewpager);
