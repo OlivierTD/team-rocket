@@ -311,7 +311,7 @@
     <string name="about_pref">About</string>
     <string name="queues_label">Queues</string>
     <string name="queue_label">Queue</string>
-    <string name="homepage_label">Home Page</string>
+    <string name="homepage_label">Home</string>
     <string name="custom_theme_label">Custom Theme</string>
     <string name="services_label">Services</string>
     <string name="flattr_label">Flattr</string>

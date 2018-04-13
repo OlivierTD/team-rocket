@@ -20,7 +20,7 @@ public class CategoriesFragment extends Fragment {
 
     public static final String TAG = "CategoriesFragment";
     private ArrayAdapter listAdapter;
-    private ListView gridView;
+    private ListView listView;
     private ArrayList<String>categories;
 
     @Override
@@ -36,17 +36,17 @@ public class CategoriesFragment extends Fragment {
         //getting the current activity
         final MainActivity activity = (MainActivity) getActivity();
 
-        gridView = (ListView) view.findViewById(R.id.listgridview);
+        listView = (ListView) view.findViewById(R.id.cat_listview);
 
 
         //creation and initialization of the arrayadapter used
         listAdapter = new ArrayAdapter(getActivity(),R.layout.category_list,R.id.categories_name, getCategories());
 
         //setting the adapter
-        gridView.setAdapter(listAdapter);
+        listView.setAdapter(listAdapter);
 
         //defining the behavior of the app when a certain item in the list is selected
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View v, int i, long l) {
                 //creating the fragment
