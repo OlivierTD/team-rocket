@@ -12,10 +12,12 @@ import java.util.ArrayList;
 
 import de.danoeh.antennapod.core.feed.Queue;
 
-public class QueueStoreService {
+public final class QueueStoreService {
+
+    private QueueStoreService(){}
 
     // Attempts to load data from local storage
-    public ArrayList<Queue> loadList(Context context, ArrayList<Queue> queueList) {
+    public static ArrayList<Queue> loadList(Context context, ArrayList<Queue> queueList) {
         SharedPreferences sharedPreferences = context.getSharedPreferences("shared preferences", Context.MODE_PRIVATE);
         Gson gson = new Gson();
         String json = sharedPreferences.getString("queue list", null);
@@ -30,7 +32,7 @@ public class QueueStoreService {
     }
 
     // Attempts to persist data to local storage
-    public void storeList(Context context, ArrayList<Queue> queueList) {
+    public static void storeList(Context context, ArrayList<Queue> queueList) {
         SharedPreferences sharedPreferences = context.getSharedPreferences("shared preferences", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Gson gson = new Gson();

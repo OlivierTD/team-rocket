@@ -34,6 +34,9 @@ import java.util.ArrayList;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.service.QueueStoreService;
 
+import static de.danoeh.antennapod.service.QueueStoreService.loadList;
+import static de.danoeh.antennapod.service.QueueStoreService.storeList;
+
 public class QueueListFragment extends Fragment {
 
     public static final String TAG = "QueueListFragment";
@@ -58,7 +61,7 @@ public class QueueListFragment extends Fragment {
         setHasOptionsMenu(true); // Fragment would like to participate in populating the options menu
 
         //attempts to load from local storage
-        queueList = store.loadList(this.getActivity(),queueList);
+        queueList = loadList(this.getActivity(),queueList);
 
 
     }
@@ -148,7 +151,7 @@ public class QueueListFragment extends Fragment {
     public void onStart() {
         super.onStart();
         //attempts to load from local storage
-        queueList = store.loadList(this.getActivity(),queueList);
+        queueList = loadList(this.getActivity(),queueList);
     }
 
     // Called when fragment is visible to the user and actively running
@@ -156,7 +159,7 @@ public class QueueListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         //attempts to load from local storage
-        queueList = store.loadList(this.getActivity(),queueList);
+        queueList = loadList(this.getActivity(),queueList);
         queuesAdapter.updateQueueList(this.queueList);
 
     }
@@ -165,7 +168,7 @@ public class QueueListFragment extends Fragment {
     @Override
     public void onPause() {
         //attempts to store in local storage
-        store.storeList(this.getActivity(), queueList);
+        storeList(this.getActivity(), queueList);
         super.onPause();
     }
 
@@ -176,7 +179,7 @@ public class QueueListFragment extends Fragment {
     @Override
     public void onDestroyView() {
         //attempts to store in local storage
-        store.storeList(this.getActivity(), queueList);
+        storeList(this.getActivity(), queueList);
         super.onDestroyView();
     }
 

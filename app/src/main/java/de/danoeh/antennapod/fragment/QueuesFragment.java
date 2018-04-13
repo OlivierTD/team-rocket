@@ -51,6 +51,9 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+import static de.danoeh.antennapod.service.QueueStoreService.loadList;
+import static de.danoeh.antennapod.service.QueueStoreService.storeList;
+
 /**
  * Created by olitr on 2018-03-28.
  */
@@ -232,9 +235,9 @@ public class QueuesFragment extends Fragment {
     }
 
     private void removeId(long Id){
-        QueueStoreService store = new QueueStoreService();
 
-        queueList = store.loadList(this.getActivity(), queueList);
+
+        queueList = loadList(this.getActivity(), queueList);
 
         if (queueList == null) {
             queueList = new ArrayList<>();
@@ -245,7 +248,7 @@ public class QueuesFragment extends Fragment {
                 queue.getEpisodesIDList().remove(Id);
             }
         }
-        store.storeList(this.getActivity(), queueList);
+        storeList(this.getActivity(), queueList);
     }
 
 
