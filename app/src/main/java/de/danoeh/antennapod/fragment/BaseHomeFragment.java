@@ -34,6 +34,11 @@ public class BaseHomeFragment extends Fragment{
     private TabLayout tabLayout;
     private ViewPager viewPager;
 
+    private MainActivity act;
+
+    public void setAct(MainActivity mainActivity){
+        this.act = mainActivity;
+    }
     public BaseHomeFragment(){
     }
 
@@ -46,7 +51,7 @@ public class BaseHomeFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         setHasOptionsMenu(true);
-        final MainActivity act = ((MainActivity) getActivity());
+        this.setAct((MainActivity) getActivity());
         act.getSupportActionBar().setTitle(R.string.homepage_label);
 
         View rootView = inflater.inflate(R.layout.base_home_fragment, container, false);

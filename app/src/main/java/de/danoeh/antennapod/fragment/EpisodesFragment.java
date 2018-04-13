@@ -43,8 +43,7 @@ public class EpisodesFragment extends Fragment {
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         setHasOptionsMenu(true);
-        final MainActivity activity = ((MainActivity) getActivity());
-        activity.getSupportActionBar().setTitle(R.string.episodes_label);
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.episodes_label);
 
         View rootView = inflater.inflate(R.layout.pager_fragment, container, false);
         viewPager = (ViewPager)rootView.findViewById(R.id.viewpager);
