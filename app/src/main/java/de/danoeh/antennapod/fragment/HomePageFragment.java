@@ -13,8 +13,6 @@ import android.view.ViewGroup;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 
-
-
 /**
  * Created by Sai Shan on 2018-02-02.
  */
@@ -26,7 +24,6 @@ public class HomePageFragment extends Fragment{
     private static View root;
 
     public HomePageFragment(){
-
     }
 
     @Override
@@ -38,9 +35,7 @@ public class HomePageFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        if (getActivity() instanceof MainActivity) {
             ((MainActivity) getActivity()).getSupportActionBar().setTitle("Home");
-        }
         try {
             root = inflater.inflate(R.layout.home_page, container, false);
             return root;
@@ -50,7 +45,6 @@ public class HomePageFragment extends Fragment{
         }
         return root;
     }
-
 
     //inflates the top menu
     @Override
@@ -72,9 +66,7 @@ public class HomePageFragment extends Fragment{
                         .replace(R.id.main_view,fragment,fragment.getTag())
                         .addToBackStack(null)
                         .commit();
-
                 return true;
-
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -84,7 +76,6 @@ public class HomePageFragment extends Fragment{
     public void onStart(){
         super.onStart();
     }
-
 
     @Override
     public void onDestroyView(){

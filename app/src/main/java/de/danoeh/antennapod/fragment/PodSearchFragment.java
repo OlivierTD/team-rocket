@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 
-
 /**
  * Created by Batoul on 2018-04-08.
  * A page that the search lands on, containing the Centralized Search and the Random Podcast button.
@@ -19,7 +18,6 @@ public class PodSearchFragment extends Fragment {
     public static final String TAG = "PodSearchFragment";
 
     public PodSearchFragment(){
-
     }
 
     @Override
@@ -32,11 +30,7 @@ public class PodSearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View root = inflater.inflate(R.layout.centralizedsearch_results, container, false);
-        if (getActivity() instanceof MainActivity) {
-            ((MainActivity) getActivity()).getSupportActionBar().setTitle("Search for a Podcast");
-        }
-
-
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle("Search for a Podcast");
         return root;
     }
 
