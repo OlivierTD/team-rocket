@@ -47,7 +47,7 @@ public class BaseHomeFragment extends Fragment{
         super.onCreateView(inflater, container, savedInstanceState);
         setHasOptionsMenu(true);
 
-        ((MainActivity) getActivity()).getSupportActionBar().setTitle("Home Page");
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.homepage_label);
 
         View rootView = inflater.inflate(R.layout.base_home_fragment, container, false);
         viewPager = (ViewPager)rootView.findViewById(R.id.home_viewpager);
@@ -112,9 +112,9 @@ public class BaseHomeFragment extends Fragment{
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case POS_FEATURED:
-                    return "FEATURED";
+                    return resources.getString(R.string.featured_tab);
                 case POS_CATEGORIES:
-                    return "CATEGORIES";
+                    return resources.getString(R.string.categories_tab);
                 default:
                     return super.getPageTitle(position);
             }

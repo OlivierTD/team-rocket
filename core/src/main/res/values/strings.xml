@@ -311,7 +311,7 @@
     <string name="about_pref">About</string>
     <string name="queues_label">Queues</string>
     <string name="queue_label">Queue</string>
-    <string name="homepage_label">Home</string>
+    <string name="homepage_label">Home Page</string>
     <string name="custom_theme_label">Custom Theme</string>
     <string name="services_label">Services</string>
     <string name="flattr_label">Flattr</string>
@@ -449,6 +449,9 @@
     <string name="pref_cast_message_free_flavor">Chromecast requires third party proprietary libraries that are disabled in this version of AntennaPod</string>
     <string name="pref_enqueue_downloaded_title">Enqueue Downloaded</string>
     <string name="pref_enqueue_downloaded_summary">Add downloaded episodes to the queue</string>
+
+    <string name="featured_tab">FEATURED</string>
+    <string name="categories_tab">CATEGORIES</string>
 
     <!-- Auto-Flattr dialog -->
     <string name="auto_flattr_enable">Enable automatic flattring</string>
