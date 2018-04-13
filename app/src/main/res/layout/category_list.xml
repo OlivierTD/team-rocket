@@ -1,33 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- This is a category list ITEM -->
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/image1"
-        android:layout_width="50dp"
+    <TextView
+        android:id="@+id/text1"
+        style="@style/AntennaPod.TextView.ListItemPrimaryTitle2"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:gravity="center_vertical"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginRight="8dp"
-        android:adjustViewBounds="true"
-        android:contentDescription="@string/cover_label"
-        android:cropToPadding="true"
-        android:scaleType="fitXY"
+        android:background="?attr/selectableItemBackground"
+        android:maxLines="2"
         tools:background="@android:color/holo_green_dark"
-        tools:src="@drawable/ic_stat_antenna_default" />
-
-        <TextView
-            android:id="@+id/text1"
-            style="@style/AntennaPod.TextView.ListItemPrimaryTitle2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/image1"
-            android:maxLines="2"
-            tools:background="@android:color/holo_green_dark"
-            tools:text="Category name" />
+        tools:text="Category name" />
 
 </RelativeLayout>

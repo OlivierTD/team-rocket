@@ -27,8 +27,8 @@
         android:layout_marginTop="10dp"
         android:paddingBottom="@dimen/list_vertical_padding"
         android:paddingTop="@dimen/list_vertical_padding"
-        android:nestedScrollingEnabled="true"
-        >
+        android:nestedScrollingEnabled="true">
     </GridView>
+
 
 </RelativeLayout>

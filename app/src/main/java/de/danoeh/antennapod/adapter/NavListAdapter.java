@@ -35,6 +35,7 @@ import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.fragment.AddFeedFragment;
 import de.danoeh.antennapod.fragment.AllEpisodesFragment;
+import de.danoeh.antennapod.fragment.BaseHomeFragment;
 import de.danoeh.antennapod.fragment.DownloadsFragment;
 import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.fragment.HomePageFragment;
@@ -121,7 +122,7 @@ public class NavListAdapter extends BaseAdapter
         }
         int icon;
         switch (tag) {
-            case HomePageFragment.TAG:
+            case BaseHomeFragment.TAG:
                 icon = R.attr.ic_home;
                 break;
             case QueueListFragment.TAG:

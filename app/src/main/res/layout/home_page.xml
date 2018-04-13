@@ -4,41 +4,21 @@
     android:id="@+id/homeScrollView"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
+
     <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:background="@android:color/darker_gray">
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_launcher"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="13dp"/>
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="80dp"
-            android:paddingLeft="70dp"
-            android:paddingTop="17dp"
-            android:layout_margin="1dp"
-            android:gravity="center"
-            android:text="AntennaPod"
-            android:textSize="25dp"/>
-
         <fragment
             android:id="@+id/randomEpisodeFragment"
             android:name="de.danoeh.antennapod.fragment.RandomPodcastFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="75dp" />
+            android:layout_marginTop="20dp" />
 
         <fragment
             android:id="@+id/topListFragment"
@@ -58,14 +38,5 @@
             android:layout_below="@+id/topListFragment"
             android:layout_marginTop="22dp" />
 
-        <!--For testing only, the categoriesFragment is located on the home page
-            upon completion of the tabs, this will be removed-->
-        <fragment
-            android:id="@+id/categoriesFragment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            android:name="de.danoeh.antennapod.fragment.CategoriesFragment"
-            android:layout_below="@+id/centralizedFragment"/>
     </RelativeLayout>
 </ScrollView>
