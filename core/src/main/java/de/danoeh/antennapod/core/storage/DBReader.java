@@ -1006,38 +1006,6 @@ public final class DBReader {
         return new StatisticsData(totalTime, totalTimeCountAll, feedTime);
     }
 
-//    public static void resetStatistics() {
-//        PodDBAdapter adapter = PodDBAdapter.getInstance();
-//        adapter.open();
-//
-//        List<StatisticsItem> feedTime = new ArrayList<>();
-//
-//        List<Feed> feeds = getFeedList();
-//        for (Feed feed : feeds) {
-//            long feedPlayedTimeCountAll = 0;
-//            long feedPlayedTime = 0;
-//            long feedTotalTime = 0;
-//            long episodes = 0;
-//            long episodesStarted = 0;
-//            long episodesStartedIncludingMarked = 0;
-//            List<FeedItem> items = getFeed(feed.getId()).getItems();
-//            for (FeedItem item : items) {
-//                FeedMedia media = item.getMedia();
-//
-//
-//                // played duration used to be reset when the item is added to the playback history
-//                media.setPlaybackCompletionDate(null);
-//
-//                item.setPlayed(false);
-//            }
-//            feedTime.add(new StatisticsItem(
-//                    feed, feedTotalTime, feedPlayedTime, feedPlayedTimeCountAll, episodes,
-//                    episodesStarted, episodesStartedIncludingMarked));
-//        }
-//
-//        adapter.close();
-//    }
-
     public static StatisticsData resetStatistics(boolean sortByCountAll, int position, StatisticsItem statisticsItem) {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
