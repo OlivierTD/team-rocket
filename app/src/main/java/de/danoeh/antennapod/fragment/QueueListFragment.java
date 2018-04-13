@@ -44,7 +44,6 @@ public class QueueListFragment extends Fragment {
     //List of queue fragments
     private ArrayList<Queue> queueList = new ArrayList<>();
 
-    private QueueStoreService store = new QueueStoreService();
 
     // List view for the list of queues
     ListView lvQueue;
