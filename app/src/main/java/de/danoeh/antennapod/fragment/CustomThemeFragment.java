@@ -4,20 +4,19 @@ package de.danoeh.antennapod.fragment;
  * Created by Anania on 3/26/2018.
  */
 
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.dialog.HSVColorPickerDialog;
-import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
 
 public class CustomThemeFragment extends Fragment implements View.OnClickListener {
 
@@ -104,8 +103,10 @@ public class CustomThemeFragment extends Fragment implements View.OnClickListene
                 navSettings.setBackgroundColor(colors[i]);
                 //action bar
                 //Code would work in API 11
-                //ColorDrawable colorDrawable = new ColorDrawable(color3));
-                //((MainActivity) getActivity()).getActionBar().setBackgroundDrawable(colorDrawable);
+                String hexColor = String.format("#%06X", (0xFFFFFF & colors[i]));
+                ColorDrawable colorDrawable = new ColorDrawable(Color.parseColor(hexColor));
+                ActionBar bar = ((MainActivity) getActivity()).getSupportActionBar();
+                bar.setBackgroundDrawable(colorDrawable);
                 break;
         }
     }
