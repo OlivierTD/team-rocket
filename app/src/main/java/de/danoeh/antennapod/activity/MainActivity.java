@@ -238,7 +238,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
 
             //View navList = this.findViewById(R.id.nav_list);
             navList.setBackgroundColor((Integer) color2);
-            
+
         }
 
         if(color3==1 || color3==0) {
