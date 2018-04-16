@@ -4,6 +4,8 @@ package de.danoeh.antennapod.fragment;
  * Created by Anania on 3/26/2018.
  */
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -26,6 +28,7 @@ public class CustomThemeFragment extends Fragment implements View.OnClickListene
     private Button[] colorButtons;
     private Integer[] colors;
     private Button setColors;
+    private Button saveColors;
     private static int NUMBER_OF_COLORS = 3;
 
     //Mandatory Constructor
@@ -54,12 +57,13 @@ public class CustomThemeFragment extends Fragment implements View.OnClickListene
         colors = new Integer[NUMBER_OF_COLORS];
 
         setColors = (Button) v.findViewById(R.id.custom_theme_set);
+        saveColors = (Button) v.findViewById(R.id.custom_theme_save);
 
         for(int i = 0; i < NUMBER_OF_COLORS; i++){
             colorButtons[i].setOnClickListener(this);
         }
         setColors.setOnClickListener(this);
-
+        saveColors.setOnClickListener(this);
         return v;
     }
 
@@ -111,10 +115,12 @@ public class CustomThemeFragment extends Fragment implements View.OnClickListene
         }
     }
 
+
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.custom_theme_color_1:
                 getColorFromUser(0);
+
                 break;
             case R.id.custom_theme_color_2:
                 getColorFromUser(1);
@@ -125,6 +131,31 @@ public class CustomThemeFragment extends Fragment implements View.OnClickListene
             case R.id.custom_theme_set:
                 for(int i = 0; i < NUMBER_OF_COLORS; i++){
                     setThemeColor(i);
+                }
+                break;
+            case R.id.custom_theme_save:
+                SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                if (colors[0]==null){
+                    editor.putInt("color1", 0);
+                    editor.commit();
+                } else {
+                    editor.putInt("color1", colors[0]);
+                    editor.commit();
+                }
+                if (colors[1]==null){
+                    editor.putInt("color2", 0);
+                    editor.commit();
+                } else {
+                    editor.putInt("color2", colors[1]);
+                    editor.commit();
+                }
+                if (colors[2]==null){
+                    editor.putInt("color3", 0);
+                    editor.commit();
+                } else {
+                    editor.putInt("color3", colors[2]);
+                    editor.commit();
                 }
                 break;
         }
