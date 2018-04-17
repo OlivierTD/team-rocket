@@ -184,11 +184,16 @@ public class CustomThemeFragment extends Fragment implements View.OnClickListene
                 SharedPreferences.Editor editor = sharedPref.edit();
                 for (int a = 0; a < 3; a++) {
                     if (colors[a] == null) {
-                        editor.putInt("color" + a, 0);
+
+                        editor.putInt("color" + String.valueOf(a+1), 0);
+                        editor.commit();
+
                     } else {
-                        editor.putInt("color" + a, colors[a]);
+                        editor.putInt("color" +String.valueOf(a+1), colors[a]);
+                        editor.commit();
+
                     }
-                    editor.commit();
+
                 }
         }
     }
