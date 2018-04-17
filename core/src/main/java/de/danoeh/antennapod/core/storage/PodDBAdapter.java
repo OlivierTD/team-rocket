@@ -1095,6 +1095,7 @@ public class PodDBAdapter {
 
     public void clearPlaybackHistory() {
         ContentValues values = new ContentValues();
+        values.put(KEY_PLAYED_DURATION, 0);
         values.put(KEY_PLAYBACK_COMPLETION_DATE, 0);
         db.update(TABLE_NAME_FEED_MEDIA, values, null, null);
     }
