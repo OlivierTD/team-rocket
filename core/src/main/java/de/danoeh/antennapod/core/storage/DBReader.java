@@ -1006,17 +1006,10 @@ public final class DBReader {
         return new StatisticsData(totalTime, totalTimeCountAll, feedTime);
     }
 
-    public static void resetStatistics(long feedID) {
+    public static void resetAllStatistics() {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
-        adapter.resetPodcastStatistics(feedID);
-        adapter.close();
-    }
-
-    public static void clearPlaybackHistory() {
-        PodDBAdapter adapter = PodDBAdapter.getInstance();
-        adapter.open();
-        adapter.clearPlaybackHistory();
+        adapter.resetAllStatistics();
         adapter.close();
     }
 

@@ -119,13 +119,13 @@ public class StatisticsFragment extends Fragment implements AdapterView.OnItemCl
 
             Button resetAllStatsButton = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
             resetAllStatsButton.setOnClickListener(e -> {
-                DBReader.clearPlaybackHistory();
+                DBReader.resetAllStatistics();
 
                 alertDialog.dismiss();
 
                 // refresh adapter
                 listAdapter.notifyDataSetChanged();
-                // reload the stats so that updated values show up on the page
+                // reload the stats so that the updated values show up on the page
                 loadStatistics();
             });
 

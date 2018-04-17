@@ -1095,7 +1095,6 @@ public class PodDBAdapter {
 
     public void clearPlaybackHistory() {
         ContentValues values = new ContentValues();
-        values.put(KEY_PLAYED_DURATION, 0);
         values.put(KEY_PLAYBACK_COMPLETION_DATE, 0);
         db.update(TABLE_NAME_FEED_MEDIA, values, null, null);
     }
@@ -1114,10 +1113,11 @@ public class PodDBAdapter {
                 KEY_TITLE + " COLLATE NOCASE ASC");
     }
 
-    public final int resetPodcastStatistics(final long feedID) {
+    public void resetAllStatistics() {
         ContentValues values = new ContentValues();
+        values.put(KEY_PLAYED_DURATION, 0);
         values.put(KEY_PLAYBACK_COMPLETION_DATE, 0);
-        return db.update(TABLE_NAME_FEED_MEDIA, values, KEY_ID + "=?", new String[]{String.valueOf(feedID)});
+        db.update(TABLE_NAME_FEED_MEDIA, values, null, null);
     }
 
     public final Cursor getFeedCursorDownloadUrls() {
