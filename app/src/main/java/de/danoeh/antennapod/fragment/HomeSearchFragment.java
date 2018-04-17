@@ -1,9 +1,7 @@
 package de.danoeh.antennapod.fragment;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
@@ -14,7 +12,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ProgressBar;
@@ -28,11 +25,9 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Array;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
@@ -60,7 +55,7 @@ import static java.util.Collections.emptyList;
  * Its purpose is to be loaded on the homepage in order to make the Random Episode button work. 
  */
 
-public class CentralSearchFragment extends Fragment {
+public class HomeSearchFragment extends Fragment {
 
     public static final String TAG = "CentralFragment";
 
@@ -88,7 +83,7 @@ public class CentralSearchFragment extends Fragment {
 
     private GridView gridView;
 
-    public CentralSearchFragment() {
+    public HomeSearchFragment() {
         // Required empty public constructor
     }
 

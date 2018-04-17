@@ -41,11 +41,9 @@ import java.util.Random;
 
 public class RandomPodcastFragment extends Fragment {
 
-    private Button randomButton;
-
     private static final String TAG = "RandomPodcastFragment";
     private Subscription subscription;
-    CentralSearchFragment centralFrag = new CentralSearchFragment();
+    HomeSearchFragment homeSearchFrag = new HomeSearchFragment();
     String topic;
     ItunesAdapter.Podcast podcast;
     List<ItunesAdapter.Podcast> resultList = new ArrayList<>();
@@ -73,16 +71,16 @@ public class RandomPodcastFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item){
         switch(item.getItemId()){
             case R.id.btnRandomPodcast:
-                clickclick();
+                clickRandom();
         }
 
         return super.onOptionsItemSelected(item);
     }
-    public void clickclick() {
+    public void clickRandom() {
         topic = getRandomTopic();
-        centralFrag = (CentralSearchFragment) getFragmentManager().findFragmentById(R.id.centralFragment);
+        homeSearchFrag = (HomeSearchFragment) getFragmentManager().findFragmentById(R.id.homeSearchFragment);
 
-        resultList = centralFrag.searchItunes(topic);   //Get search result from random topic
+        resultList = homeSearchFrag.searchItunes(topic);   //Get search result from random topic
 
         //Create the dialog to be shown to the user
         enterNameDialog = new AlertDialog.Builder(getActivity())
