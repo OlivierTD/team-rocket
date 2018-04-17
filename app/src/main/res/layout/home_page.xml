@@ -49,7 +49,7 @@
 
       <fragment
             android:id="@+id/suggestedPodcasts"
-            android:name="de.danoeh.antennapod.fragment.suggestedPodcastsFragment"
+            android:name="de.danoeh.antennapod.fragment.SuggestedPodcastsFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/textView"
