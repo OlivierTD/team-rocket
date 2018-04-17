@@ -26,13 +26,9 @@ public class HomePageFragment extends Fragment{
 
     private TextView txtHome;
     public static final String TAG = "HomePageFragment";
-    // private MainActivity activity;
     private View root;
 
-
-
     public HomePageFragment(){
-
     }
 
     @Override
@@ -56,8 +52,6 @@ public class HomePageFragment extends Fragment{
         }
         return root;
     }
-
-
 
     //creates search menu on top
    @Override
@@ -91,19 +85,6 @@ public class HomePageFragment extends Fragment{
         activity.loadChildFragment(centralizedSearchFragment);
     }
 
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()) {
-//            case R.id.randomPodcastButton:
-//
-//                return true;
-//
-//            default:
-//                return super.onOptionsItemSelected(item);
-//        }
-//    }
-
     //method that allows a redirect from the homepage to the centralized search page
     public void reDirect(){
         CentralizedSearchFragment centralizedSearchFragment = new CentralizedSearchFragment();
@@ -112,16 +93,10 @@ public class HomePageFragment extends Fragment{
                 .commit();
     }
 
-    public void randomEp(){
-        RandomPodcastFragment randomPodcastFragment = new RandomPodcastFragment();
-        FragmentManager manager = getFragmentManager();
-
-    }
     @Override
     public void onStart(){
         super.onStart();
     }
-
 
     @Override
     public void onDestroyView(){

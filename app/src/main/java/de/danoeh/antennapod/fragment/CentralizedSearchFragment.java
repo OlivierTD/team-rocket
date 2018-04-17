@@ -55,6 +55,7 @@ import static java.util.Collections.emptyList;
 
 /**
  * Created by David on 2018-03-14.
+ * This page is loaded after the search on home page.
  */
 
 public class CentralizedSearchFragment extends Fragment {
@@ -417,6 +418,4 @@ public class CentralizedSearchFragment extends Fragment {
     public void setQuery(String query){
         this.query = query;
     }
-
-
 }

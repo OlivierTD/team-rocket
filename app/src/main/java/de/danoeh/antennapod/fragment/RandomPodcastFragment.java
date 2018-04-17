@@ -75,7 +75,7 @@ public class RandomPodcastFragment extends Fragment {
     private void onClick(View v) {
         topic = getRandomTopic();
         centralFrag = (CentralSearchFragment) getFragmentManager().findFragmentById(R.id.centralFragment);
-       // centralFrag = (CentralizedSearchFragment) getFragmentManager().findFragmentByTag("CentralSearchFragment");
+
         resultList = centralFrag.searchItunes(topic);   //Get search result from random topic
 
         //Create the dialog to be shown to the user
