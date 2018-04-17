@@ -59,7 +59,7 @@ public class HomePageFragment extends Fragment{
 
         final MainActivity activity = (MainActivity) getActivity();
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.itunes_search, menu);
+        inflater.inflate(R.menu.home_toolbar, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
         final android.support.v7.widget.SearchView sv = (android.support.v7.widget.SearchView) MenuItemCompat.getActionView(searchItem);
         MenuItemUtils.adjustTextColor(getActivity(), sv);
