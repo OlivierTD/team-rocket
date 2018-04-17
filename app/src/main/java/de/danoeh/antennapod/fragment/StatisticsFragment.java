@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
@@ -93,13 +95,17 @@ public class StatisticsFragment extends Fragment implements AdapterView.OnItemCl
         totalTimeStringTextView = (TextView) getView().findViewById(R.id.total_time_string);
         totalTimeTextView = (TextView) getView().findViewById(R.id.total_time);
         feedStatisticsList = (ListView) getView().findViewById(R.id.statistics_list);
-        resetAllStatisticsButton = (Button) getView().findViewById(R.id.statistics_reset_all);
         listAdapter = new StatisticsListAdapter(getActivity());
         listAdapter.setCountAll(countAll);
         feedStatisticsList.setAdapter(listAdapter);
         feedStatisticsList.setOnItemClickListener(this);
 
+        resetAllStatisticsButton = new Button(getActivity());
         resetAllStatisticsButton.setText(R.string.reset_all_statistics);
+        resetAllStatisticsButton.setTextSize(16);
+
+        feedStatisticsList.addFooterView(resetAllStatisticsButton);
+
         resetAllStatisticsButton.setOnClickListener(v -> {
 
             AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
@@ -204,7 +210,7 @@ public class StatisticsFragment extends Fragment implements AdapterView.OnItemCl
                         totalTimeStringTextView.setVisibility(View.VISIBLE);
                         totalTimeTextView.setVisibility(View.VISIBLE);
                         feedStatisticsList.setVisibility(View.VISIBLE);
-                        int numberOfSubscriptions = feedStatisticsList.getAdapter().getCount();
+                        int numberOfSubscriptions = feedStatisticsList.getAdapter().getCount() - 1;         // -1 so that the reset stats button doesn't get counted
                         numberOfPodcastsString.setText(getString(R.string.statistics_number_of_subscriptions));
                         numberOfPodcasts.setText(numberOfSubscriptions + "");
                     }
