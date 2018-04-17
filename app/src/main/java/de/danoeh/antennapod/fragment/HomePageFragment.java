@@ -35,10 +35,6 @@ public class HomePageFragment extends Fragment{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
-        CentralizedSearchFragment centralizedSearchFragment = new CentralizedSearchFragment();
-        android.support.v4.app.FragmentManager manager = getFragmentManager();
-        manager.beginTransaction().add(R.id.main_view, centralizedSearchFragment);
     }
 
     @Override
@@ -51,46 +47,6 @@ public class HomePageFragment extends Fragment{
             e.printStackTrace();
         }
         return root;
-    }
-
-    //creates search menu on top
-   @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
-
-        final MainActivity activity = (MainActivity) getActivity();
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.home_toolbar, menu);
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        final android.support.v7.widget.SearchView sv = (android.support.v7.widget.SearchView) MenuItemCompat.getActionView(searchItem);
-        MenuItemUtils.adjustTextColor(getActivity(), sv);
-        sv.setQueryHint(getString(R.string.home_search));
-        sv.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                sv.clearFocus();
-                goToResults(activity, s);
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String s) {
-                return false;
-            }
-        });
-    }
-
-    public void goToResults(MainActivity activity, String query){
-        CentralizedSearchFragment centralizedSearchFragment = new CentralizedSearchFragment();
-        centralizedSearchFragment.setQuery(query);
-        activity.loadChildFragment(centralizedSearchFragment);
-    }
-
-    //method that allows a redirect from the homepage to the centralized search page
-    public void reDirect(){
-        CentralizedSearchFragment centralizedSearchFragment = new CentralizedSearchFragment();
-        FragmentManager manager = getFragmentManager();
-        manager.beginTransaction().replace(R.id.main_view,centralizedSearchFragment,centralizedSearchFragment.getTag())
-                .commit();
     }
 
     @Override

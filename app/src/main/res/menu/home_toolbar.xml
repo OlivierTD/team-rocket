@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res-auto"
-    xmlns:app="http://schemas.android.com/tools"
-    >
+    xmlns:custom="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/action_search"
@@ -13,7 +11,7 @@
 
     <item
         android:id="@+id/btnRandomPodcast"
-        android:icon="@drawable/ic_audiotrack_light"
+        android:icon="@drawable/ic_random_grey"
         android:title="Random Episode"
         custom:showAsAction="always"/>
 

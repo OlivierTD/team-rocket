@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Locale;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
 import de.danoeh.antennapod.adapter.itunes.ItunesAdapter;
 import de.danoeh.antennapod.core.ClientConfig;
@@ -71,6 +72,7 @@ public class CentralSearchFragment extends Fragment {
     private ProgressBar progressBar;
     private TextView titleMessage;
     private String query;
+
 
     /**
      * Adapter responsible with the search results
@@ -178,6 +180,52 @@ public class CentralSearchFragment extends Fragment {
         fragment.setArguments(bundle);
 
         return fragment;
+    }
+
+    public void goToResults(MainActivity activity, String query){
+        CentralizedSearchFragment centralizedSearchFragment = new CentralizedSearchFragment();
+        centralizedSearchFragment.setQuery(query);
+        activity.loadChildFragment(centralizedSearchFragment);
+    }
+
+    //Search bar event handler
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        final MainActivity activity = (MainActivity)getActivity();
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.home_toolbar, menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        final SearchView sv = (SearchView) MenuItemCompat.getActionView(searchItem);
+        MenuItemUtils.adjustTextColor(getActivity(), sv);
+        sv.setQueryHint(getString(R.string.home_search));
+        sv.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                sv.clearFocus();
+                goToResults(activity, s);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
+        MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                if (searchResults != null) {
+                    searchResults = null;
+                    updateData(topList);
+                }
+                return true;
+            }
+        });
     }
 
     private void showOnlyProgressBar() {

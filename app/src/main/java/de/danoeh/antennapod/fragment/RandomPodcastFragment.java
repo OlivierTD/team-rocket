@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -65,14 +66,19 @@ public class RandomPodcastFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.random_podcast, container, false);
-
-        randomButton = (Button) view.findViewById(R.id.btnRandomPodcast);
-        randomButton.setOnClickListener(this::onClick);
-
         return view;
     }
 
-    private void onClick(View v) {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch(item.getItemId()){
+            case R.id.btnRandomPodcast:
+                clickclick();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+    public void clickclick() {
         topic = getRandomTopic();
         centralFrag = (CentralSearchFragment) getFragmentManager().findFragmentById(R.id.centralFragment);
 
