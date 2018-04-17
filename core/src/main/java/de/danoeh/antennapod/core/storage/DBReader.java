@@ -1013,14 +1013,6 @@ public final class DBReader {
         adapter.close();
     }
 
-    // just testing stuff out with DBReader
-    public static void renamePod(long feedID) {
-        PodDBAdapter adapter = PodDBAdapter.getInstance();
-        adapter.open();
-        adapter.renamePod(feedID);
-        adapter.close();
-    }
-
     public static void clearPlaybackHistory() {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
