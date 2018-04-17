@@ -54,12 +54,14 @@ import rx.schedulers.Schedulers;
 import static java.util.Collections.emptyList;
 
 /**
- * Created by David on 2018-03-14.
+ * Created by Batoul on 2018-04-16.
+ * A version of the centralized search fragment but without an options menu.
+ * Its purpose is to be loaded on the homepage in order to make the Random Episode button work. 
  */
 
-public class CentralizedSearchFragment extends Fragment {
+public class CentralSearchFragment extends Fragment {
 
-    public static final String TAG = "CentralSearchFragment";
+    public static final String TAG = "CentralFragment";
 
     private FyydClient client = new FyydClient(AntennapodHttpClient.getHttpClient());
 
@@ -84,7 +86,7 @@ public class CentralizedSearchFragment extends Fragment {
 
     private GridView gridView;
 
-    public CentralizedSearchFragment() {
+    public CentralSearchFragment() {
         // Required empty public constructor
     }
 
@@ -176,45 +178,6 @@ public class CentralizedSearchFragment extends Fragment {
         fragment.setArguments(bundle);
 
         return fragment;
-    }
-
-    //Search bar event handler
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.itunes_search, menu);
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        final SearchView sv = (SearchView) MenuItemCompat.getActionView(searchItem);
-        MenuItemUtils.adjustTextColor(getActivity(), sv);
-        sv.setQueryHint(getString(R.string.home_search));
-        sv.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                sv.clearFocus();
-                search(s);
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String s) {
-                return false;
-            }
-        });
-        MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnActionExpandListener() {
-            @Override
-            public boolean onMenuItemActionExpand(MenuItem item) {
-                return true;
-            }
-
-            @Override
-            public boolean onMenuItemActionCollapse(MenuItem item) {
-                if (searchResults != null) {
-                    searchResults = null;
-                    updateData(topList);
-                }
-                return true;
-            }
-        });
     }
 
     private void showOnlyProgressBar() {

@@ -30,6 +30,7 @@ public class HomePageFragment extends Fragment{
     private View root;
 
 
+
     public HomePageFragment(){
 
     }
@@ -38,6 +39,10 @@ public class HomePageFragment extends Fragment{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        CentralizedSearchFragment centralizedSearchFragment = new CentralizedSearchFragment();
+        android.support.v4.app.FragmentManager manager = getFragmentManager();
+        manager.beginTransaction().add(R.id.main_view, centralizedSearchFragment);
     }
 
     @Override
@@ -55,7 +60,7 @@ public class HomePageFragment extends Fragment{
 
 
     //creates search menu on top
-    @Override
+   @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
 
         final MainActivity activity = (MainActivity) getActivity();
