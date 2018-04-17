@@ -132,13 +132,13 @@ public class CustomThemeFragment extends Fragment implements View.OnClickListene
                 getColorFromUser(2);
                 break;
             case R.id.custom_theme_set:
-                for(int i = 0; i < NUMBER_OF_COLORS; i++){
+                for (int i = 0; i < NUMBER_OF_COLORS; i++) {
                     setThemeColor(i);
                 }
                 break;
             case R.id.custom_theme_reset:
                 //get saved color scheme if there is
-                SharedPreferences sharedPref =((MainActivity) getActivity()).getPreferences(Context.MODE_PRIVATE);
+                SharedPreferences sharedPref = ((MainActivity) getActivity()).getPreferences(Context.MODE_PRIVATE);
 
 
                 //int color1 = getResources().getInteger(R.integer.saved_high_score_default_key);
@@ -146,14 +146,14 @@ public class CustomThemeFragment extends Fragment implements View.OnClickListene
                 int color2 = sharedPref.getInt("color2", 1);
                 int color3 = sharedPref.getInt("color3", 1);
 
-                if (color1==1 || color1==0) {
+                if (color1 == 1 || color1 == 0) {
 
 
                 } else {
                     ((MainActivity) getActivity()).setActivityBackgroundColor(color1);
                 }
 
-                if (color2==1 || color2==0) {
+                if (color2 == 1 || color2 == 0) {
 
 
                 } else {
@@ -163,7 +163,7 @@ public class CustomThemeFragment extends Fragment implements View.OnClickListene
 
                 }
 
-                if(color3==1 || color3==0) {
+                if (color3 == 1 || color3 == 0) {
 
 
                 } else {
@@ -172,9 +172,9 @@ public class CustomThemeFragment extends Fragment implements View.OnClickListene
                     View navSettings = ((MainActivity) getActivity()).findViewById(R.id.nav_settings);
                     navSettings.setBackgroundColor(color3);
 
-                    String hexColor = String.format("#%06X", (0xFFFFFF &color3));
+                    String hexColor = String.format("#%06X", (0xFFFFFF & color3));
                     ColorDrawable colorDrawable = new ColorDrawable(Color.parseColor(hexColor));
-                    ActionBar bar =((MainActivity) getActivity()).getSupportActionBar();
+                    ActionBar bar = ((MainActivity) getActivity()).getSupportActionBar();
                     bar.setBackgroundDrawable(colorDrawable);
                 }
 
@@ -182,28 +182,14 @@ public class CustomThemeFragment extends Fragment implements View.OnClickListene
             case R.id.custom_theme_save:
                 sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();
-                if (colors[0]==null){
-                    editor.putInt("color1", 0);
-                    editor.commit();
-                } else {
-                    editor.putInt("color1", colors[0]);
-                    editor.commit();
-                }
-                if (colors[1]==null){
-                    editor.putInt("color2", 0);
-                    editor.commit();
-                } else {
-                    editor.putInt("color2", colors[1]);
+                for (int a = 0; a < 3; a++) {
+                    if (colors[a] == null) {
+                        editor.putInt("color" + a, 0);
+                    } else {
+                        editor.putInt("color" + a, colors[a]);
+                    }
                     editor.commit();
                 }
-                if (colors[2]==null){
-                    editor.putInt("color3", 0);
-                    editor.commit();
-                } else {
-                    editor.putInt("color3", colors[2]);
-                    editor.commit();
-                }
-                break;
         }
     }
 
