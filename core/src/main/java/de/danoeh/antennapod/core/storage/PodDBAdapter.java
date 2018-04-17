@@ -1113,6 +1113,14 @@ public class PodDBAdapter {
                 KEY_TITLE + " COLLATE NOCASE ASC");
     }
 
+    public final int resetPodcastStatistics(final long feedID) {
+        ContentValues values = new ContentValues();
+//        values.put(KEY_TITLE, "Hello world");
+//        return db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?", new String[]{String.valueOf(feedID)});
+        values.put(KEY_PLAYED_DURATION, 0);
+        return db.update(TABLE_NAME_FEED_MEDIA, values, KEY_ID + "=?", new String[]{String.valueOf(feedID)});
+    }
+
     public final Cursor getFeedCursorDownloadUrls() {
         return db.query(TABLE_NAME_FEEDS, new String[]{KEY_ID, KEY_DOWNLOAD_URL}, null, null, null, null, null);
     }

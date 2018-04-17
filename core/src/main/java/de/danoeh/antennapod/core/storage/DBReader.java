@@ -1006,74 +1006,11 @@ public final class DBReader {
         return new StatisticsData(totalTime, totalTimeCountAll, feedTime);
     }
 
-    public static StatisticsData resetStatistics(boolean sortByCountAll, int position, StatisticsItem statisticsItem) {
+    public static void resetStatistics(long feedID) {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
-
-        long totalTimeCountAll = 0;
-        long totalTime = 0;
-        List<StatisticsItem> feedTime = new ArrayList<>();
-
-        List<Feed> feeds = getFeedList();
-        for (Feed feed : feeds) {
-            long feedPlayedTimeCountAll = 0;
-            long feedPlayedTime = 0;
-            long feedTotalTime = 0;
-            long episodes = 0;
-            long episodesStarted = 0;
-            long episodesStartedIncludingMarked = 0;
-            List<FeedItem> items = getFeed(feed.getId()).getItems();
-            for (FeedItem item : items) {
-                FeedMedia media = item.getMedia();
-                if (media == null) {
-                    continue;
-                }
-
-                // played duration used to be reset when the item is added to the playback history
-                if (media.getPlaybackCompletionDate() != null) {
-                    feedPlayedTime += media.getDuration() / 1000;
-                }
-                feedPlayedTime += media.getPlayedDuration() / 1000;
-
-                if (item.isPlayed()) {
-                    feedPlayedTimeCountAll += media.getDuration() / 1000;
-                } else {
-                    feedPlayedTimeCountAll += media.getPosition() / 1000;
-                }
-
-                if (media.getPlaybackCompletionDate() != null || media.getPlayedDuration() > 0) {
-                    episodesStarted++;
-                }
-
-                if (item.isPlayed() || media.getPosition() != 0) {
-                    episodesStartedIncludingMarked++;
-                }
-
-                feedTotalTime += media.getDuration() / 1000;
-                episodes++;
-            }
-            feedTime.add(new StatisticsItem(
-                    feed, feedTotalTime, feedPlayedTime, feedPlayedTimeCountAll, episodes,
-                    episodesStarted, episodesStartedIncludingMarked));
-            totalTime -= 4;
-            totalTime += feedPlayedTime;
-            totalTimeCountAll += feedPlayedTimeCountAll;
-        }
-
-        totalTime -= feedTime.get(position).timePlayed;
-        totalTimeCountAll -= feedTime.get(position).timePlayedCountAll;
-        feedTime.set(position, statisticsItem);
-
-        if (sortByCountAll) {
-            Collections.sort(feedTime, (item1, item2) ->
-                    compareLong(item1.timePlayedCountAll, item2.timePlayedCountAll));
-        } else {
-            Collections.sort(feedTime, (item1, item2) ->
-                    compareLong(item1.timePlayed, item2.timePlayed));
-        }
-
+        adapter.resetPodcastStatistics(feedID);
         adapter.close();
-        return new StatisticsData(totalTime, totalTimeCountAll, feedTime);
     }
 
     /**
@@ -1094,7 +1031,7 @@ public final class DBReader {
 
     /**
      * StatisticsData is the stats of ALL podcasts combined:
-     * - total time;
+     * - total time listening to podcasts;
      * - list of podcasts (the List object), which is used to calculate the total time.
      */
     public static class StatisticsData {
