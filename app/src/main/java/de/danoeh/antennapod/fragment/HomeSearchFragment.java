@@ -57,7 +57,7 @@ import static java.util.Collections.emptyList;
 
 public class HomeSearchFragment extends Fragment {
 
-    public static final String TAG = "CentralFragment";
+    public static final String TAG = "HomeSearchFragment";
 
     private FyydClient client = new FyydClient(AntennapodHttpClient.getHttpClient());
 
