@@ -1115,10 +1115,17 @@ public class PodDBAdapter {
 
     public final int resetPodcastStatistics(final long feedID) {
         ContentValues values = new ContentValues();
-//        values.put(KEY_TITLE, "Hello world");
-//        return db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?", new String[]{String.valueOf(feedID)});
-        values.put(KEY_PLAYED_DURATION, 0);
+//        values.put(KEY_PLAYED_DURATION, 0);
+//        return db.update(TABLE_NAME_FEED_MEDIA, values, KEY_ID + "=?", new String[]{String.valueOf(feedID)});
+        // not working
+        values.put(KEY_PLAYBACK_COMPLETION_DATE, 0);
         return db.update(TABLE_NAME_FEED_MEDIA, values, KEY_ID + "=?", new String[]{String.valueOf(feedID)});
+    }
+
+    public final int renamePod(final long feedID) {
+        ContentValues values = new ContentValues();
+        values.put(KEY_TITLE, "Some Name " + feedID);
+        return db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?", new String[]{String.valueOf(feedID)});
     }
 
     public final Cursor getFeedCursorDownloadUrls() {

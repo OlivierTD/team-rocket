@@ -56,10 +56,11 @@ public class StatisticsFragment extends Fragment implements AdapterView.OnItemCl
     private TextView totalTimeStringTextView;
     private TextView totalTimeTextView;
 
+    private Button resetAllStatisticsButton;
+
     private ListView feedStatisticsList;
     private StatisticsListAdapter listAdapter;
     private boolean countAll = false;
-    DBReader.StatisticsData getStats = DBReader.getStatistics(countAll);
     private SharedPreferences prefs;
 
     public StatisticsFragment(){
@@ -92,10 +93,37 @@ public class StatisticsFragment extends Fragment implements AdapterView.OnItemCl
         totalTimeStringTextView = (TextView) getView().findViewById(R.id.total_time_string);
         totalTimeTextView = (TextView) getView().findViewById(R.id.total_time);
         feedStatisticsList = (ListView) getView().findViewById(R.id.statistics_list);
+        resetAllStatisticsButton = (Button) getView().findViewById(R.id.statistics_reset_all);
         listAdapter = new StatisticsListAdapter(getActivity());
         listAdapter.setCountAll(countAll);
         feedStatisticsList.setAdapter(listAdapter);
         feedStatisticsList.setOnItemClickListener(this);
+
+        resetAllStatisticsButton.setText(R.string.reset_all_statistics);
+        resetAllStatisticsButton.setOnClickListener(v -> {
+
+            AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+            dialog.setTitle(R.string.reset_all_statistics);
+            dialog.setMessage(R.string.reset_all_statistics_confirm);
+            dialog.setPositiveButton(android.R.string.ok, null);
+            dialog.setNeutralButton(android.R.string.cancel, null);
+
+            final AlertDialog alertDialog = dialog.create();
+            alertDialog.show();
+
+            Button resetAllStatsButton = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
+            resetAllStatsButton.setOnClickListener(e -> {
+                DBReader.clearPlaybackHistory();
+
+                alertDialog.dismiss();
+
+                // refresh adapter
+                listAdapter.notifyDataSetChanged();
+                // reload the stats so that updated values show up on the page
+                loadStatistics();
+            });
+
+        });
     }
 
     @Override
@@ -162,7 +190,7 @@ public class StatisticsFragment extends Fragment implements AdapterView.OnItemCl
         if (subscription != null) {
             subscription.unsubscribe();
         }
-        subscription = Observable.fromCallable(() -> getStats)
+        subscription = Observable.fromCallable(() -> DBReader.getStatistics(countAll))
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
@@ -204,11 +232,7 @@ public class StatisticsFragment extends Fragment implements AdapterView.OnItemCl
 
         Button resetButton = alertDialog.getButton(DialogInterface.BUTTON_NEUTRAL);
         resetButton.setOnClickListener(v -> {
-            List<Feed> feedList = DBReader.getFeedList();
-            listAdapter.replaceItem(position, new DBReader.StatisticsItem(stats.feed, stats.time, 0, 0, stats.episodes, 0, 0));
-            getStats = DBReader.resetStatistics(countAll, position, new DBReader.StatisticsItem(stats.feed, stats.time, 0, 0, stats.episodes, 0, 0));
-            alertDialog.dismiss();
-            loadStatistics();
+            long feedID = listAdapter.getItem(position).feed.getId();
         });
     }
 }
