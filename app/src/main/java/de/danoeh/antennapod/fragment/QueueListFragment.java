@@ -201,6 +201,15 @@ public class QueueListFragment extends Fragment {
     }
 
 
+    //Renames a queue in the list according to its position
+    public void renameWithPos(int position, Queue name){
+        this.queueList.remove(position);
+        this.queueList.add(position, name);
+        queuesAdapter.updateQueueList(this.queueList);
+
+    }
+
+
     public void setQueuesAdapter(QueuesAdapter queuesAdapter) {
         this.queuesAdapter = queuesAdapter;
     }
