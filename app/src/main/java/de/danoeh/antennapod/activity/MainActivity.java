@@ -60,11 +60,11 @@ import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.dialog.RatingDialog;
 import de.danoeh.antennapod.dialog.RenameFeedDialog;
 import de.danoeh.antennapod.fragment.AddFeedFragment;
+import de.danoeh.antennapod.fragment.HomeFragment;
 import de.danoeh.antennapod.fragment.DownloadsFragment;
 import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.fragment.CustomThemeFragment;
 import de.danoeh.antennapod.fragment.ExternalPlayerFragment;
-import de.danoeh.antennapod.fragment.HomePageFragment;
 import de.danoeh.antennapod.fragment.ItemlistFragment;
 import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
 import de.danoeh.antennapod.fragment.QueueListFragment;
@@ -102,7 +102,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
     public static final String SAVE_TITLE = "title";
 
     public static final String[] NAV_DRAWER_TAGS = {
-            HomePageFragment.TAG,
+            HomeFragment.TAG,
             QueueListFragment.TAG,
             EpisodesFragment.TAG,
             SubscriptionFragment.TAG,
@@ -204,7 +204,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
                     // it's not a number, this happens if we removed
                     // a label from the NAV_DRAWER_TAGS
                     // give them a nice default...
-                    loadFragment(HomePageFragment.TAG, null);
+                    loadFragment(HomeFragment.TAG, null);
                 }
             }
         }
@@ -339,8 +339,8 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         Log.d(TAG, "loadFragment(tag: " + tag + ", args: " + args + ")");
         Fragment fragment = null;
         switch (tag) {
-            case HomePageFragment.TAG:
-                fragment = new HomePageFragment();
+            case HomeFragment.TAG:
+                fragment = new HomeFragment();
                 break;
             case QueueListFragment.TAG:
                 fragment = new QueueListFragment();
@@ -372,8 +372,8 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
                 tag = QueueListFragment.TAG;
                 fragment = new QueueListFragment();
                 // default to the homepage
-                tag = HomePageFragment.TAG;
-                fragment =  new HomePageFragment();
+                tag = HomeFragment.TAG;
+                fragment =  new HomeFragment();
                 args = null;
                 break;
         }
@@ -581,7 +581,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         boolean retVal = super.onCreateOptionsMenu(menu);
         if (Flavors.FLAVOR == Flavors.PLAY) {
             switch (getLastNavFragment()) {
-                case HomePageFragment.TAG:
+                case HomeFragment.TAG:
                 case QueueListFragment.TAG:
                 case EpisodesFragment.TAG:
                     requestCastButton(MenuItem.SHOW_AS_ACTION_IF_ROOM);

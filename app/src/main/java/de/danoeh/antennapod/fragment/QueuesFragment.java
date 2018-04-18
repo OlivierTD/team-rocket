@@ -79,6 +79,7 @@ public class QueuesFragment extends Fragment {
 
     // List of feed items
     private List<FeedItem> feedItems;
+
     //Object where we will store the list of queues, important for context menu
     private static ArrayList<Queue> queueList = new ArrayList<>();
 
@@ -234,21 +235,24 @@ public class QueuesFragment extends Fragment {
         }
     }
 
-    private void removeId(long Id){
-
+    public void removeId(long Id){
 
         queueList = loadList(this.getActivity(), queueList);
 
         if (queueList == null) {
             queueList = new ArrayList<>();
         }
+        removeQueue(Id);
+        storeList(this.getActivity(), queueList);
+    }
+
+    public void removeQueue(long Id){
         for (Queue queues : queueList) {
             if (queues.getName().equalsIgnoreCase(this.queue.getName())) {
                 queues.getEpisodesIDList().remove(Id);
                 queue.getEpisodesIDList().remove(Id);
             }
         }
-        storeList(this.getActivity(), queueList);
     }
 
 
@@ -353,4 +357,15 @@ public class QueuesFragment extends Fragment {
 
     };
 
+    public void setEpisodesAdapter(EpisodesAdapter episodesAdapter) {
+        this.episodesAdapter = episodesAdapter;
+    }
+
+    public void setQueueList(ArrayList<Queue> queueList){
+        this.queueList = queueList;
+    }
+
+    public ArrayList<Queue> getQueueList() {
+        return this.queueList;
+    }
 }

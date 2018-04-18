@@ -8,6 +8,8 @@
     <string name="create">Create</string>
     <string name="cancel">Cancel</string>
     <string name="name_already_exists">A queue already has that name!</string>
+    <string name="rename_queue">Rename the queue!</string>
+    <string name="confirm_rename">Rename</string>
     <string name="queues">Queues</string>
     <string name="home_search">Search</string>
     <string name="confirmation_title">Confirmation</string>
@@ -72,5 +74,26 @@
         <item>University</item>
         <item>Video Games</item>
         <item>Visual Arts</item>
+    </string-array>
+
+
+    <!-- CategoriesFragment labels -->
+    <string-array name="categories_names">
+        <item>Arts</item>
+        <item>Comedy</item>
+        <item>Education</item>
+        <item>Kids &amp; family</item>
+        <item>Health</item>
+        <item>TV &amp; Film</item>
+        <item>Music</item>
+        <item>News &amp; Politics</item>
+        <item>Religion &amp; Spirituality</item>
+        <item>Science &amp; Medicine</item>
+        <item>Sports</item>
+        <item>Technology</item>
+        <item>Business</item>
+        <item>Games &amp; Hobbies</item>
+        <item>Society &amp; Culture</item>
+        <item>Government &amp; Organizations</item>
     </string-array>
 </resources>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/suggestedPodcasts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="15dp"
+        android:paddingTop="30dp"
+        android:text="Suggested Podcasts"
+        android:textSize="20sp" />
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <GridView
+            android:id="@+id/gridViewHome"
+            android:layout_width="match_parent"
+            android:layout_height="265dp"
+            android:layout_marginTop="5dp"
+            android:clipToPadding="false"
+            android:columnWidth="400dp"
+            android:gravity="center"
+            android:horizontalSpacing="8dp"
+            android:numColumns="auto_fit"
+            android:paddingBottom="@dimen/list_vertical_padding"
+            android:paddingTop="@dimen/list_vertical_padding"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="8dp"
+            android:nestedScrollingEnabled="true"
+            tools:listitem="@layout/gpodnet_podcast_listitem" />
+
+        <TextView
+            android:id="@+id/noSubbedPodcast"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="80dp"
+            android:paddingTop="40dp"
+            android:text="No subscribed podcasts"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:indeterminateOnly="true"
+        android:visibility="gone"/>
+
+</LinearLayout>
