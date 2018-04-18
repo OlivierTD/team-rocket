@@ -45,6 +45,7 @@ public class RandomPodcastFragment extends Fragment {
 
     private static final String TAG = "RandomPodcastFragment";
     private Subscription subscription;
+
     CentralizedSearchFragment centralFrag = new CentralizedSearchFragment();
     String topic;
     ItunesAdapter.Podcast podcast;
@@ -86,7 +87,9 @@ public class RandomPodcastFragment extends Fragment {
     }
     public void clickRandom() {
         topic = getRandomTopic();
+
         centralFrag = (CentralizedSearchFragment) getFragmentManager().findFragmentById(R.id.centralFragment);
+
 
         resultList = centralFrag.searchItunes(topic);   //Get search result from random topic
 
