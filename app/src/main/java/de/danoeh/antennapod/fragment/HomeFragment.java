@@ -124,5 +124,17 @@ public class HomeFragment extends Fragment{
                     return super.getPageTitle(position);
             }
         }
+
+        //for HomeTest, not able to access resources
+        public CharSequence getTitle(int position) {
+            switch (position) {
+                case POS_FEATURED:
+                    return "FEATURED";
+                case POS_CATEGORIES:
+                    return "CATEGORIES";
+                default:
+                    return super.getPageTitle(position);
+            }
+        }
     }
 }
