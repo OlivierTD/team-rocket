@@ -36,6 +36,10 @@
     <string name="statistics_mode_count_all">Sum up all podcasts marked as played</string>
     <string name="statistics_speed_not_counted">Notice: Playback speed is never taken into account.</string>
     <string name="statistics_number_of_subscriptions">Numbers of subscriptions</string>
+    <string name="reset_statistics">Reset</string>
+    <string name="reset_all_statistics">Reset all stats</string>
+    <string name="reset_all_statistics_confirm">Pressing on OK will reset all accumulated stats of podcasts. Press Cancel to go back.</string>
+    <string name="no_statistics">You aren\'t currently subscribed to any podcasts. Subscribe to one or more to start accumulating interesting statistics!</string>
 
     <!-- Main activity -->
     <string name="drawer_open">Open menu</string>
@@ -449,6 +453,9 @@
     <string name="pref_cast_message_free_flavor">Chromecast requires third party proprietary libraries that are disabled in this version of AntennaPod</string>
     <string name="pref_enqueue_downloaded_title">Enqueue Downloaded</string>
     <string name="pref_enqueue_downloaded_summary">Add downloaded episodes to the queue</string>
+
+    <string name="featured_tab">FEATURED</string>
+    <string name="categories_tab">CATEGORIES</string>
 
     <!-- Auto-Flattr dialog -->
     <string name="auto_flattr_enable">Enable automatic flattring</string>

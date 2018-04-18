@@ -1113,6 +1113,13 @@ public class PodDBAdapter {
                 KEY_TITLE + " COLLATE NOCASE ASC");
     }
 
+    public void resetAllStatistics() {
+        ContentValues values = new ContentValues();
+        values.put(KEY_PLAYED_DURATION, 0);
+        values.put(KEY_PLAYBACK_COMPLETION_DATE, 0);
+        db.update(TABLE_NAME_FEED_MEDIA, values, null, null);
+    }
+
     public final Cursor getFeedCursorDownloadUrls() {
         return db.query(TABLE_NAME_FEEDS, new String[]{KEY_ID, KEY_DOWNLOAD_URL}, null, null, null, null, null);
     }
