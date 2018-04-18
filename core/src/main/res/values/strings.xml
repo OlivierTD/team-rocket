@@ -39,6 +39,7 @@
     <string name="reset_statistics">Reset</string>
     <string name="reset_all_statistics">Reset all stats</string>
     <string name="reset_all_statistics_confirm">Pressing on OK will reset all accumulated stats of podcasts. Press Cancel to go back.</string>
+    <string name="no_statistics">You aren\'t currently subscribed to any podcasts. Subscribe to one or more to start accumulating interesting statistics!</string>
 
     <!-- Main activity -->
     <string name="drawer_open">Open menu</string>

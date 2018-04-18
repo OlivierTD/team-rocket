@@ -53,6 +53,8 @@ public class StatisticsFragment extends Fragment implements AdapterView.OnItemCl
 
     private Subscription subscription;
 
+    private LinearLayout statisticsLayout;
+
     private TextView numberOfPodcastsString;
     private TextView numberOfPodcasts;
 
@@ -60,6 +62,8 @@ public class StatisticsFragment extends Fragment implements AdapterView.OnItemCl
     private TextView totalTimeTextView;
 
     private Button resetAllStatisticsButton;
+
+    private TextView noStats;
 
     private ListView feedStatisticsList;
     private StatisticsListAdapter listAdapter;
@@ -91,6 +95,8 @@ public class StatisticsFragment extends Fragment implements AdapterView.OnItemCl
         prefs = getContext().getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         countAll = prefs.getBoolean(PREF_COUNT_ALL, false);
 
+        statisticsLayout = (LinearLayout) getView().findViewById(R.id.statistics_layout);
+
         numberOfPodcastsString = (TextView) getView().findViewById(R.id.number_of_subscriptions_string);
         numberOfPodcasts = (TextView) getView().findViewById(R.id.number_of_subscriptions);
         totalTimeStringTextView = (TextView) getView().findViewById(R.id.total_time_string);
@@ -104,6 +110,7 @@ public class StatisticsFragment extends Fragment implements AdapterView.OnItemCl
         resetAllStatisticsButton = new Button(getActivity());
         resetAllStatisticsButton.setText(R.string.reset_all_statistics);
         resetAllStatisticsButton.setTextSize(16);
+        resetAllStatisticsButton.setVisibility(View.GONE);
 
         feedStatisticsList.addFooterView(resetAllStatisticsButton);
 
@@ -131,6 +138,13 @@ public class StatisticsFragment extends Fragment implements AdapterView.OnItemCl
             });
 
         });
+
+        noStats = new TextView(getActivity());
+        noStats.setText(R.string.no_statistics);
+        noStats.setGravity(Gravity.CENTER);
+        noStats.setPadding((int) getResources().getDimension(R.dimen.statistics_leftpadding), 0,
+                (int) getResources().getDimension(R.dimen.statistics_rightpadding), 0);
+
     }
 
     @Override
@@ -214,6 +228,12 @@ public class StatisticsFragment extends Fragment implements AdapterView.OnItemCl
                         int numberOfSubscriptions = feedStatisticsList.getAdapter().getCount() - 1;         // -1 so that the reset stats button doesn't get counted
                         numberOfPodcastsString.setText(getString(R.string.statistics_number_of_subscriptions));
                         numberOfPodcasts.setText(numberOfSubscriptions + "");
+                        if (feedStatisticsList.getAdapter().getCount() > 1) {
+                            resetAllStatisticsButton.setVisibility(View.VISIBLE);
+                        }
+                        else {
+                            statisticsLayout.addView(noStats);
+                        }
                     }
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
