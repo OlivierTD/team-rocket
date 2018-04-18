@@ -431,4 +431,13 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         solo.clickInList(1);
     }
 
+    public void testResetStatistics() {
+        openNavDrawer();
+        solo.clickOnText(solo.getString(R.string.statistics_label));
+        solo.waitForView(R.id.statistics_list);
+
+        solo.clickOnText(solo.getString(R.string.reset_all_statistics));
+        solo.clickOnText(solo.getString(android.R.string.ok));
+    }
+
 }
