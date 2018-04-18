@@ -450,6 +450,9 @@
     <string name="pref_enqueue_downloaded_title">Enqueue Downloaded</string>
     <string name="pref_enqueue_downloaded_summary">Add downloaded episodes to the queue</string>
 
+    <string name="featured_tab">FEATURED</string>
+    <string name="categories_tab">CATEGORIES</string>
+
     <!-- Auto-Flattr dialog -->
     <string name="auto_flattr_enable">Enable automatic flattring</string>
     <string name="auto_flattr_after_percent">Flattr episode as soon as %d percent have been played</string>

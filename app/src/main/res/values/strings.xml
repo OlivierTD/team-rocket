@@ -75,4 +75,25 @@
         <item>Video Games</item>
         <item>Visual Arts</item>
     </string-array>
+
+
+    <!-- CategoriesFragment labels -->
+    <string-array name="categories_names">
+        <item>Arts</item>
+        <item>Comedy</item>
+        <item>Education</item>
+        <item>Kids &amp; family</item>
+        <item>Health</item>
+        <item>TV &amp; Film</item>
+        <item>Music</item>
+        <item>News &amp; Politics</item>
+        <item>Religion &amp; Spirituality</item>
+        <item>Science &amp; Medicine</item>
+        <item>Sports</item>
+        <item>Technology</item>
+        <item>Business</item>
+        <item>Games &amp; Hobbies</item>
+        <item>Society &amp; Culture</item>
+        <item>Government &amp; Organizations</item>
+    </string-array>
 </resources>
