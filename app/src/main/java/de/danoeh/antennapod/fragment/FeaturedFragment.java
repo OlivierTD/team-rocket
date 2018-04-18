@@ -18,17 +18,18 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.fragment.CentralizedSearchFragment;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 
-/**
- * Created by Sai Shan on 2018-02-02.
- */
 
-public class HomePageFragment extends Fragment{
+//This fragment is the fragment under "FEATURE" tab on the home page
+public class FeaturedFragment extends Fragment{
 
+    public static final String TAG = "FeaturedFragment";
     private TextView txtHome;
-    public static final String TAG = "HomePageFragment";
+
     private View root;
 
-    public HomePageFragment(){
+
+
+    public FeaturedFragment() {
     }
 
     @Override
@@ -41,7 +42,7 @@ public class HomePageFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         try {
-            root = inflater.inflate(R.layout.home_page, container, false);
+            root = inflater.inflate(R.layout.featured_fragment, container, false);
         }
         catch (Exception e){
             e.printStackTrace();

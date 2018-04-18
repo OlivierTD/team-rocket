@@ -59,4 +59,15 @@ public class QueueListFragmentTest {
         verify(mockQueueAdapter, times(2)).updateQueueList(qlFragment.getQueuesList());
         assertEquals(1, qlFragment.getQueuesList().size());
     }
+
+    @Test
+    public void testRenameQueue(){
+        qlFragment.createNewQueue("Queue 1");
+        qlFragment.createNewQueue("Queue 2");
+        assertEquals("Queue 1", qlFragment.getQueuesList().get(0).getName());
+        Queue testQueue = new Queue("test");
+        qlFragment.renameWithPos(0, testQueue);
+        assertEquals("test", qlFragment.getQueuesList().get(0).getName());
+    }
+
 }

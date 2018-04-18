@@ -15,40 +15,18 @@
         tools:background="@android:color/darker_gray">
 
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_launcher"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="13dp"/>
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="80dp"
-            android:paddingLeft="70dp"
-            android:paddingTop="17dp"
-            android:layout_margin="1dp"
-            android:gravity="center"
-            android:text="AntennaPod"
-            android:textSize="25dp"/>
-
         <fragment
             android:id="@+id/topListFragment"
             android:name="de.danoeh.antennapod.fragment.ToplistFragment"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/textView"/>
-        
+            android:layout_height="wrap_content" />
+
+
       <fragment
             android:id="@+id/suggestedPodcasts"
             android:name="de.danoeh.antennapod.fragment.suggestedPodcastsFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/textView"
-            android:layout_alignStart="@+id/textView"
             android:layout_below="@+id/topListFragment"
             android:layout_marginTop="22dp" />
 

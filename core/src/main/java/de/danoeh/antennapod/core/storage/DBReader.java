@@ -1006,6 +1006,13 @@ public final class DBReader {
         return new StatisticsData(totalTime, totalTimeCountAll, feedTime);
     }
 
+    public static void resetAllStatistics() {
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+        adapter.resetAllStatistics();
+        adapter.close();
+    }
+
     /**
      * Compares two {@code long} values. Long.compare() is not available before API 19
      *
@@ -1022,6 +1029,11 @@ public final class DBReader {
         }
     }
 
+    /**
+     * StatisticsData is the stats of ALL podcasts combined:
+     * - total time listening to podcasts;
+     * - list of podcasts (the List object), which is used to calculate the total time.
+     */
     public static class StatisticsData {
         /**
          * Simply sums up time of podcasts that are marked as played
@@ -1042,6 +1054,10 @@ public final class DBReader {
         }
     }
 
+    /**
+     * StatisticsItem represents the stats of ONE INDIVIDUAL podcast.
+     * There is a List object in StatisticsData populated with StatisticsItem objects.
+     */
     public static class StatisticsItem {
         public Feed feed;
         public long time;
