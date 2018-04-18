@@ -432,6 +432,8 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         solo.waitForView(R.id.statistics_list);
 
         solo.clickInList(1);
+
+        solo.clickOnText(solo.getString(android.R.string.ok));
     }
 
     //this is not testing the top list nor the suggested podcasts as they are
@@ -507,6 +509,26 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 
         //Scroll down home page
         searchResultView.scrollTo(0, searchResultView.getHeight());
+    }
+
+    public void testResetStatistics() {
+        // subscribe to a podcast
+        openNavDrawer();
+        solo.clickOnText(solo.getString(R.string.homepage_label));
+        solo.clickOnText(solo.getString(R.string.featured_tab));
+        solo.waitForView(R.id.gridViewHome);
+        solo.clickInList(1);
+        solo.waitForView(R.id.subscriptionLayout);
+        solo.clickOnButton(solo.getString(R.string.subscribe_label));
+
+        // twice to press the back button, then the hamburger button
+        openNavDrawer();
+        openNavDrawer();
+        solo.clickOnText(solo.getString(R.string.statistics_label));
+        solo.waitForView(R.id.statistics_list);
+
+        solo.clickOnText(solo.getString(R.string.reset_all_statistics));
+        solo.clickOnText(solo.getString(android.R.string.ok));
     }
 
 }
