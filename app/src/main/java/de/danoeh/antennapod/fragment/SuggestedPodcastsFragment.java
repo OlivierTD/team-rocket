@@ -49,7 +49,7 @@ import static java.util.Collections.emptyList;
  */
 
 
-public class suggestedPodcastsFragment extends Fragment {
+public class SuggestedPodcastsFragment extends Fragment {
 
     private static final String TAG = "sugPodcastsFragment";
 
