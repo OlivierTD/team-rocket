@@ -352,6 +352,8 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 
         //Create new queue
         solo.clickOnView(solo.getView(R.id.addQueue));
+        solo.enterText(0,"test");
+        solo.clickOnText("Create");
         solo.waitForView(R.id.queue_name);
 
         //open nav bar
