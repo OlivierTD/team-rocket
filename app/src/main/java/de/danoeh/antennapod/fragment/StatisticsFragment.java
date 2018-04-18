@@ -138,13 +138,6 @@ public class StatisticsFragment extends Fragment implements AdapterView.OnItemCl
             });
 
         });
-
-        noStats = new TextView(getActivity());
-        noStats.setText(R.string.no_statistics);
-        noStats.setGravity(Gravity.CENTER);
-        noStats.setPadding((int) getResources().getDimension(R.dimen.statistics_leftpadding), 0,
-                (int) getResources().getDimension(R.dimen.statistics_rightpadding), 0);
-
     }
 
     @Override
@@ -228,14 +221,24 @@ public class StatisticsFragment extends Fragment implements AdapterView.OnItemCl
                         int numberOfSubscriptions = feedStatisticsList.getAdapter().getCount() - 1;         // -1 so that the reset stats button doesn't get counted
                         numberOfPodcastsString.setText(getString(R.string.statistics_number_of_subscriptions));
                         numberOfPodcasts.setText(numberOfSubscriptions + "");
-                        if (feedStatisticsList.getAdapter().getCount() > 1) {
-                            resetAllStatisticsButton.setVisibility(View.VISIBLE);
-                        }
-                        else {
-                            statisticsLayout.addView(noStats);
-                        }
+                        checkSubscriptionCount();
                     }
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
+    }
+
+    private void checkSubscriptionCount() {
+        if (feedStatisticsList.getAdapter().getCount() <= 1) {
+            resetAllStatisticsButton.setVisibility(View.GONE);
+            noStats = new TextView(getActivity());
+            noStats.setText(R.string.no_statistics);
+            noStats.setGravity(Gravity.CENTER);
+            noStats.setPadding((int) getResources().getDimension(R.dimen.statistics_leftpadding), 0,
+                    (int) getResources().getDimension(R.dimen.statistics_rightpadding), 0);
+            statisticsLayout.addView(noStats);
+        }
+        else {
+            resetAllStatisticsButton.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
