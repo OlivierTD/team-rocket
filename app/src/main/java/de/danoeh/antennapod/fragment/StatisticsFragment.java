@@ -114,6 +114,10 @@ public class StatisticsFragment extends Fragment implements AdapterView.OnItemCl
 
         feedStatisticsList.addFooterView(resetAllStatisticsButton);
 
+        setResetStatsFunctionality();
+    }
+
+    public void setResetStatsFunctionality() {
         resetAllStatisticsButton.setOnClickListener(v -> {
 
             AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
