@@ -348,19 +348,17 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         openNavDrawer();
         solo.clickOnText(solo.getString(R.string.homepage_label));
 
-        solo.clickOnView(solo.getView(R.id.search_home));
-
         solo.clickOnView(solo.getView(R.id.action_search));
+
         solo.enterText(0, "Joe Rogan");
         solo.pressSoftKeyboardSearchButton();
 
         solo.sleep(1000);
 
-        ScrollView searchView = (ScrollView) solo.getView(R.id.searchScrollView);
+
         GridView searchResultView = (GridView) solo.getView(R.id.gridSearchResult);
 
-        //Scroll down home page
-        searchView.scrollTo(0, searchView.getHeight());
+        searchResultView.scrollTo(0, searchResultView.getHeight());
     }
 
 
@@ -404,7 +402,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         solo.clickOnText(solo.getString(R.string.homepage_label));
 
         //clicks on the search button on top
-        solo.clickOnView(solo.getView(R.id.search_home));
+        solo.clickOnView(solo.getView(R.id.action_search));
 
         //Check random podcast category - cancel
         solo.clickOnView(solo.getView(R.id.btnRandomPodcast));

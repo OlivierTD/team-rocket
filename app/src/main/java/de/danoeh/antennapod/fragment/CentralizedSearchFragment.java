@@ -1,9 +1,7 @@
 package de.danoeh.antennapod.fragment;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
@@ -14,7 +12,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ProgressBar;
@@ -28,11 +25,9 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Array;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
@@ -100,6 +95,7 @@ public class CentralizedSearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.centralized_search, container, false);
+
         gridView = (GridView) view.findViewById(R.id.gridSearchResult);
         titleMessage = (TextView) view.findViewById(R.id.textSearchResult);
         adapter = new ItunesAdapter(getActivity(), new ArrayList<>());
@@ -169,15 +165,6 @@ public class CentralizedSearchFragment extends Fragment {
         search(query);
 
         return view;
-    }
-
-    public  CentralizedSearchFragment newInstance(){
-        Bundle bundle = new Bundle();
-
-        CentralizedSearchFragment fragment = new CentralizedSearchFragment();
-        fragment.setArguments(bundle);
-
-        return fragment;
     }
 
     //Search bar event handler
