@@ -47,7 +47,7 @@
         android:id="@+id/custom_theme_color_1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Color 1 (Main Bakground)" />
+        android:text="Color 1 (Main Background)" />
 
     <TextView
         android:id="@+id/colot_2_title"
@@ -98,5 +98,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Save Theme!" />
+
+    <Button
+        android:id="@+id/static_themes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Use Static Themes" />
 
 </LinearLayout>

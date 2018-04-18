@@ -30,6 +30,7 @@ public class CustomThemeFragment extends Fragment implements View.OnClickListene
     private Button setColors;
     private Button saveColors;
     private Button resetColors;
+    private Button staticThemes;
     private static int NUMBER_OF_COLORS = 3;
 
     //Mandatory Constructor
@@ -60,6 +61,7 @@ public class CustomThemeFragment extends Fragment implements View.OnClickListene
         setColors = (Button) v.findViewById(R.id.custom_theme_set);
         saveColors = (Button) v.findViewById(R.id.custom_theme_save);
         resetColors = (Button) v.findViewById(R.id.custom_theme_reset);
+        staticThemes = (Button) v.findViewById(R.id.static_themes);
 
         for(int i = 0; i < NUMBER_OF_COLORS; i++){
             colorButtons[i].setOnClickListener(this);
@@ -67,6 +69,7 @@ public class CustomThemeFragment extends Fragment implements View.OnClickListene
         setColors.setOnClickListener(this);
         saveColors.setOnClickListener(this);
         resetColors.setOnClickListener(this);
+        staticThemes.setOnClickListener(this);
         return v;
     }
 
@@ -120,6 +123,8 @@ public class CustomThemeFragment extends Fragment implements View.OnClickListene
 
 
     public void onClick(View v) {
+        //get saved color scheme if there is
+        SharedPreferences sharedPref = ((MainActivity) getActivity()).getPreferences(Context.MODE_PRIVATE);
         switch (v.getId()) {
             case R.id.custom_theme_color_1:
                 getColorFromUser(0);
@@ -136,10 +141,16 @@ public class CustomThemeFragment extends Fragment implements View.OnClickListene
                     setThemeColor(i);
                 }
                 break;
-            case R.id.custom_theme_reset:
-                //get saved color scheme if there is
-                SharedPreferences sharedPref = ((MainActivity) getActivity()).getPreferences(Context.MODE_PRIVATE);
+            case R.id.static_themes:
+                sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                for (int a = 0; a < 3; a++) {
+                    editor.putInt("color" + String.valueOf(a + 1), 0);
+                    editor.commit();
+                }
 
+                break;
+            case R.id.custom_theme_reset:
 
                 //int color1 = getResources().getInteger(R.integer.saved_high_score_default_key);
                 int color1 = sharedPref.getInt("color1", 1);
@@ -181,16 +192,16 @@ public class CustomThemeFragment extends Fragment implements View.OnClickListene
                 break;
             case R.id.custom_theme_save:
                 sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPref.edit();
+                SharedPreferences.Editor editor2 = sharedPref.edit();
                 for (int a = 0; a < 3; a++) {
                     if (colors[a] == null) {
 
-                        editor.putInt("color" + String.valueOf(a+1), 0);
-                        editor.commit();
+                        editor2.putInt("color" + String.valueOf(a+1), 0);
+                        editor2.commit();
 
                     } else {
-                        editor.putInt("color" +String.valueOf(a+1), colors[a]);
-                        editor.commit();
+                        editor2.putInt("color" +String.valueOf(a+1), colors[a]);
+                        editor2.commit();
 
                     }
 
