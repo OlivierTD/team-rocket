@@ -386,6 +386,13 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         solo.waitForView(R.id.queueList);
         solo.clickInList(0);
         solo.waitForView(R.id.queue_fragment);
+        solo.goBack();
+
+        //Delete queue
+        solo.clickOnView(solo.getView(R.id.queue_delete_button));
+        solo.clickOnButton(solo.getString(R.string.confirm));
+        solo.waitForView(R.id.queue_name);
+
     }
 
   public void testCentralSearch() throws Exception{
