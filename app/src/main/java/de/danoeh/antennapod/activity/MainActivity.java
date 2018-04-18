@@ -97,7 +97,6 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
     public static final String EXTRA_FRAGMENT_TAG = "fragment_tag";
     public static final String EXTRA_FRAGMENT_ARGS = "fragment_args";
     public static final String EXTRA_FEED_ID = "fragment_feed_id";
-    public static boolean customTheme = false;
 
     public static final String SAVE_BACKSTACK_COUNT = "backstackCount";
     public static final String SAVE_TITLE = "title";
@@ -134,9 +133,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        if(this.customTheme==false) {
-            setTheme(UserPreferences.getNoTitleTheme());
-        }
+        setTheme(UserPreferences.getNoTitleTheme());
         super.onCreate(savedInstanceState);
         StorageUtils.checkStorageAvailability(this);
         setContentView(R.layout.main);
@@ -214,38 +211,49 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         externalPlayerFragment = new ExternalPlayerFragment();
         transaction.replace(R.id.playerFragment, externalPlayerFragment, ExternalPlayerFragment.TAG);
         transaction.commit();
+
         checkFirstLaunch();
+
 
         //get saved color scheme if there is
         SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+
 
         //int color1 = getResources().getInteger(R.integer.saved_high_score_default_key);
         int color1 = sharedPref.getInt("color1", 1);
         int color2 = sharedPref.getInt("color2", 1);
         int color3 = sharedPref.getInt("color3", 1);
 
-        if (this.customTheme==true) {
-            if (color1 == 1 || color1 == 0) {
-            } else {
-                this.setActivityBackgroundColor(color1);
-            }
-            if (color2 == 1 || color2 == 0) {
-            } else {
-                //View navList = this.findViewById(R.id.nav_list);
-                navList.setBackgroundColor((Integer) color2);
-            }
-            if (color3 == 1 || color3 == 0) {
-            } else {
-                View navTitle = this.findViewById(R.id.nav_layout);
-                navTitle.setBackgroundColor(color3);
-                View navSettings = this.findViewById(R.id.nav_settings);
-                navSettings.setBackgroundColor(color3);
+        if (color1==1 || color1==0) {
 
-                String hexColor = String.format("#%06X", (0xFFFFFF & color3));
-                ColorDrawable colorDrawable = new ColorDrawable(Color.parseColor(hexColor));
-                //ActionBar bar = this.getSupportActionBar();
-                toolbar.setBackgroundDrawable(colorDrawable);
-            }
+
+        } else {
+            this.setActivityBackgroundColor(color1);
+        }
+
+        if (color2==1 || color2==0) {
+
+
+        } else {
+
+            //View navList = this.findViewById(R.id.nav_list);
+            navList.setBackgroundColor((Integer) color2);
+
+        }
+
+        if(color3==1 || color3==0) {
+
+
+        } else {
+            View navTitle = this.findViewById(R.id.nav_layout);
+            navTitle.setBackgroundColor(color3);
+            View navSettings = this.findViewById(R.id.nav_settings);
+            navSettings.setBackgroundColor(color3);
+
+            String hexColor = String.format("#%06X", (0xFFFFFF &color3));
+            ColorDrawable colorDrawable = new ColorDrawable(Color.parseColor(hexColor));
+            //ActionBar bar = this.getSupportActionBar();
+            toolbar.setBackgroundDrawable(colorDrawable);
         }
     }
 
