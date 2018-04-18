@@ -3,13 +3,6 @@
     xmlns:custom="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_search"
-        android:icon="?attr/action_search"
-        custom:showAsAction="collapseActionView|ifRoom"
-        custom:actionViewClass="android.support.v7.widget.SearchView"
-        android:title="@string/search_label"/>
-
-    <item
         android:id="@+id/btnRandomPodcast"
         android:icon="@drawable/ic_random_grey"
         android:title="Random Episode"

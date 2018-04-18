@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,11 +43,9 @@ import java.util.Random;
 
 public class RandomPodcastFragment extends Fragment {
 
-    private Button randomButton;
-
     private static final String TAG = "RandomPodcastFragment";
     private Subscription subscription;
-    CentralSearchFragment centralFrag = new CentralSearchFragment();
+    CentralizedSearchFragment centralFrag = new CentralizedSearchFragment();
     String topic;
     ItunesAdapter.Podcast podcast;
     List<ItunesAdapter.Podcast> resultList = new ArrayList<>();
@@ -70,17 +70,23 @@ public class RandomPodcastFragment extends Fragment {
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.home_toolbar, menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item){
         switch(item.getItemId()){
             case R.id.btnRandomPodcast:
-                clickclick();
+                clickRandom();
         }
 
         return super.onOptionsItemSelected(item);
     }
-    public void clickclick() {
+    public void clickRandom() {
         topic = getRandomTopic();
-        centralFrag = (CentralSearchFragment) getFragmentManager().findFragmentById(R.id.centralFragment);
+        centralFrag = (CentralizedSearchFragment) getFragmentManager().findFragmentById(R.id.centralFragment);
 
         resultList = centralFrag.searchItunes(topic);   //Get search result from random topic
 

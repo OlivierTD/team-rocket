@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Locale;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
 import de.danoeh.antennapod.adapter.itunes.ItunesAdapter;
 import de.danoeh.antennapod.core.ClientConfig;
@@ -182,6 +183,7 @@ public class CentralizedSearchFragment extends Fragment {
     //Search bar event handler
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        final MainActivity activity = (MainActivity) getActivity();
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.itunes_search, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
@@ -192,7 +194,7 @@ public class CentralizedSearchFragment extends Fragment {
             @Override
             public boolean onQueryTextSubmit(String s) {
                 sv.clearFocus();
-                search(s);
+                goToResults(activity, s);
                 return true;
             }
 
@@ -217,6 +219,13 @@ public class CentralizedSearchFragment extends Fragment {
             }
         });
     }
+
+    public void goToResults(MainActivity activity, String query){
+        CentralizedSearchFragment centralizedSearchFragment = new CentralizedSearchFragment();
+        centralizedSearchFragment.setQuery(query);
+        activity.loadChildFragment(centralizedSearchFragment);
+    }
+
 
     private void showOnlyProgressBar() {
         gridView.setVisibility(View.GONE);

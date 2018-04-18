@@ -62,7 +62,7 @@
             <fragment
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:name="de.danoeh.antennapod.fragment.CentralSearchFragment"
+                android:name="de.danoeh.antennapod.fragment.CentralizedSearchFragment"
                 android:id="@+id/centralFragment" />
 
             <fragment
