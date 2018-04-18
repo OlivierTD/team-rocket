@@ -97,6 +97,7 @@
         <item name="attr/ic_home">@drawable/ic_home_white</item>
         <item name="attr/ic_custom_theme">@drawable/ic_custom_theme_white</item>
         <item name="attr/ic_stats">@drawable/ic_stats_white</item>
+        <item name="attr/ic_random">@drawable/ic_random_white</item>
 
     </style>
 
@@ -167,6 +168,7 @@
         <item name="attr/ic_home">@drawable/ic_home_white</item>
         <item name="attr/ic_custom_theme">@drawable/ic_custom_theme_white</item>
         <item name="attr/ic_stats">@drawable/ic_stats_white</item>
+        <item name="attr/ic_random">@drawable/ic_random_white</item>
 
     </style>
 
@@ -237,6 +239,7 @@
         <item name="attr/ic_home">@drawable/ic_home_white</item>
         <item name="attr/ic_custom_theme">@drawable/ic_custom_theme_white</item>
         <item name="attr/ic_stats">@drawable/ic_stats_white</item>
+        <item name="attr/ic_random">@drawable/ic_random_white</item>
 
     </style>
 

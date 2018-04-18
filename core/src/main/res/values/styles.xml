@@ -61,6 +61,7 @@
         <item name="attr/ic_home">@drawable/ic_home_grey</item>
         <item name="attr/ic_custom_theme">@drawable/ic_custom_theme_grey</item>
         <item name="attr/ic_stats">@drawable/ic_stats_grey</item>
+        <item name="attr/ic_random">@drawable/ic_random_grey</item>
     </style>
 
     <style name="Theme.AntennaPod.Dark" parent="Theme.AppCompat">
@@ -123,6 +124,7 @@
         <item name="attr/ic_home">@drawable/ic_home_white</item>
         <item name="attr/ic_custom_theme">@drawable/ic_custom_theme_white</item>
         <item name="attr/ic_stats">@drawable/ic_stats_white</item>
+        <item name="attr/ic_random">@drawable/ic_random_white</item>
 
     </style>
 
@@ -189,6 +191,7 @@
         <item name="attr/ic_home">@drawable/ic_home_white</item>
         <item name="attr/ic_custom_theme">@drawable/ic_custom_theme_white</item>
         <item name="attr/ic_stats">@drawable/ic_stats_white</item>
+        <item name="attr/ic_random">@drawable/ic_random_white</item>
 
     </style>
 
@@ -256,6 +259,7 @@
         <item name="attr/ic_home">@drawable/ic_home_white</item>
         <item name="attr/ic_custom_theme">@drawable/ic_custom_theme_white</item>
         <item name="attr/ic_stats">@drawable/ic_stats_white</item>
+        <item name="attr/ic_random">@drawable/ic_random_white</item>
     </style>
 
     <style name="Theme.AntennaPod.Light.NoTitle" parent="Theme.AppCompat.Light.NoActionBar">
@@ -319,6 +323,7 @@
         <item name="attr/ic_home">@drawable/ic_home_grey</item>
         <item name="attr/ic_custom_theme">@drawable/ic_custom_theme_grey</item>
         <item name="attr/ic_stats">@drawable/ic_stats_grey</item>
+        <item name="attr/ic_random">@drawable/ic_random_grey</item>
 
     </style>
 
@@ -383,6 +388,7 @@
         <item name="attr/ic_home">@drawable/ic_home_white</item>
         <item name="attr/ic_custom_theme">@drawable/ic_custom_theme_white</item>
         <item name="attr/ic_stats">@drawable/ic_stats_white</item>
+        <item name="attr/ic_random">@drawable/ic_random_white</item>
 
     </style>
 
@@ -452,6 +458,7 @@
         <item name="attr/ic_home">@drawable/ic_home_white</item>
         <item name="attr/ic_custom_theme">@drawable/ic_custom_theme_white</item>
         <item name="attr/ic_stats">@drawable/ic_stats_white</item>
+        <item name="attr/ic_random">@drawable/ic_random_white</item>
 
     </style>
 
@@ -519,6 +526,8 @@
         <item name="attr/ic_home">@drawable/ic_home_white</item>
         <item name="attr/ic_custom_theme">@drawable/ic_custom_theme_white</item>
         <item name="attr/ic_stats">@drawable/ic_stats_white</item>
+        <item name="attr/ic_random">@drawable/ic_random_white</item>
+
     </style>
 
     <style name="Theme.AntennaPod.Dark.Splash" parent="Theme.AppCompat.NoActionBar">

@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/btnRandomPodcast"
-        android:icon="@drawable/ic_random_grey"
+        android:icon="?attr/ic_random"
         android:title="Random Episode"
         custom:showAsAction="always"/>
 
