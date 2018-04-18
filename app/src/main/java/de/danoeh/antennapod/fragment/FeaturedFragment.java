@@ -1,23 +1,18 @@
 package de.danoeh.antennapod.fragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.widget.TextView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MainActivity;
 
-/**
- * Created by Sai Shan on 2018-02-02.
- */
+//This fragment is the fragment under "FEATURE" tab on the home page
+public class FeaturedFragment extends Fragment{
 
-public class HomePageFragment extends Fragment{
+    public static final String TAG = "FeaturedFragment";
+    private View root;
 
-    private TextView txtHome;
-    public static final String TAG = "HomePageFragment";
-
-    public HomePageFragment(){
+    public FeaturedFragment(){
 
     }
 
@@ -30,8 +25,13 @@ public class HomePageFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View root = inflater.inflate(R.layout.home_page, container, false);
+        try {
+            root = inflater.inflate(R.layout.featured_fragment, container, false);
 
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         return root;
     }
 

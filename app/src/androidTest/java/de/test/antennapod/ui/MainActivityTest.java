@@ -431,6 +431,53 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         solo.clickInList(1);
     }
 
+//this is not testing the top list nor the suggested podcasts as they are
+    //already tested in other UI tests
+    public void testBHFragment(){
+
+        //open nav bar
+        openNavDrawer();
+
+        //open search podcast page
+        solo.clickOnText(solo.getString(R.string.homepage_label));
+
+        solo.sleep(1000);
+
+        //Swipe left
+        solo.clickOnText(solo.getString(R.string.featured_tab));
+        solo.sleep(500);
+        //Swipe right
+        solo.clickOnText(solo.getString(R.string.categories_tab));
+
+        solo.sleep(500);
+
+        //select second category in list
+
+        
+  //      solo.getView(R.id.listgridview);    NEEDS TO BE FIXED ASAP - does not exist so cannot run this UI test
+        solo.clickInList(2);
+
+        solo.sleep(2000);
+
+        solo.clickInList(2);
+
+        solo.sleep(1000);
+
+        //Subscribe to podcast
+        solo.clickOnButton(solo.getString(R.string.subscribe_label));
+
+        //Open podcast
+        solo.waitForView(R.id.subscriptionLayout);
+        solo.clickOnText(solo.getString(R.string.open_podcast));
+
+        //open 1st episode in list
+        solo.clickInList(2);
+
+        //Download episode
+        solo.clickOnText(solo.getString(R.string.download_label));
+    }
+
+    //Subscribes to a podcast then navigates to home page to see suggestion based on subscription(s)
     public void testSuggestedPodcast(){
         //Navigate to home page
         openNavDrawer();
@@ -458,5 +505,3 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         //Scroll down home page
         searchResultView.scrollTo(0, searchResultView.getHeight());
     }
-
-}
