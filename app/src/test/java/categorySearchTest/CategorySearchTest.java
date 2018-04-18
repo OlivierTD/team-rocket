@@ -36,16 +36,12 @@ import static org.mockito.Mockito.when;
 
 public class CategorySearchTest {
 
-
-    @Mock
     private CategorySearchFragment csFrag;
 
-    @Mock
     private AddFeedFragment afFrag;
 
 
-    //mock alertdialog builder
-    @Mock
+    //alertdialog builder
     AlertDialog.Builder builder;
 
     //mock main activity
