@@ -52,15 +52,6 @@ public class CategorySearchTest {
     @Mock
     MainActivity activity;
 
-    //Mock values for onCreateView of the categorySearchFragment
-    @Mock
-    LayoutInflater mockInflater;
-    @Mock
-    ViewGroup mockViewGroup;
-    @Mock
-    Bundle mockBundle;
-
-
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
@@ -99,24 +90,7 @@ public class CategorySearchTest {
         });
 
         AlertDialog alertDialog = builder.create();
-
         assertEquals(alertDialog, builder.show());
-
     }
-
-    //categorySearchFragment test
-    @Test
-    public void testCSFragment(){
-        doAnswer(new Answer<Void>() {
-            public Void answer(InvocationOnMock invocation) {
-                Object[] args = invocation.getArguments();
-                System.out.println("called with arguments: " + Arrays.toString(args));
-                return null;
-            }
-        }).when(csFrag).onCreateView(mockInflater, mockViewGroup, mockBundle);
-
-    }
-
-
 
 }
