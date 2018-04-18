@@ -381,7 +381,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         solo.clickInList(2);
 
         solo.sleep(1000);
-        
+
         //Subscribe to podcast
         solo.clickOnButton(solo.getString(R.string.subscribe_label));
 
