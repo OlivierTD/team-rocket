@@ -2,6 +2,7 @@ package de.danoeh.antennapod.fragment;
 
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -230,15 +231,5 @@ public class StatisticsFragment extends Fragment implements AdapterView.OnItemCl
                         stats.timePlayedCountAll : stats.timePlayed),
                 Converter.shortLocalizedDuration(getActivity(), stats.time)));
         dialog.setPositiveButton(android.R.string.ok, null);
-        dialog.setNeutralButton(R.string.reset_statistics, null);
-
-
-        final AlertDialog alertDialog = dialog.create();
-        alertDialog.show();
-
-        Button resetButton = alertDialog.getButton(DialogInterface.BUTTON_NEUTRAL);
-        resetButton.setOnClickListener(v -> {
-            long feedID = listAdapter.getItem(position).feed.getId();
-        });
     }
 }
