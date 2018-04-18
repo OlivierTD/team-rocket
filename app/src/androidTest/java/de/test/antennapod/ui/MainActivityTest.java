@@ -548,3 +548,4 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         //Scroll down home page
         searchResultView.scrollTo(0, searchResultView.getHeight());
     }
+}
