@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.support.annotation.MainThread;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -54,7 +55,9 @@ public class PreferenceActivity extends AppCompatActivity {
         // reference it needs
         instance = new WeakReference<>(this);
 
-        setTheme(UserPreferences.getTheme());
+        if(MainActivity.customTheme==false) {
+            setTheme(UserPreferences.getTheme());
+        }
         super.onCreate(savedInstanceState);
 
         ActionBar ab = getSupportActionBar();
@@ -85,36 +88,28 @@ public class PreferenceActivity extends AppCompatActivity {
         int color2 = sharedPref.getInt("color2", 1);
         int color3 = sharedPref.getInt("color3", 1);
 
-        if (color1==1 || color1==0) {
+        if (MainActivity.customTheme==true) {
+            if (color1 == 1 || color1 == 0) {
+            } else {
+                this.setActivityBackgroundColor(color1);
+            }
+            if (color2 == 1 || color2 == 0) {
+            } else {
+                View navList = this.findViewById(R.id.nav_list);
+                navList.setBackgroundColor((Integer) color2);
+            }
+            if (color3 == 1 || color3 == 0) {
+            } else {
+                View navTitle = this.findViewById(R.id.nav_layout);
+                navTitle.setBackgroundColor(color3);
+                View navSettings = this.findViewById(R.id.nav_settings);
+                navSettings.setBackgroundColor(color3);
 
-
-        } else {
-            this.setActivityBackgroundColor(color1);
-        }
-
-        if (color2==1 || color2==0) {
-
-
-        } else {
-
-            View navList = this.findViewById(R.id.nav_list);
-            navList.setBackgroundColor((Integer) color2);
-
-        }
-
-        if(color3==1 || color3==0) {
-
-
-        } else {
-            View navTitle = this.findViewById(R.id.nav_layout);
-            navTitle.setBackgroundColor(color3);
-            View navSettings = this.findViewById(R.id.nav_settings);
-            navSettings.setBackgroundColor(color3);
-
-            String hexColor = String.format("#%06X", (0xFFFFFF &color3));
-            ColorDrawable colorDrawable = new ColorDrawable(Color.parseColor(hexColor));
-            ActionBar bar = this.getSupportActionBar();
-            bar.setBackgroundDrawable(colorDrawable);
+                String hexColor = String.format("#%06X", (0xFFFFFF & color3));
+                ColorDrawable colorDrawable = new ColorDrawable(Color.parseColor(hexColor));
+                ActionBar bar = this.getSupportActionBar();
+                bar.setBackgroundDrawable(colorDrawable);
+            }
         }
     }
 

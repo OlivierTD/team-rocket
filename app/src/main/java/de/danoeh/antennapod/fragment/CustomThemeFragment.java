@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.annotation.MainThread;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
@@ -135,6 +136,7 @@ public class CustomThemeFragment extends Fragment implements View.OnClickListene
                 for (int i = 0; i < NUMBER_OF_COLORS; i++) {
                     setThemeColor(i);
                 }
+                MainActivity.customTheme=true;
                 break;
             case R.id.custom_theme_reset:
                 //get saved color scheme if there is
