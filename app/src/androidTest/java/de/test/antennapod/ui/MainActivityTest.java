@@ -230,7 +230,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     }
 
     /******** (opens homepage) ********/
-    public void testOpenHomePageToplist(){
+    public void testOpenHomePageToplist() {
         //opens the homepage
         openNavDrawer();
         //clicks on the home button on the nav drawer
@@ -245,7 +245,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     }
 
     /******** (stream from toplist) ********/
-    public void testHomePageToplistStream(){
+    public void testHomePageToplistStream() {
         //Navigate to home page
         openNavDrawer();
         solo.clickOnText(solo.getString(R.string.homepage_label));
@@ -272,7 +272,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     }
 
     /******** (Download from toplist) ********/
-    public void testHomePageTopListDownload(){
+    public void testHomePageTopListDownload() {
         //Navigate to home page
         openNavDrawer();
         solo.clickOnText(solo.getString(R.string.homepage_label));
@@ -302,6 +302,8 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         openNavDrawer();
         solo.clickOnText(solo.getString(R.string.homepage_label));
 
+        solo.clickOnText(solo.getString(R.string.featured_tab));
+
         solo.waitForView(R.id.gridViewHome);
 
         //open 1st podcast in list view
@@ -319,7 +321,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         solo.clickOnView(solo.getView(R.id.btnRandomEpisode));
     }
 
-    public void testManageQueues(){
+    public void testManageQueues() {
         //Navigate to queues page
         openNavDrawer();
         solo.clickOnText(solo.getString(R.string.queues_label));
@@ -343,7 +345,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         solo.waitForView(R.id.queue_fragment);
     }
 
-  public void testCentralSearch() throws Exception{
+    public void testCentralSearch() throws Exception {
         //Navigate to queues page
         openNavDrawer();
         solo.clickOnText(solo.getString(R.string.homepage_label));
@@ -362,7 +364,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     }
 
 
-    public void testCategorySearch (){
+    public void testCategorySearch() {
         //open nav bar
         openNavDrawer();
 
@@ -381,7 +383,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         solo.clickInList(2);
 
         solo.sleep(1000);
-        
+
         //Subscribe to podcast
         solo.clickOnButton(solo.getString(R.string.subscribe_label));
 
@@ -396,7 +398,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         solo.clickOnText(solo.getString(R.string.download_label));
     }
 
-    public void testRandomPodcast(){
+    public void testRandomPodcast() {
         //Navigate to home page
         openNavDrawer();
         solo.clickOnText(solo.getString(R.string.homepage_label));
@@ -416,6 +418,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         // subscribe to a podcast
         openNavDrawer();
         solo.clickOnText(solo.getString(R.string.homepage_label));
+        solo.clickOnText(solo.getString(R.string.featured_tab));
         solo.waitForView(R.id.gridViewHome);
         solo.clickInList(1);
         solo.waitForView(R.id.subscriptionLayout);
@@ -431,9 +434,9 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         solo.clickInList(1);
     }
 
-//this is not testing the top list nor the suggested podcasts as they are
+    //this is not testing the top list nor the suggested podcasts as they are
     //already tested in other UI tests
-    public void testBHFragment(){
+    public void testBHFragment() {
 
         //open nav bar
         openNavDrawer();
@@ -453,8 +456,8 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 
         //select second category in list
 
-        
-  //      solo.getView(R.id.listgridview);    NEEDS TO BE FIXED ASAP - does not exist so cannot run this UI test
+
+        //      solo.getView(R.id.listgridview);    NEEDS TO BE FIXED ASAP - does not exist so cannot run this UI test
         solo.clickInList(2);
 
         solo.sleep(2000);
@@ -478,7 +481,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     }
 
     //Subscribes to a podcast then navigates to home page to see suggestion based on subscription(s)
-    public void testSuggestedPodcast(){
+    public void testSuggestedPodcast() {
         //Navigate to home page
         openNavDrawer();
         solo.clickOnText(solo.getString(R.string.homepage_label));
@@ -505,3 +508,5 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         //Scroll down home page
         searchResultView.scrollTo(0, searchResultView.getHeight());
     }
+
+}
