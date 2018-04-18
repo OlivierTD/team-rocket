@@ -345,8 +345,60 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         solo.waitForView(R.id.queue_fragment);
     }
 
-    public void testCentralSearch() throws Exception {
+    public void testAddToQueues(){
+
         //Navigate to queues page
+        openNavDrawer();
+        solo.clickOnText(solo.getString(R.string.queues_label));
+        solo.waitForView(R.id.queueList);
+
+        //Create new queue
+        solo.clickOnView(solo.getView(R.id.addQueue));
+        solo.enterText(0,"test");
+        solo.clickOnText("Create");
+        solo.waitForView(R.id.queue_name);
+
+        //open nav bar
+        openNavDrawer();
+
+        //open search podcast page
+        solo.clickOnText(solo.getString(R.string.add_feed_label));
+
+        //Click on the "category" button to open the dialog
+        solo.clickOnView(solo.getView(R.id.butCategorySearch));
+        //select second in list
+        solo.clickInList(2);
+        solo.sleep(2000);
+        solo.clickInList(2);
+        solo.sleep(1000);
+        //Subscribe to podcast
+        solo.clickOnButton(solo.getString(R.string.subscribe_label));
+        //Open podcast
+        solo.waitForView(R.id.subscriptionLayout);
+        solo.clickOnText(solo.getString(R.string.open_podcast));
+        //open 1st episode in list
+        solo.clickLongInList(2);
+        solo.clickOnMenuItem(solo.getString(R.string.add_to_queue_label));
+        solo.clickOnText(solo.getString(R.string.confirm));
+
+
+        //Navigate to queues page
+        openNavDrawer();
+        solo.clickOnText(solo.getString(R.string.queues_label));
+        solo.waitForView(R.id.queueList);
+        solo.clickInList(0);
+        solo.waitForView(R.id.queue_fragment);
+        solo.goBack();
+
+        //Delete queue
+        solo.clickOnView(solo.getView(R.id.queue_delete_button));
+        solo.clickOnButton(solo.getString(R.string.confirm));
+        solo.waitForView(R.id.queue_name);
+
+    }
+
+  public void testCentralSearch() throws Exception{
+        //Navigate to home page
         openNavDrawer();
         solo.clickOnText(solo.getString(R.string.homepage_label));
 
