@@ -231,5 +231,6 @@ public class StatisticsFragment extends Fragment implements AdapterView.OnItemCl
                         stats.timePlayedCountAll : stats.timePlayed),
                 Converter.shortLocalizedDuration(getActivity(), stats.time)));
         dialog.setPositiveButton(android.R.string.ok, null);
+        dialog.show();
     }
 }
