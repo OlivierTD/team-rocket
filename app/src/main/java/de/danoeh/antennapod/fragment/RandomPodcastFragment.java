@@ -46,7 +46,7 @@ public class RandomPodcastFragment extends Fragment {
     private static final String TAG = "RandomPodcastFragment";
     private Subscription subscription;
 
-    CentralizedSearchFragment centralFrag = new CentralizedSearchFragment();
+    CentralizedSearchFragment centralFrag;
     String topic;
     ItunesAdapter.Podcast podcast;
     List<ItunesAdapter.Podcast> resultList = new ArrayList<>();
