@@ -107,18 +107,27 @@ public class StatisticsFragment extends Fragment implements AdapterView.OnItemCl
         feedStatisticsList.setAdapter(listAdapter);
         feedStatisticsList.setOnItemClickListener(this);
 
-        resetAllStatisticsButton = new Button(getActivity());
-        resetAllStatisticsButton.setText(R.string.reset_all_statistics);
-        resetAllStatisticsButton.setTextSize(16);
-        resetAllStatisticsButton.setVisibility(View.GONE);
+        Button resetStats = new Button(getActivity());
+        resetStats.setText(R.string.reset_all_statistics);
+        resetStats.setTextSize(16);
+        resetStats.setVisibility(View.GONE);
+        setResetStatsButton(resetStats);
 
-        feedStatisticsList.addFooterView(resetAllStatisticsButton);
+        feedStatisticsList.addFooterView(getResetStatsButton());
 
         setResetStatsFunctionality();
     }
 
+    public void setResetStatsButton(Button resetAllStatisticsButton) {
+        this.resetAllStatisticsButton = resetAllStatisticsButton;
+    }
+
+    public Button getResetStatsButton() {
+        return resetAllStatisticsButton;
+    }
+
     public void setResetStatsFunctionality() {
-        resetAllStatisticsButton.setOnClickListener(v -> {
+        getResetStatsButton().setOnClickListener(v -> {
 
             AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
             dialog.setTitle(R.string.reset_all_statistics);
@@ -232,7 +241,7 @@ public class StatisticsFragment extends Fragment implements AdapterView.OnItemCl
 
     private void checkSubscriptionCount() {
         if (feedStatisticsList.getAdapter().getCount() <= 1) {
-            resetAllStatisticsButton.setVisibility(View.GONE);
+            getResetStatsButton().setVisibility(View.GONE);
             noStats = new TextView(getActivity());
             noStats.setText(R.string.no_statistics);
             noStats.setGravity(Gravity.CENTER);
@@ -241,7 +250,7 @@ public class StatisticsFragment extends Fragment implements AdapterView.OnItemCl
             statisticsLayout.addView(noStats);
         }
         else {
-            resetAllStatisticsButton.setVisibility(View.VISIBLE);
+            getResetStatsButton().setVisibility(View.VISIBLE);
         }
     }
 
