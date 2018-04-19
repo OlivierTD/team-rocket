@@ -61,6 +61,7 @@ public class CategorySearchFragment extends Fragment {
     public void setId(String id){
         this.id = id;
     }
+    public String getIdvar(){return id;}
 
     //load the podcasts from the search in the adapter
     private void updateData(List<ItunesAdapter.Podcast> result) {
