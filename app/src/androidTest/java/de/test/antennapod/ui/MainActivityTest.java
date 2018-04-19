@@ -504,6 +504,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         solo.sleep(500);
 
         //select second category in list
+
         solo.getView(R.id.cat_listview);
         solo.clickInList(2);
 
