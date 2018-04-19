@@ -2,11 +2,14 @@ package de.danoeh.antennapod.activity;
 
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.database.DataSetObserver;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,6 +18,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
@@ -137,6 +141,8 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             findViewById(R.id.shadow).setVisibility(View.GONE);
             int elevation = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4,
@@ -207,6 +213,48 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         transaction.commit();
 
         checkFirstLaunch();
+
+
+        //get saved color scheme if there is
+        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+
+
+        //int color1 = getResources().getInteger(R.integer.saved_high_score_default_key);
+        int color1 = sharedPref.getInt("color1", 1);
+        int color2 = sharedPref.getInt("color2", 1);
+        int color3 = sharedPref.getInt("color3", 1);
+
+        if (color1==1 || color1==0) {
+
+
+        } else {
+            this.setActivityBackgroundColor(color1);
+        }
+
+        if (color2==1 || color2==0) {
+
+
+        } else {
+
+            //View navList = this.findViewById(R.id.nav_list);
+            navList.setBackgroundColor((Integer) color2);
+
+        }
+
+        if(color3==1 || color3==0) {
+
+
+        } else {
+            View navTitle = this.findViewById(R.id.nav_layout);
+            navTitle.setBackgroundColor(color3);
+            View navSettings = this.findViewById(R.id.nav_settings);
+            navSettings.setBackgroundColor(color3);
+
+            String hexColor = String.format("#%06X", (0xFFFFFF &color3));
+            ColorDrawable colorDrawable = new ColorDrawable(Color.parseColor(hexColor));
+            //ActionBar bar = this.getSupportActionBar();
+            toolbar.setBackgroundDrawable(colorDrawable);
+        }
     }
 
     private void saveLastNavFragment(String tag) {
@@ -524,6 +572,10 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         Glide.get(this).clearMemory();
     }
 
+    public void setActivityBackgroundColor(Integer color){
+        View view = this.getWindow().getDecorView();
+        view.setBackgroundColor(color);
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         boolean retVal = super.onCreateOptionsMenu(menu);

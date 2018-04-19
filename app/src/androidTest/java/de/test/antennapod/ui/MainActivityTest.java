@@ -488,6 +488,36 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         solo.clickOnText(solo.getString(android.R.string.ok));
     }
 
+    public void testCustomTheme() {
+        // navigate to Custom Theme Fragment
+        openNavDrawer();
+        solo.clickOnText("Custom Theme");
+        solo.waitForView(R.id.custom_theme_set);
+
+        //click color 1 button
+        solo.clickOnButton("Color 1");
+        solo.waitForDialogToOpen();
+        solo.clickLongOnScreen(500, 900);
+        solo.clickOnButton("OK");
+
+        //click color 2 button
+        solo.clickOnButton("Color 2");
+        solo.waitForDialogToOpen();
+        solo.clickLongOnScreen(600, 900);
+        solo.clickOnButton("OK");
+
+        //click color 3 button
+        solo.clickOnButton("Color 3");
+        solo.waitForDialogToOpen();
+        solo.clickLongOnScreen(400, 900);
+        solo.clickOnButton("OK");
+
+        //set Colors
+        solo.clickOnButton("Set!");
+    }
+
+
+
     //this is not testing the top list nor the suggested podcasts as they are
     //already tested in other UI tests
     public void testBHFragment() {
@@ -530,6 +560,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 
         //Download episode
         solo.clickOnText(solo.getString(R.string.download_label));
+
     }
 
     //Subscribes to a podcast then navigates to home page to see suggestion based on subscription(s)
